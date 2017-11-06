@@ -1,0 +1,147 @@
+##########################################
+# (1) LINK INFORMATION                   #
+##########################################
+C:\Renesas\NC30WA\V540R00\bin\ln30.exe @D:\svn\2010\trunk\zhukong\v01\Debug_M16C_R8C_FoUSB_UART\v01.m16cl
+
+# LINK FILE INFORMATION
+ncrt0 (D:\svn\2010\trunk\zhukong\v01\Debug_M16C_R8C_FoUSB_UART\ncrt0.r30)
+	Mar 12 09:28:11 2010
+
+action (D:\svn\2010\trunk\zhukong\v01\Debug_M16C_R8C_FoUSB_UART\action.r30)
+	Mar 12 09:28:01 2010
+
+communication (D:\svn\2010\trunk\zhukong\v01\Debug_M16C_R8C_FoUSB_UART\communication.r30)
+	Mar 12 09:28:02 2010
+
+delay (D:\svn\2010\trunk\zhukong\v01\Debug_M16C_R8C_FoUSB_UART\delay.r30)
+	Mar 12 09:28:03 2010
+
+initial (D:\svn\2010\trunk\zhukong\v01\Debug_M16C_R8C_FoUSB_UART\initial.r30)
+	Mar 12 09:28:03 2010
+
+main (D:\svn\2010\trunk\zhukong\v01\Debug_M16C_R8C_FoUSB_UART\main.r30)
+	Mar 12 09:28:04 2010
+
+motor (D:\svn\2010\trunk\zhukong\v01\Debug_M16C_R8C_FoUSB_UART\motor.r30)
+	Mar 12 09:28:05 2010
+
+solenoid (D:\svn\2010\trunk\zhukong\v01\Debug_M16C_R8C_FoUSB_UART\solenoid.r30)
+	Mar 12 09:28:06 2010
+
+step_motor_drv (D:\svn\2010\trunk\zhukong\v01\Debug_M16C_R8C_FoUSB_UART\step_motor_drv.r30)
+	Mar 12 09:28:06 2010
+
+system (D:\svn\2010\trunk\zhukong\v01\Debug_M16C_R8C_FoUSB_UART\system.r30)
+	Mar 12 11:30:30 2010
+
+variables (D:\svn\2010\trunk\zhukong\v01\Debug_M16C_R8C_FoUSB_UART\variables.r30)
+	Mar 12 09:28:09 2010
+
+watch (D:\svn\2010\trunk\zhukong\v01\Debug_M16C_R8C_FoUSB_UART\watch.r30)
+	Mar 12 09:28:10 2010
+
+_i4div (C:\Renesas\NC30WA\V540R00\lib30\nc30lib.lib)
+	Dec  8 19:43:01 2005
+
+_i4i2div (C:\Renesas\NC30WA\V540R00\lib30\nc30lib.lib)
+	Dec  8 19:43:01 2005
+
+_i4mulu (C:\Renesas\NC30WA\V540R00\lib30\nc30lib.lib)
+	Dec  8 19:43:02 2005
+
+_mbase (C:\Renesas\NC30WA\V540R00\lib30\nc30lib.lib)
+	Dec  8 19:43:04 2005
+
+bcopy (C:\Renesas\NC30WA\V540R00\lib30\nc30lib.lib)
+	Dec  8 19:43:07 2005
+
+bzero (C:\Renesas\NC30WA\V540R00\lib30\nc30lib.lib)
+	Dec  8 19:43:07 2005
+
+mdata (C:\Renesas\NC30WA\V540R00\lib30\nc30lib.lib)
+	Dec  8 19:43:18 2005
+
+
+##########################################
+# (2) SECTION INFORMATION                #
+##########################################
+# SECTION                        ATR TYPE    START  LENGTH ALIGN MODULENAME
+data_SE                          ABS DATA    000400 000000       ncrt0
+bss_SE                           REL DATA    000400 000000 2     ncrt0
+data_SO                          REL DATA    000400 000000       ncrt0
+bss_SO                           REL DATA    000400 000000       ncrt0
+data_NE                          REL DATA    000400 000000 2     ncrt0
+                                 REL DATA    000400 000018 2     motor
+                                 REL DATA    000418 000014 2     variables
+                                 REL DATA    00042C 000002 2     watch
+                                 REL DATA    00042E 000010 2     mdata
+bss_NE                           REL DATA    00043E 000000 2     ncrt0
+                                 REL DATA    00043E 0001FE 2     communication
+                                 REL DATA    00063C 00006A 2     motor
+                                 REL DATA    0006A6 000024 2     step_motor_drv
+                                 REL DATA    0006CA 0004DA 2     variables
+                                 REL DATA    000BA4 0000EE 2     watch
+                                 REL DATA    000C92 000004 2     _mbase
+                                 REL DATA    000C96 000008 2     mdata
+data_NO                          REL DATA    000C9E 000000       ncrt0
+                                 REL DATA    000C9E 000003       motor
+                                 REL DATA    000CA1 000013       variables
+bss_NO                           REL DATA    000CB4 000000       ncrt0
+                                 REL DATA    000CB4 000001       action
+                                 REL DATA    000CB5 000004       communication
+                                 REL DATA    000CB9 000008       motor
+                                 REL DATA    000CC1 000005       step_motor_drv
+                                 REL DATA    000CC6 000002       system
+                                 REL DATA    000CC8 001097       variables
+                                 REL DATA    001D5F 000009       watch
+stack                            REL DATA    001D68 000600       ncrt0
+heap                             REL DATA    002368 000300       ncrt0
+rom_NE                           REL ROMDATA 002668 000000 2     ncrt0
+rom_NO                           REL ROMDATA 002668 000000       ncrt0
+data_FE                          ABS DATA    010000 000000       ncrt0
+bss_FE                           REL DATA    010000 000000 2     ncrt0
+data_FO                          REL DATA    010000 000000       ncrt0
+bss_FO                           REL DATA    010000 000000       ncrt0
+rom_FE                           ABS ROMDATA 0E0000 000000       ncrt0
+                                 REL ROMDATA 0E0000 0006D8 2     action
+                                 REL ROMDATA 0E06D8 000602 2     motor
+                                 REL ROMDATA 0E0CDA 000100 2     step_motor_drv
+rom_FO                           REL ROMDATA 0E0DDA 000000       ncrt0
+data_SEI                         REL ROMDATA 0E0DDA 000000       ncrt0
+data_SOI                         REL ROMDATA 0E0DDA 000000       ncrt0
+data_NEI                         REL ROMDATA 0E0DDA 000000       ncrt0
+                                 REL ROMDATA 0E0DDA 000018       motor
+                                 REL ROMDATA 0E0DF2 000014       variables
+                                 REL ROMDATA 0E0E06 000002       watch
+                                 REL ROMDATA 0E0E08 000010       mdata
+data_NOI                         REL ROMDATA 0E0E18 000000       ncrt0
+                                 REL ROMDATA 0E0E18 000003       motor
+                                 REL ROMDATA 0E0E1B 000013       variables
+data_FEI                         REL ROMDATA 0E0E2E 000000       ncrt0
+data_FOI                         REL ROMDATA 0E0E2E 000000       ncrt0
+program                          REL CODE    0E0E2E 000000       ncrt0
+                                 REL CODE    0E0E2E 005589 2     action
+                                 REL CODE    0E63B8 0021CD 2     communication
+                                 REL CODE    0E8586 00008C 2     delay
+                                 REL CODE    0E8612 00046A 2     initial
+                                 REL CODE    0E8A7C 0001F5 2     main
+                                 REL CODE    0E8C72 002287 2     motor
+                                 REL CODE    0EAEFA 00005F 2     solenoid
+                                 REL CODE    0EAF5A 0006D8 2     step_motor_drv
+                                 REL CODE    0EB632 004CBF 2     system
+                                 REL CODE    0F02F2 00076E 2     watch
+                                 REL CODE    0F0A60 000083 2     _i4div
+                                 REL CODE    0F0AE4 000041 2     _i4i2div
+                                 REL CODE    0F0B26 00001C 2     _i4mulu
+                                 REL CODE    0F0B42 000035 2     bcopy
+                                 REL CODE    0F0B78 000028 2     bzero
+program_S                        REL CODE    0F0BA0 000000       ncrt0
+interrupt                        REL CODE    0F0BA0 000000       ncrt0
+                                 REL CODE    0F0BA0 000130       ncrt0
+vector                           ABS CODE    0FBD00 0000C0       ncrt0
+fvector                          ABS CODE    0FFFDC 000024       ncrt0
+# Total -------------------------------------------------------------------
+                                     DATA           002268(0008808) Byte(s)
+                                     ROMDATA        000E2E(0003630) Byte(s)
+                                     CODE           00FF86(0065414) Byte(s)
+

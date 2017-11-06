@@ -1,0 +1,20 @@
+[HIMDBVersion]
+2.0
+[DATABASE_VERSION]
+"1.2" 
+[CURRENT_PROJECT]
+"v01" 
+[GENERAL_DATA]
+"ECXLABEL_LAST_FINDS_DATA" "" 
+[BREAKPOINTS]
+[OPEN_WORKSPACE_FILES]
+"D:\git_svn\mobanji\mbj_test(JKMBJ)0919\include\common.h" 
+"D:\git_svn\mobanji\mbj_test(JKMBJ)0919\src\c\action.c" 
+"D:\git_svn\mobanji\mbj_test(JKMBJ)0919\src\c\system.c" 
+[WORKSPACE_FILE_STATES]
+"D:\git_svn\mobanji\mbj_test(JKMBJ)0919\include\common.h" 0 0 913 311 0 0 
+"D:\git_svn\mobanji\mbj_test(JKMBJ)0919\src\c\action.c" -8 -30 1058 478 1 2 
+"D:\git_svn\mobanji\mbj_test(JKMBJ)0919\src\c\system.c" 25 25 917 315 0 1 
+[LOADED_PROJECTS]
+"v01" 
+[END]

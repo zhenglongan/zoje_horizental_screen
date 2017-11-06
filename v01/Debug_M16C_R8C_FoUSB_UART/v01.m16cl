@@ -1,0 +1,16 @@
+-L "nc30lib"
+-G
+-M
+-O "D:\svn\2010\trunk\zhukong\v01\Debug_M16C_R8C_FoUSB_UART\v01.x30"
+"D:\svn\2010\trunk\zhukong\v01\Debug_M16C_R8C_FoUSB_UART\ncrt0.r30"
+"D:\svn\2010\trunk\zhukong\v01\Debug_M16C_R8C_FoUSB_UART\action.r30"
+"D:\svn\2010\trunk\zhukong\v01\Debug_M16C_R8C_FoUSB_UART\communication.r30"
+"D:\svn\2010\trunk\zhukong\v01\Debug_M16C_R8C_FoUSB_UART\delay.r30"
+"D:\svn\2010\trunk\zhukong\v01\Debug_M16C_R8C_FoUSB_UART\initial.r30"
+"D:\svn\2010\trunk\zhukong\v01\Debug_M16C_R8C_FoUSB_UART\main.r30"
+"D:\svn\2010\trunk\zhukong\v01\Debug_M16C_R8C_FoUSB_UART\motor.r30"
+"D:\svn\2010\trunk\zhukong\v01\Debug_M16C_R8C_FoUSB_UART\solenoid.r30"
+"D:\svn\2010\trunk\zhukong\v01\Debug_M16C_R8C_FoUSB_UART\step_motor_drv.r30"
+"D:\svn\2010\trunk\zhukong\v01\Debug_M16C_R8C_FoUSB_UART\system.r30"
+"D:\svn\2010\trunk\zhukong\v01\Debug_M16C_R8C_FoUSB_UART\variables.r30"
+"D:\svn\2010\trunk\zhukong\v01\Debug_M16C_R8C_FoUSB_UART\watch.r30"
