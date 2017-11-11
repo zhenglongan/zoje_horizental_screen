@@ -113,65 +113,64 @@ typedef struct
 
 typedef struct
 {
-	UINT16 DSP1_para_1F;
-	UINT16 DSP1_para_20;
-	UINT16 DSP1_para_21;
-	UINT16 DSP1_para_22;
-	UINT16 DSP1_para_23;
-	UINT16 DSP1_para_27;
-	UINT16 DSP1_para_28H;
-	UINT16 DSP1_para_28M1;
-	UINT16 DSP1_para_28M2;
-	UINT16 DSP1_para_28L;
+	UINT16 DSP1_para_1F;		//1,2
+	UINT16 DSP1_para_20;		//3,4
+	UINT16 DSP1_para_21;		//5,6
+	UINT16 DSP1_para_22;		//7,8
+	UINT16 DSP1_para_23;		//9,10
+	UINT16 DSP1_para_27;		//11,12
+	UINT16 DSP1_para_28H;		//13,14
+	UINT16 DSP1_para_28M1;		//15,16
+	UINT16 DSP1_para_28M2;		//17,18
+	UINT16 DSP1_para_28L;		//19,20
 	
-	UINT16 DSP2_para_1F;
-	UINT16 DSP2_para_20;
-	UINT16 DSP2_para_21;
-	UINT16 DSP2_para_22;
-	UINT16 DSP2_para_23;
-	UINT16 DSP2_para_26;
-	UINT16 DSP2_para_27;
-	UINT16 DSP2_para_28H;
-	UINT16 DSP2_para_28M1;
-	UINT16 DSP2_para_28M2;
-	UINT16 DSP2_para_28L;
+	UINT16 DSP2_para_1F;		//21,22
+	UINT16 DSP2_para_20;		//23,24
+	UINT16 DSP2_para_21;		//25,26
+	UINT16 DSP2_para_22;		//27,28
+	UINT16 DSP2_para_23;		//29,30
+
+	UINT16 DSP2_para_27;		//31,32
+	UINT16 DSP2_para_28H;		//33,34
+	UINT16 DSP2_para_28M1;		//35,36
+	UINT16 DSP2_para_28M2;		//37,38
+	UINT16 DSP2_para_28L;		//39,40
 	
-	UINT8  dsp1A_half_current;
-	UINT8  dsp1B_half_current;
-	UINT8  dsp2A_half_current;
-	UINT8  dsp2B_half_current;
+	UINT8  dsp1A_half_current;	//41
+	UINT8  dsp1B_half_current;	//42
+	UINT8  dsp2A_half_current;	//43
+	UINT8  dsp2B_half_current;	//44
 		
-	UINT8  platform_type;			
-	UINT8  mainmotor_type;
-	UINT8  x_origin_mode;		
-	UINT8  yj_org_direction;
-	UINT8  Corner_deceleration_speed;
-    UINT8  wipper_type;
-	UINT8  x_sensor_open_level;
-	UINT8  y_sensor_open_level;
-	UINT8  laser_function_enable;
-	UINT8  last_10_speed;
-	UINT8  last_9_speed;
-	UINT8  last_8_speed;
-	UINT8  last_7_speed;
-	UINT8  last_6_speed;
-	UINT8  last_5_speed;
-	UINT8  last_4_speed;
-	UINT8  last_3_speed;
-	UINT8  last_2_speed;
-	UINT8  last_1_speed;
-	UINT8  dvab_open_level;
-	UINT16  dsp1_step_crc;
-	UINT16  dsp2_step_crc;
-	UINT16 y_backward_dis;
-    UINT16 x_take_offset;
-	UINT16 x_take_offset2;
-	UINT16 left_barcode_position;
-	UINT16 right_barcode_position;
-	UINT16 catch_delay_time;
-	UINT16 y_barcode_position;
-	UINT16 blow_air_counter;
-	UINT16 cut_air_counter;
+	UINT8  platform_type;		//45	
+	UINT8  mainmotor_type;      //46
+	UINT8  x_origin_mode;		//47
+	UINT8  yj_org_direction;    //48
+	UINT8  Corner_deceleration_speed;//49
+    UINT8  wipper_type;			//50
+	UINT8  x_sensor_open_level; //51
+	UINT8  y_sensor_open_level;	//52
+	UINT8  laser_function_enable;//53
+	UINT8  last_9_speed;		//54
+	UINT8  last_8_speed;		//55
+	UINT8  last_7_speed;		//56
+	UINT8  last_6_speed;		//57
+	UINT8  last_5_speed;		//58
+	UINT8  last_4_speed;		//59
+	UINT8  last_3_speed;		//60
+	UINT8  last_2_speed;		//61
+	UINT8  last_1_speed;		//62
+	UINT8  dvab_open_level;		//63
+	UINT16  dsp1_step_crc;		//64,65
+	UINT16  dsp2_step_crc;		//66,67
+	UINT16 y_backward_dis;		//68,69
+    UINT16 x_take_offset;		//70,71
+	UINT16 x_take_offset2;		//72,73
+	UINT16 left_barcode_position;	//74,75
+	UINT16 right_barcode_position;	//76,77
+	UINT16 catch_delay_time;	//78,79
+	UINT16 y_barcode_position;	//80,81
+	UINT16 blow_air_counter;	//82,83
+	UINT16 cut_air_counter;		//84,85
 }SYSTEM_PARA;
 
 #endif

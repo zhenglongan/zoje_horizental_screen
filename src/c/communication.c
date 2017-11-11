@@ -1298,10 +1298,10 @@ void protocol(UINT8* command)
 				u94 = rec_buf[32];								 	// check dead point when go origin or reset
 				u104 = rec_buf[33];                              	// inpresser lowering timing
 				u212 = rec_buf[34];									// cancel sewing sera potection 
-				u213 = rec_buf[35];									// x left limit 
-				u214 = rec_buf[36];									// x right limit 
-				u215 = rec_buf[37];									// y up limit
-				u216 = rec_buf[38];									// y down limit
+//				u213 = rec_buf[35];									// x left limit 
+//				u214 = rec_buf[36];									// x right limit 
+//				u215 = rec_buf[37];									// y up limit
+//				u216 = rec_buf[38];									// y down limit
 				u217 = rec_buf[39];									// set the high speed
 				u218 = rec_buf[40];									// set the low speed
 				u219 = rec_buf[41];									// set the mid-high speed
@@ -1351,14 +1351,14 @@ void protocol(UINT8* command)
 				wiper_start_time = temp | (UINT16)rec_buf[55];
 				temp = (UINT16)rec_buf[56]<<8;						// wiper hold time
 				wiper_end_time = temp | (UINT16)rec_buf[57];
-				u224 = rec_buf[58];									// presser style									
-				u225 = rec_buf[59];									// presser wright
+				//u224 = rec_buf[58];									// presser style									
+				//u225 = rec_buf[59];									// presser wright
 				tail_sewing_speed = u211;//rec_buf[59];	
 				//if( tail_sewing_speed >=11)
 				//    tail_sewing_speed = 11;
-				u226 = rec_buf[60];									// light presser
-				u227 = rec_buf[61];									// mid presser
-				u228 = rec_buf[62];									// heavy presser
+				//u226 = rec_buf[60];									// light presser
+				//u227 = rec_buf[61];									// mid presser
+				//u228 = rec_buf[62];									// heavy presser
 				u229 = rec_buf[63];									// sewing material style
 				u230 = rec_buf[64];									// thin material
 				
@@ -1425,8 +1425,12 @@ void protocol(UINT8* command)
 				else
 				    stretch_foot_enable =0;
 			
-				foot2_high = rec_buf[86];  
+			
 				
+				auto_function_skip_flag = rec_buf[86]; //模板解锁标致：1是模板识别 0是手动切换  
+				if( auto_function_skip_flag==0)
+					last_pattern_number =0;
+								
 				u239 = 0;
 				temp16 = (INT16)rec_buf[88]<<8;					
 				u242 = temp16|(INT16)rec_buf[89];            
@@ -1441,11 +1445,6 @@ void protocol(UINT8* command)
 
 				temp16 = (INT16)rec_buf[97]<<8;	
 				nop_move_delay = temp16|(INT16)rec_buf[98];	
-				
-//				temp = (UINT16)rec_buf[99]<<8;	
-			   
-//				temp16 = (INT16)rec_buf[101]<<8;	
-//				edit_move_delay = temp16|(INT16)rec_buf[102];	
 				
 				x_step_current_level = rec_buf[103];
 				if(x_step_current_level>31)
@@ -1471,9 +1470,8 @@ void protocol(UINT8* command)
 				MoveMode = rec_buf[123];
 								
 				HighSpeedStitchLength = rec_buf[124];
-				//MAIN_MOTOR_TYPE = rec_buf[125];
-				//if(MAIN_MOTOR_TYPE ==0 )
-				   MAIN_MOTOR_TYPE=2;
+				MAIN_MOTOR_TYPE = rec_buf[125];
+			    MAIN_MOTOR_TYPE = 2;
 				
 				MotorPreInit();
 				StitchSpeedCurve = rec_buf[126];				
@@ -1496,15 +1494,10 @@ void protocol(UINT8* command)
 					{
 						speed_display_mode = rec_buf[136];
 				
-						foot_type = rec_buf[137];
-						u224 = foot_type;
-						foot2_enable = rec_buf[138];						
+						u224 = rec_buf[137];
+						
 						steper_footer_range = rec_buf[140];
 						steper_footer_range = steper_footer_range*14/10;
-						if( foot2_high == 0)
-						    foot2_enable = 0;
-						foot_current = rec_buf[141];
-				
 						
 						temp16 = (INT16)rec_buf[142]<<8;
 						angle_test_x = temp16 | (INT16)rec_buf[143];
@@ -1606,6 +1599,8 @@ void protocol(UINT8* command)
 					y_bios_offset = (INT16)temp16;
 					y_bios_offset = y_bios_offset * RESOLUTION;
 					marking_speed = rec_buf[190];
+					if(marking_speed<3)
+					marking_speed =3;
 				}
 				
 				if(data_length >190)
@@ -1644,7 +1639,6 @@ void protocol(UINT8* command)
 				if( data_length >220)
 				{
 				   	formwork_identify_device =  rec_buf[221];
-//					formwork_identify_device =2;
 			    }
 				  
 				if(data_length>226)
@@ -1705,8 +1699,7 @@ void protocol(UINT8* command)
 					k03 = rec_buf[245];
 					base_tension = tension_release_value;
 					sewing_tenion = base_tension;
-					//if( base_tension > 100)
-					//    base_tension = 100;
+
 				}
 				
 				if(auto_select_flag ==1)
@@ -1742,6 +1735,7 @@ void protocol(UINT8* command)
 				if( inpress_follow_range < 10)
 					inpress_follow_range = 10;
 				inpress_follow_range =  inpress_follow_range*7/10;
+				
 				follow_up_inpresser_time_adj = (INT8)rec_buf[100];				
 				temp = (UINT16)rec_buf[35]<<8;					
 				fw_start_angle = temp | (UINT16)rec_buf[36];
@@ -1816,8 +1810,7 @@ void protocol(UINT8* command)
 				}
 				}
 				LastPatternHaveSOP = 0;
-				sta_point = (PATTERN_DATA *)(pat_buf);		
-				
+				sta_point = (PATTERN_DATA *)(pat_buf);				
 			
 				temp = pattern_number;
 				tra_ind_r = 0; 
@@ -1840,7 +1833,7 @@ void protocol(UINT8* command)
 			//--------------------------------------------------------------------------------------
 			case STEP:
 
-				if( (sys.status != ERROR)&&(sys.status != RUN)&&(finish_nopmove_pause_flag != 1) )
+				if( (sys.status != ERROR)&&(sys.status != RUN)&&(finish_nopmove_pause_flag != 1)&&(waitting_for_point_command==0) )
 				{
 					switch(rec_buf[3])                      
 					{
@@ -3042,14 +3035,10 @@ void protocol(UINT8* command)
 					tra_com(send_command,14);
 					rec_ind_r = 0; 
 					rec_ind_w = 0; 
-			  break;
+			  break;		
 			 
-		
-			 
-			  case   SET_MAIN_CONTROL_LOCK:
-			 
-			        main_control_lock_flag = rec_buf[3];				
-					
+			  case   SET_MAIN_CONTROL_LOCK:			 
+			        main_control_lock_flag = rec_buf[3];					
 			 		tra_ind_r = 0; 
 					tra_ind_w = 0;
 					send_command[0] = DATA_START;
@@ -3061,7 +3050,7 @@ void protocol(UINT8* command)
 					tra_com(send_command,6);    
 					rec_ind_r = 0; 
 					rec_ind_w = 0;					
-					main_control_lock_change_flag = 1;			
+					main_control_lock_setup = 1;			
 					
 			  break;
 			   

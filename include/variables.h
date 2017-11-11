@@ -482,7 +482,7 @@ extern UINT8 aging_mode,unaging_flag;
 extern INT16 tension_release_value,x_origin_offset,y_origin_offset;
 extern UINT16 tension_release_time;
 extern UINT16 steper_footer_range,steper_footer_position;
-extern UINT8 foot_type,foot2_enable,foot2_high,foot_position,foot_current,foot_action_flag,foot2_count;
+
 extern INT16 pdl_val_now;	
 extern INT16 pdl_val_old;
 extern UINT16 pedal_pos0;
@@ -710,7 +710,7 @@ extern UINT16 inpress_follow_down_angle,inpress_follow_up_angle;
 extern UINT8 inpress_follow_down_speed,inpress_follow_up_speed;
 extern INT16 inpress_follow_range;
 extern UINT8 inpress_follow_high_flag;
-extern UINT8 main_control_lock_change_flag;
+
 extern UINT16 rec1_datalength,rec1_package_length;
 
 extern UINT8  rec1_status_machine;
@@ -741,6 +741,8 @@ extern UINT8  rc522_write_falg;
 extern UINT8  rc522_write_ret_falg;
 extern UINT8  rc522_control_falg;
 extern UINT8  making_pen_nopmove_flag;
+extern UINT16  dsp1_step_crc;
+extern UINT16  dsp2_step_crc;
 
 #if AUTO_CHANGE_FRAMEWORK 
 	extern UINT8  left_footer_action_flag,left_start_action_flag,left_footer_counter,left_start_counter,left_footer_lock_flag,left_start_lock_flag;
@@ -751,9 +753,14 @@ extern UINT8  making_pen_nopmove_flag;
 	extern UINT8 left_footer_delay_flag,left_footer_delay_counter,right_footer_delay_flag,right_footer_delay_counter;
 	extern UINT8 power_on_allow_keypress;
 	extern UINT8 testpin;
-	extern UINT8 blow_air_action_flag;
-	extern UINT16 blow_air_counter;
+
 #endif
+	
+extern UINT8 blow_air_action_flag;
+extern UINT16 blow_air_counter;
+extern UINT8 waitting_for_point_command;
+extern UINT8 auto_function_skip_flag;
+extern UINT8 main_control_lock_setup;
 //--------------------------------------------------------------------------------------
 //         COPYRIGHT(C) 2006 Beijing xingdahao technology Co., Ltd.
 //                     ALL RIGHTS RESERVED 

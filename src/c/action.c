@@ -140,18 +140,18 @@ const UINT16 inpress_follow_down_angle_tab[]=
 const UINT8 inpress_follow_down_speed_tab[]=
 {
 	// 0   1   2   3   4   5   6   7   8   9   10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32
-	  60, 60, 60, 60, 60, 47, 42, 37, 33, 29, 26, 24, 22, 20, 18, 17, 16, 15, 15, 13, 13, 13, 12, 12, 11, 11, 11, 10, 10, 10, 10, 10, 9
+	  60, 60, 60, 60, 60, 47, 42, 37, 33, 29, 26, 24, 22, 20, 18, 17, 16, 15, 15, 13, 13, 13, 12, 12, 11, 11, 11, 10, 10, 10, 10, 9, 9
  };
 
 const UINT16 inpress_follow_up_angle_tab[]= 
 {
 	// 0   1   2   3   4   5   6   7   8   9   10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32
-  	   250,250,250,230,230,230,220,210,210,210,210,210,210,210,210,210,210,210,200,200,200,200,200,200,200,200,190,190,185,150,150,140,140
+  	   250,250,250,230,230,230,220,210,210,210,210,210,210,210,210,210,210,210,200,200,200,200,200,200,200,200,190,190,185,185,185,185,185
 }; 
 const UINT8 inpress_follow_up_speed_tab[]=
 {
 	// 0   1   2   3   4   5   6   7   8   9   10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32
-	  60, 60, 60, 60, 60, 47, 42, 37, 33, 29, 26, 24, 22, 20, 18, 17, 16, 15, 15, 13, 13, 13, 12, 12, 11, 11, 11, 10, 10, 10, 10, 10, 9
+	  60,  60, 60, 60, 60, 47, 42, 37, 33, 29, 26, 24, 22, 20, 18, 17, 16, 15, 15, 13, 13, 13, 12, 12, 11, 11, 11, 10, 10, 10, 10, 9, 9
 };
 //======================================================================================================================================	
 const UINT8 MoveTime_Speed_10080_ND80[] =
@@ -169,7 +169,7 @@ const UINT16 MoveStartAngle_10080_y[] =
 {
 //	0	1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	20	21	22	23	24	25  26  27  28  29  30  31  32
 //  63, 63, 63, 63, 63,	63,	63,	59,	50,	45,	42,	40,	39,	37,	36,	34,	33,	31,	29,	28,	27,	26,	25,	24, 23, 22, 21, 20, 19, 19, 18, 18, 17
-	63, 63, 63, 63, 63,	63,	63,	59,	50,	45,	42,	40,	39,	37,	35,	32,	30,	27,	24,	22,	20,	19,	18,	17, 16, 15, 14, 13, 12, 12, 11, 11, 10
+	63, 63, 63, 63, 63,	63,	63,	59,	50,	45,	42,	40,	39,	37,	35,	32,	30,	27,	24,	22,	20,	19,	18,	17, 16, 15, 17, 16, 15, 15, 14, 14, 13
 };
 
 const UINT16 MoveStartAngle_10080_x[] =
@@ -182,7 +182,7 @@ const UINT8 MoveTime_Speed_10080_x[] =
 {
 //	0	1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	20	21	22	23	24	25  26  27  28  29  30  31  32
 //	63, 63, 63, 63, 63,	63,	63,	59,	50,	45,	42,	40,	39,	37,	36,	34,	33,	31,	29,	28,	27,	26,	25,	24, 23, 22, 21, 20, 19, 19, 18, 18, 17
-	63, 63, 63, 63, 63,	63,	63,	59,	50,	45,	42,	40,	39,	37,	35,	32,	30,	27,	24,	22,	20,	19,	18,	17, 16, 15, 14, 13, 12, 12, 11, 11, 10
+	63, 63, 63, 63, 63,	63,	63,	59,	50,	45,	42,	40,	39,	37,	35,	32,	30,	27,	24,	22,	20,	19,	18,	17, 16, 15, 17, 16, 15, 15, 14, 14, 13
 };
 
 const UINT16 spdlimit_10080_345_tab[]=                         
@@ -195,13 +195,13 @@ const UINT16 spdlimit_10080_345_tab[]=
 	// 	2.1		2.2		2.3		2.4		2.5		2.6		2.7		2.8		2.9		3.0
 		3000,	3000,	3000,	3000,	3000,	3000,	3000,	3000,	2900,	2800,
 	// 	3.1		3.2		3.3		3.4		3.5		3.6		3.7		3.8		3.9		4.0  
-		2800,	2800,	2800,	2800,	2800,	2800,	2800,	2700,	2700,	2600,
+		2800,	2800,	2800,	2800,	2800,	2800,	2700,	2600,	2500,	2400,
 	// 	4.1		4.2		4.3		4.4		4.5		4.6		4.7		4.8		4.9		5.0
-		2500,	2400,	2400,	2400,	2400,	2400,	2300,	2300,	2300,	2300,
+		2400,	2400,	2400,	2400,	2300,	2200,	2100,	2000,	1900,	1800,
 	// 	5.1		5.2		5.3		5.4		5.5		5.6		5.7		5.8		5.9		6.0
-	    2100,	2000,	2000,	1900,	1900,	1900,	1800,	1800,	1800,	1800,
+	    1800,	1800,	1800,	1900,	1800,	1800,	1800,	1700,	1700,	1600,
 	// 	6.1		6.2		6.3		6.4		6.5		6.6		6.7		6.8		6.9		7.0
-	    1800,	1700,	1700,	1700,	1600,	1600,	1600,	1500,	1500,	1500,
+	    1600,	1600,	1600,	1600,	1600,	1600,	1600,	1500,	1500,	1500,
 	// 	7.1		7.2		7.3		7.4		7.5		7.6		7.7		7.8		7.9		8.0
 		1500,	1500,	1400,	1400,	1400,	1400,	1400,	1300,	1300,	1300,
 	// 	8.1		8.2		8.3		8.4		8.5		8.6		8.7		8.8		8.9		9.0
@@ -887,10 +887,13 @@ void go_origin_allmotor(void)
 		predit_shift = 0;
 		return;
     }
-	if( u37 == 0)
+	if(sys.status != FINISH)
 	{
-		footer_both_down();
-		delay_ms(120); 
+		if( u37 == 0)
+		{
+			footer_both_down();
+			delay_ms(120); 
+		}
 	}
 	if( cut_mode == STEPPER_MOTER_CUTTER )
 		go_origin_yj();
@@ -901,7 +904,20 @@ void go_origin_allmotor(void)
 		return;
     }
 	manual_operation_flag = 0;
-
+    if( (making_pen_actoin_flag ==1)&&((x_bios_offset != 0)||(y_bios_offset != 0)) )
+	{
+		if( making_pen_offset_done == 1)
+		{
+			making_pen_nopmove_flag =1;
+			go_commandpoint(allx_step - x_bios_offset ,ally_step - y_bios_offset);
+			making_pen_offset_done = 0;
+			making_pen_nopmove_flag =0;
+		}
+		marking_finish_flag = 1;
+		making_pen_actoin_flag = 0;
+	}
+	last_pattern_number = 0;
+	serail_number = 0;
 	opl_flag = opl_origin_flag ;
 	go_origin_xy();
 	if( pause_flag == 1 )
@@ -954,6 +970,7 @@ void go_origin_allmotor(void)
 		LastPatternHaveSOP = 0;
 		already_in_origin = 1;
 		nopmove_flag = 0;
+	    making_pen_status =0;
 		move_flag = 0;
 		cut_flag = 0;
 		stop_flag = 0;
@@ -2960,13 +2977,13 @@ void process_data(void)
     		    move_flag = 1; 
     		    break_flag = 1;
 				if (pat_point->func == 0x61)
-				  PatternSpeedLimited = u217;
+				    PatternSpeedLimited = u217;
 				else if (pat_point->func == 0x41)
-				  PatternSpeedLimited = u219;
+				    PatternSpeedLimited = u219;
 				else if (pat_point->func == 0x21)
-				  PatternSpeedLimited = u220;
+				    PatternSpeedLimited = u220;
 				else if (pat_point->func == 0x01)
-				  PatternSpeedLimited = u218;    
+				    PatternSpeedLimited = u218;    
     		    break;    					
     		default:   
 				break;
@@ -3156,8 +3173,8 @@ void process_edit_data(void)
 					ystep_cou = ChangeY(pat_point);
 					if( (xstep_cou != 0)||(ystep_cou != 0) )
 					{
-	    		    move_flag = 1; 
-	    		    break_flag = 1;
+	    		    	move_flag = 1; 
+	    		    	break_flag = 1;
 					}
 	    		    break;    					
 	    		//-----------------------------------------------------------------------	
@@ -3202,19 +3219,19 @@ UINT32 Calculate_QuickMove_Time(UINT16 temp16_x,UINT16 temp16_y)
 					temp32 = 75;
 					break;
 			case 3://<60
-					temp32 = 90;
+					temp32 = 85;
 					break;
 			case 4://<80
-					temp32 = 105;
+					temp32 = 92;
 		    		break;
 			case 5://<100
-					temp32 = 120;
+					temp32 = 100;
 					break;
 			case 6://<120
-					temp32 = 130;
+					temp32 = 110;
 					break;
 			default:
-					temp32 = 140;
+					temp32 = 120;
 					break;	
 			
 		}
@@ -3231,86 +3248,86 @@ UINT32 Calculate_QuickMove_Time(UINT16 temp16_x,UINT16 temp16_y)
 		{
 
 			case 0://<50
-					temp32 = 190;				
+					temp32 = 150;				
 				break;
 			case 1://<100
-					temp32 = 350;
+					temp32 = 250;
 				break;
 			case 2:
 			case 3://<200
-					temp32 = 490;
+					temp32 = 450;
 				break;
 			case 4:
 			case 5://<300
-					temp32 = 600;
+					temp32 = 550;
 		    	break;
 			case 6:
 			case 7://<400
-					temp32 = 690;
+					temp32 = 650;
 				break;
 			case 8:
 			case 9://<500
-					temp32 = 780;
+					temp32 = 750;
 				break;
 			case 10:
 			case 11://<600
-			        temp32 = 880;
+			        temp32 = 820;
 				break;
 			case 12:
 			case 13://<700
-					temp32 = 990;
+					temp32 = 900;
 				break;
 			case 14:
 			case 15://<800
-					temp32 = 1100;
+					temp32 = 1000;
 				break;
 			case 16:
 			case 17://<900
-					temp32 = 1210;
+					temp32 = 1100;
 				break;
 			case 18:
 			case 19://<1000
-					temp32 = 1300;
+					temp32 = 1200;
 					break;
 			case 20:
 			case 21://<1100
-					temp32 = 1400;
+					temp32 = 1300;
 					break;
 			case 22:
 			case 23://<1200
-					temp32 = 1500;
+					temp32 = 1400;
 					break;
 			case 24:
 			case 25://<1300
-					temp32 = 1600;
+					temp32 = 1500;
 					break;
 			case 26:
 			case 27://<1400
-					temp32 = 1700;
+					temp32 = 1600;
 					break;
 			case 28:
 			case 29://<1500
-					temp32 = 1800;
+					temp32 = 1700;
 					break;
 			case 30:
 			case 31://<1600
-					temp32 = 1900;
+					temp32 = 1800;
 					break;
 			case 32:
 			case 33://<1700
-					temp32 = 2000;
+					temp32 = 1900;
 					break;
 			case 34:
 			case 35://<1800
-					temp32 = 2100;
+					temp32 = 2000;
 					break;
 			case 36:
 			case 37://<1900
-					temp32 = 2200;
+					temp32 = 2100;
 					break;
 			case 38:
 			case 39://<2000
-					temp32 = 2300;
+					temp32 = 2200;
 					break;
 			default:
 					temp32 = 3000;
@@ -3559,6 +3576,7 @@ void go_beginpoint(UINT8 FirstNopmoveFlag)
 	bakeup_total_counter = pat_buff_total_counter;
 	add_x = 0;
 	add_y = 0;
+	if(making_pen_actoin_flag == 1)PEN_SIGNAL = 0;
 	//--------------------------------------------------------------------------------------
   	//  process pattern data
   	//--------------------------------------------------------------------------------------
@@ -4299,12 +4317,11 @@ void single_next(void)
 				do_pat_point_sub_one();
 	    		return;
 	    	}
-			
-			if(inpress_high_flag ==1)
+			if( (inpress_high_flag ==1)&&(inpress_follow_flag == 1) )
 			{
-				last_inpress_position = inpress_high;
-				inpress_to(inpress_high);
-				inpress_high_flag = 0;  
+					last_inpress_position = inpress_high;
+					inpress_to(inpress_high);
+					inpress_high_flag = 0;  
 			}
 
 			if( (move_flag == 1)||(nopmove_flag == 1)||(FootRotateFlag == 1))
@@ -4352,13 +4369,16 @@ void single_edit_continue_next(void)
   			single_reply = 0x51;     // stepper motor is not move
 			return;
 		}
-		
-		if(inpress_high_flag ==1)
+		if( inpress_follow_flag == 1)
 		{
-			last_inpress_position = inpress_high;
-			inpress_to(inpress_high);
-			inpress_high_flag = 0;  
+			if(inpress_high_flag ==1)
+			{
+				last_inpress_position = inpress_high;
+				inpress_to(inpress_high);
+				inpress_high_flag = 0;  
+			}
 		}
+
 		if(end_flag == 1)
     	{   
     		single_flag = 0; 	
@@ -4436,34 +4456,33 @@ void single_back(void)
 				return;
 			}
 		  	conprocess_data();
-		
-			if(inpress_high_flag ==1)
-			{
-				TempStart_pointTemp = pat_point;
-				
-				TempStart_pointTemp--;
-				while(TempStart_pointTemp > (PATTERN_DATA *)(pat_buf))
+			if( (inpress_high_flag ==1)&&(inpress_follow_flag == 1) )
 				{
-					if( (TempStart_pointTemp->func == 0x1d) && (TempStart_pointTemp->para == 2) )
-					{
-						inpress_delta = ((INT16)((TempStart_pointTemp)->xstep));
-						inpress_high = inpress_high_base + inpress_delta;
-						if(inpress_high > 80)
-							inpress_high = 80;
-						if(inpress_high < 0)
-							inpress_high = 0;
-					    break;
-					}
+					TempStart_pointTemp = pat_point;
 				
-				TempStart_pointTemp--;
-				}
-				if(TempStart_pointTemp == (PATTERN_DATA *)(pat_buf))
-				    inpress_high = inpress_high_base;
+					TempStart_pointTemp--;
+					while(TempStart_pointTemp > (PATTERN_DATA *)(pat_buf))
+					{
+						if( (TempStart_pointTemp->func == 0x1d) && (TempStart_pointTemp->para == 2) )
+						{
+							inpress_delta = ((INT16)((TempStart_pointTemp)->xstep));
+							inpress_high = inpress_high_base + inpress_delta;
+							if(inpress_high > 80)
+								inpress_high = 80;
+							if(inpress_high < 0)
+								inpress_high = 0;
+						    break;
+						}
+				
+					TempStart_pointTemp--;
+					}
+					if(TempStart_pointTemp == (PATTERN_DATA *)(pat_buf))
+					    inpress_high = inpress_high_base;
 					
 				
-				last_inpress_position = inpress_high;
-			    inpress_to(inpress_high);
-			    inpress_high_flag = 0;  
+					last_inpress_position = inpress_high;
+				    inpress_to(inpress_high);
+				    inpress_high_flag = 0;  
 			}
 	    	if(start_flag == 1)
 	    	{	 
@@ -4521,33 +4540,35 @@ void single_edit_continue_back(void)
   	  		single_reply = 0x51;  
   	  		return;
     	}
-	
-		if(inpress_high_flag ==1)
+		if( inpress_follow_flag == 1)
 		{
-	        TempStart_pointTemp = pat_point;			
-			TempStart_pointTemp--;
-			while(TempStart_pointTemp > (PATTERN_DATA *)(pat_buf))
+			if(inpress_high_flag ==1)
 			{
-				if( (TempStart_pointTemp->func == 0x1d) && (TempStart_pointTemp->para == 2) )
+		        TempStart_pointTemp = pat_point;			
+				TempStart_pointTemp--;
+				while(TempStart_pointTemp > (PATTERN_DATA *)(pat_buf))
 				{
-					inpress_delta = ((INT16)((TempStart_pointTemp)->xstep));
-					inpress_high = inpress_high_base + inpress_delta;
-					if(inpress_high > 80)
-						inpress_high = 80;
-					if(inpress_high < 0)
-						inpress_high = 0;
-				    break;
-				}
+					if( (TempStart_pointTemp->func == 0x1d) && (TempStart_pointTemp->para == 2) )
+					{
+						inpress_delta = ((INT16)((TempStart_pointTemp)->xstep));
+						inpress_high = inpress_high_base + inpress_delta;
+						if(inpress_high > 80)
+							inpress_high = 80;
+						if(inpress_high < 0)
+							inpress_high = 0;
+					    break;
+					}
 		
-			TempStart_pointTemp--;
-			}
-			if(TempStart_pointTemp == (PATTERN_DATA *)(pat_buf))
-			    inpress_high = inpress_high_base;
+				TempStart_pointTemp--;
+				}
+				if(TempStart_pointTemp == (PATTERN_DATA *)(pat_buf))
+				    inpress_high = inpress_high_base;
 
-			last_inpress_position = inpress_high;
-		    inpress_to(inpress_high);
-		    inpress_high_flag = 0;  
-		}	
+				last_inpress_position = inpress_high;
+			    inpress_to(inpress_high);
+			    inpress_high_flag = 0;  
+			}	
+		}
 		if( FootRotateFlag == 1)
 		{
 			process_making_pen_signal(1);
@@ -4892,6 +4913,7 @@ void course_next(void)
 
 	movestepxy_time = 0;
 	process_data();
+	
 	if( inpress_follow_flag == 1)
 	{
 		if(nopmove_flag == 1)
@@ -4910,14 +4932,21 @@ void course_next(void)
 				delay_ms(100);
 			}
 		}
+		if(inpress_high_flag ==1)
+		{
+			last_inpress_position = inpress_high;
+			inpress_to(inpress_high);
+			inpress_high_flag = 0;  
+			delay_ms(200);
+		}
 	}
-	
-	if(inpress_high_flag ==1)
+	else
 	{
-		last_inpress_position = inpress_high;
-		inpress_to(inpress_high);
-		inpress_high_flag = 0;  
-		delay_ms(200);
+		if(inpress_flag == 0)  
+			{
+				inpress_up();
+				delay_ms(100);
+			}
 	}
 	if(end_flag == 1)
   	{   
@@ -5045,6 +5074,7 @@ void course_back(void)
   		single_flag = 0; 	
     	return;
   	}
+	
 	if( inpress_follow_flag == 1)
 	{	
 		if(nopmove_flag == 1)
@@ -5063,36 +5093,43 @@ void course_back(void)
 				delay_ms(100);
 			}
 		}
-	}
-	if(inpress_high_flag ==1)
-	{
-	  pat_buff_total_counter_temp = pat_buff_total_counter;
-	  TempStart_pointTemp = pat_point;
-	  //do_pat_point_sub_one();
-	  TempStart_pointTemp--;
-	  
-	  while(pat_buff_total_counter_temp > 0)
+	
+		if(inpress_high_flag ==1)
 		{
-			if( (TempStart_pointTemp->func == 0x1d) && (TempStart_pointTemp->para == 2) )
+		  pat_buff_total_counter_temp = pat_buff_total_counter;
+		  TempStart_pointTemp = pat_point;
+		  TempStart_pointTemp--;
+	  
+		  while(pat_buff_total_counter_temp > 0)
 			{
-				inpress_delta = ((INT16)((TempStart_pointTemp)->xstep));
-				inpress_high = inpress_high_base + inpress_delta;
-				if(inpress_high > 80)
-					inpress_high = 80;
-				if(inpress_high < 0)
-					inpress_high = 0;
-			    break;
-			}		
-	     //do_pat_point_sub_one();
-		 TempStart_pointTemp--;
-		}
-		if(pat_buff_total_counter_temp == 0)
-		    inpress_high = inpress_high_base;
+				if( (TempStart_pointTemp->func == 0x1d) && (TempStart_pointTemp->para == 2) )
+				{
+					inpress_delta = ((INT16)((TempStart_pointTemp)->xstep));
+					inpress_high = inpress_high_base + inpress_delta;
+					if(inpress_high > 80)
+						inpress_high = 80;
+					if(inpress_high < 0)
+						inpress_high = 0;
+				    break;
+			 TempStart_pointTemp--;
+			}
+			if(pat_buff_total_counter_temp == 0)
+			    inpress_high = inpress_high_base;
 
-		last_inpress_position = inpress_high;
-	    inpress_to(inpress_high);
-	    inpress_high_flag = 0;
-		delay_ms(200);
+			last_inpress_position = inpress_high;
+		    inpress_to(inpress_high);
+		    inpress_high_flag = 0;
+			delay_ms(200);
+		  }
+	   }
+	}
+	else
+	{
+		if(inpress_flag == 0)  
+			{
+				inpress_up();
+				delay_ms(100);
+			}
 	}
 	
 	if(move_flag == 1)
@@ -6035,7 +6072,7 @@ void para_confirm(void)
 //--------------------------------------------------------------------------------------
 void sewing_stop(void)
 {          	     
-	motor.stop_angle = u236 ; //2010-4-29
+	motor.stop_angle = u236 ; 
 	if(motor.stop_angle >= CODE_SCALE)
 	{
 		motor.stop_angle = motor.stop_angle - CODE_SCALE;
@@ -6066,6 +6103,8 @@ void pause_stop(void)
 #if ONE_STITCH_STOP
 	jiting_flag = 1;  
 	process_flag = 0;    	                       	
+	if(making_pen_actoin_flag == 0)  
+	{ 	                       	
 	sewing_stop();  
 	while(motor.stop_flag == 0)
 	{
@@ -6094,6 +6133,9 @@ void pause_stop(void)
 	{
 	   footer_both_up();
 	} 
+	}
+	if(making_pen_actoin_flag == 1 )
+	while(rec1_total_counter>0)delay_ms(20);
 	//--------------------------------------------------------------------------------------
 	//  switch system status 
 	//--------------------------------------------------------------------------------------  	     
@@ -6192,6 +6234,8 @@ void pause_stop(void)
 		motor.spd_obj = 2400;      
 	}	
 #endif
+    if( making_pen_actoin_flag == 1)
+		PEN_SIGNAL = 0;
 		
 }
 //--------------------------------------------------------------------------------------
@@ -6750,7 +6794,7 @@ void zpl_process(void)
     	}
     	stay_flag = 0;           			// no emergency break
     	brkdt_flag = 0;          			// no thread breakage detection  	    
-    	if(TH_BRK == 1 ||test_brk_flag == 1)
+    	if(((TH_BRK == 1 ||test_brk_flag == 1))&&( making_pen_actoin_flag == 0))
     	{
   	  		thbrk_count =thbrk_count + 1;
     	}
@@ -7079,7 +7123,10 @@ void inpress_to(INT16 a)
 	    }
 	    else 
 		{
+			if(temp<=127)
 			movestep_zx(step,63);			  //196*0.45 =>63ms  257rpm
+			else
+		   		zx_quickmove(80,step);         
 		}
 		inpress_position = obj_position;  
 	} 	
@@ -7170,7 +7217,7 @@ void do_pat_point_sub_one(void)
 		if( pat_point < (PATTERN_DATA *)(pat_buf) ) 
 		{
 		    if( pat_buff_total_counter >0) 
-			   pat_point = (PATTERN_DATA *)(pat_buf)+TOTAL_STITCH_COUNTER;
+			   pat_point = (PATTERN_DATA *)(pat_buf)+TOTAL_STITCH_COUNTER-1;
 			else
 			{
 			   pat_point = (PATTERN_DATA *)(pat_buf);
@@ -7789,7 +7836,7 @@ void process_making_pen_signal(UINT8 flag)
 				}
 				if( sys.error == 0)
 				{
-				    PEN_SIGNAL = 1;
+				   // PEN_SIGNAL = 1;
 					if( para.laser_function_enable == 1)
 					{
 						LASER_POWER_ON = 1;

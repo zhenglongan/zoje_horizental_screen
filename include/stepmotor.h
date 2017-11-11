@@ -46,6 +46,7 @@ extern UINT8 write_stepmotor_curve(UINT8 port,UINT8 *pdata) ;
 extern UINT16 read_stepmotor_curve_crc(UINT8 port);
 extern void x_quickmove(UINT16 quick_time,INT32 tempx_step);
 extern void y_quickmove(UINT16 quick_time,INT32 tempy_step);
+extern void zx_quickmove(UINT16 quick_time,INT32 tempz_step);
 
 extern UINT16 get_CORG_statu(void);
 extern void movestep_yj(int zx_data,UINT16 time);

@@ -505,23 +505,13 @@ void movestep_yj(int zx_data,UINT16 time)
 {
 	while(spi_flag > 0) ;
 
-	if(spi_flag > 0)
-	{
-		if( sys.error == 0)
-	   	    sys.error = ERROR_30;	
-		sys.status = ERROR;
-	    StatusChangeLatch = ERROR;
-		spi_flag=0;
-		dsp1=0;
-		dsp2=0;
-	}
 	if( time >63)
 	    time = 63;	
 	if(zx_data>0)
 	{
 		spi_flag=1;
 		
-		if( para.yj_org_direction == 0)//yj_motor_dir == 0)
+		if( para.yj_org_direction == 0)
 			trans_x.word=(UINT16)0x4000+((UINT16)zx_data <<6 )+(UINT16)time;         
 		else
 			trans_x.word=(UINT16)0x0000+((UINT16)zx_data <<6 )+(UINT16)time;	   
@@ -540,7 +530,7 @@ void movestep_yj(int zx_data,UINT16 time)
 		zx_data_nf = -zx_data;                                                  
 		spi_flag = 1;	
 		
-		if( para.yj_org_direction == 0)//( yj_motor_dir == 0)
+		if( para.yj_org_direction == 0)
 			trans_x.word=(UINT16)0x0000+((UINT16)zx_data_nf<<6)+(UINT16)time;         
 		else
 			trans_x.word=(UINT16)0x4000+((UINT16)zx_data_nf<<6)+(UINT16)time;
@@ -1029,6 +1019,55 @@ void y_quickmove(UINT16 quick_time,INT32 tempy_step)
 	#endif
 }
 
+void zx_quickmove(UINT16 quick_time,INT32 tempz_step)
+{
+	UINT16 low16,high16;
+	UINT32 tmp32;
+	send_dsp_command(2,0x0000);	
+	delay_us(500);	
+	if( tempz_step > 0)
+	{
+		tmp32 = tempz_step;
+		low16  = tmp32 & 0xffff;
+		if( z_motor_dir == 0)
+		{	
+		    high16 = 0xc000;
+			high16 += (tmp32>>16)&0xff;
+		}
+		else
+		{
+			high16 = 0x8000; 
+			high16 += (tmp32>>16)&0xff;
+		}
+	}
+	else
+	{
+		tmp32 = - tempz_step;
+		low16  = tmp32 & 0xffff;		
+		if( y_motor_dir == 0)
+		{		
+		    high16 = 0x8000; 
+			high16 += (tmp32>>16)&0xff;
+		}
+		else
+		{
+			high16 = 0xc000;
+			high16 += (tmp32>>16)&0xff;
+		}
+	}
+
+	high16 |= (1<<13);
+	send_dsp_command(2,high16);	
+	delay_ms(1);
+	if( low16 == 0x5555)
+	    low16 = low16 +1;
+	send_dsp_command(2,low16);	
+	delay_ms(1);
+	if( quick_time == 0x5555)
+	    quick_time = quick_time +1;
+	send_dsp_command(2,quick_time);
+	delay_ms(1);	
+}
 UINT16 get_IORG_statu(void)
 {
 	send_dsp2_command(0x0029,0xa000);

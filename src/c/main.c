@@ -240,7 +240,7 @@ void ta0_int(void)
 			}
 		}
 	}
-	#if AUTO_CHANGE_FRAMEWORK
+	
 	if( blow_air_action_flag == 1)
 	{
 		if( blow_air_counter > 0)
@@ -252,7 +252,7 @@ void ta0_int(void)
 			BLOW_AIR = 0;
 		}
 	}
-	#endif
+
 	if( needle_cool_flag ==2 )//
 	{
 		if( CoolingActionFlag == 1)
@@ -632,6 +632,9 @@ void ta0_int(void)
 	}
 	
 	#endif
+	
+	
+	
 	#if AUTO_CHANGE_FRAMEWORK ==0
 	if(sys.status == READY)
 	{	

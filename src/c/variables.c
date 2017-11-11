@@ -41,7 +41,7 @@ UINT16 wipe_time;
 
 UINT16 us_counter;         // 100us delay counter
 
-UINT8 pat_buf[25002];		//5000 
+UINT8 pat_buf[24002];		//5000 
 
 
 UINT8 *recpat_point;       // receive pattern point
@@ -489,7 +489,7 @@ INT16 tension_release_value,x_origin_offset,y_origin_offset;
 UINT16 tension_release_time;
 
 UINT16 steper_footer_range,steper_footer_position;
-UINT8 foot_type,foot2_enable,foot2_high,foot_position,foot_current,foot_action_flag,foot2_count;
+
 INT16 pdl_val_now;	
 INT16 pdl_val_old;  
 UINT16 pedal_pos0;
@@ -613,21 +613,14 @@ INT16 test_nop_x,test_nop_y,next_nop_x,next_nop_y;
 UINT8 cool_air_action_flag;
 UINT16 cool_air_counter,cool_air_action_counter,cool_air_1_sec;
 UINT16 cool_air_close_time,cool_air_open_time;
-
-
-
+UINT8 auto_function_skip_flag;
 UINT8 flag_start_waitcom;
 UINT8 counter_wait_com;
 UINT8 flag_wait_com;
-
 UINT8 slowdown_stitchs;
-
-
 UINT8 need_down_flag;
-
 UINT16 smotor_speed_counter;
 UINT8 smotor_speed_flag;
-
 UINT8 k03; //0: Mechanical Type; 1: Electrical Type
 UINT8 temp_tension_last,base_tension,cut_tension,sewing_tenion;
 
@@ -702,7 +695,6 @@ UINT16 inpress_follow_down_angle,inpress_follow_up_angle;
 UINT8 inpress_follow_down_speed,inpress_follow_up_speed;
 INT16 inpress_follow_range;
 UINT8 inpress_follow_high_flag;
-UINT8 main_control_lock_change_flag;
 
 UINT16 rec1_datalength,rec1_package_length;
 UINT8  rec1_status_machine;
@@ -735,6 +727,8 @@ UINT8  rc522_write_falg;
 UINT8  rc522_write_ret_falg;
 UINT8  rc522_control_falg;
 UINT8  making_pen_nopmove_flag;
+UINT16  dsp1_step_crc;
+UINT16  dsp2_step_crc;
 
 #if AUTO_CHANGE_FRAMEWORK 
 	UINT8  left_footer_action_flag,left_start_action_flag,left_footer_counter,left_start_counter,left_footer_lock_flag,left_start_lock_flag;
@@ -747,9 +741,15 @@ UINT8  making_pen_nopmove_flag;
 	UINT8 power_on_allow_keypress;
 	
 	UINT8 testpin;
-	UINT8 blow_air_action_flag;
-	UINT16 blow_air_counter;
+
 #endif 
+
+UINT8  blow_air_action_flag;
+UINT16 blow_air_counter;
+	
+UINT8 waitting_for_point_command;
+UINT8 main_control_lock_setup;
+
 //--------------------------------------------------------------------------------------
 //         COPYRIGHT(C) 2006 Beijing xingdahao technology Co., Ltd.
 //                     ALL RIGHTS RESERVED 

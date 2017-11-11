@@ -544,7 +544,7 @@ void init_var(void)
 	y_origin_offset = 0;
 	steper_footer_range = 280;
 	steper_footer_position = 0;
-	foot_current = 10;
+
 	pdl_val_old = 0;
 	pdl_val_now = 0;
 	pedal_pos1 = 70*8;
@@ -558,9 +558,7 @@ void init_var(void)
 	PAUSE_OFF = 0;
 	PAUSE_ON = 1;	
 	inpress_speed = 13;	
-	foot2_enable = 0;
-	foot2_high = 0;
-	foot_action_flag = 0;
+
 	special_machine_type = 0;
 	autoprecess_footer3_flag = 0;
 	IORGLastState = 1;
@@ -856,6 +854,9 @@ void init_var(void)
 	blow_air_action_flag = 0;
 	blow_air_counter = 0;
 #endif
+	waitting_for_point_command = 0;
+	auto_function_skip_flag = 1;
+	main_control_lock_setup = 0;
 }			
 //--------------------------------------------------------------------------------------
 //  Name:		initial 
@@ -1089,20 +1090,20 @@ void restore_para_from_eeprom(void)
 	para.last_2_speed = svpara_disp_buf[index++];
 	para.last_1_speed = svpara_disp_buf[index++];
 	para.dvab_open_level = svpara_disp_buf[index++]; 
-	para.dsp1_step_crc   = string2int(&svpara_disp_buf[index]);	index +=2;
-	para.dsp2_step_crc   = string2int(&svpara_disp_buf[index]);	index +=2;
+	para.dsp1_step_crc   = string2int(&svpara_disp_buf[index]);			index +=2;
+	para.dsp2_step_crc   = string2int(&svpara_disp_buf[index]);			index +=2;
 	
-	para.y_backward_dis   = string2int(&svpara_disp_buf[index]);	index +=2;
-	para.x_take_offset   = string2int(&svpara_disp_buf[index]);	index +=2;
-	para.x_take_offset2   = string2int(&svpara_disp_buf[index]);	index +=2;
+	para.y_backward_dis   = string2int(&svpara_disp_buf[index]);		index +=2;
+	para.x_take_offset   = string2int(&svpara_disp_buf[index]);			index +=2;
+	para.x_take_offset2   = string2int(&svpara_disp_buf[index]);		index +=2;
 	
 	para.left_barcode_position   = string2int(&svpara_disp_buf[index]);	index +=2;
-	para.right_barcode_position   = string2int(&svpara_disp_buf[index]);	index +=2;
-	para.catch_delay_time   = string2int(&svpara_disp_buf[index]);	index +=2;
+	para.right_barcode_position   = string2int(&svpara_disp_buf[index]);index +=2;
+	para.catch_delay_time   = string2int(&svpara_disp_buf[index]);		index +=2;
 	
 	para.y_barcode_position = string2int(&svpara_disp_buf[index]);	index +=2;
 	para.blow_air_counter = string2int(&svpara_disp_buf[index]);	index +=2;
-	para.cut_air_counter = string2int(&svpara_disp_buf[index]);	index +=2;
+	para.cut_air_counter = string2int(&svpara_disp_buf[index]);		index +=2;
 	
 }
 

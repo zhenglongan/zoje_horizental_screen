@@ -24,7 +24,7 @@
     
 #define MainFatherVersion		05
 #define MainChildVersion		07 
-#define MainSVNVersion			20515
+#define MainSVNVersion			20518
 
 #define USE_SC013K_PALTFORM         0
 #define DEBUG_PARA_OUTPUT		 	0
@@ -36,7 +36,7 @@
 #define NOPMOVE_STOP_ENABLE     	1 //空送急停
 #define UART1_DEBUG_OUT         	0
 #define SUPPORT_0_5MM_FORMAT    	0
-#define NEED_TAKE_UP_ORIGIN_PHASE   0 //
+#define NEED_TAKE_UP_ORIGIN_PHASE   1 //
 #define OPEN_LAST_5_STITCH_SPEED    1 //
 
 
@@ -60,7 +60,7 @@
 #define DA0_TEST_FUN_ENABLE     	0    //测试电子线张力
 #define DEBUG_MAIN_MOTOR        	0    //借用参数调主轴
 #define CHECK_BOARD             	0    //板级加密
-#define INSTALLMENT          		0    //分期付款方式
+#define INSTALLMENT          		1    //分期付款方式
 #define TIAOMA               		1    //条码识别器
 #define DA1_OUTPUT_ANGLE	    	0    //调试角度输出
 #define DA1_OUTPUT_SPEED        	0    //调试速度输出
@@ -236,6 +236,7 @@
 #define ERROR_95    95 //中压脚电机异常
 #define ERROR_96    96 //剪线电机异常
 #define ERROR_97    97 //读卡模块异常
+#define ERROR_98    98 //90V电压过载
 //--------------------------------------------------------------------------------------
 // inpresser origin definition 
 //--------------------------------------------------------------------------------------
