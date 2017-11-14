@@ -1422,7 +1422,7 @@ void trim_io_control(UINT8 a)
 }
 void trim_action(void)
 {
-	UINT8 temp8;
+	UINT8 temp8,flag;
 	INT16 temp16;	
 	UINT8 action0_flag , action1_flag , action2_flag,action3_flag,action4_flag;
 	
@@ -1539,6 +1539,7 @@ void trim_action(void)
 	}
 	
 	sewing_stop();
+	
 	if( cut_mode == STEPPER_MOTER_CUTTER )
 	{
 		while( cutter_delay_flag == 1)
@@ -1556,9 +1557,36 @@ void trim_action(void)
 		cutter_delay_counter = 40;
 		cutter_delay_flag = 1;
 	}
+	if( (u206 == 1)&&(u210 ==1) )
+	{
+		temp16 = motor.angle_adjusted;
+		while( temp16 > 1000 )//等待新的一圈
+		{
+			temp16 = motor.angle_adjusted;
+			if( motor.stop_flag == 1)
+				    break;
+		}
+	
+		flag = 1;
+		while( motor.stop_flag == 0)
+		{	
+			temp16 = motor.angle_adjusted;
+			if( (temp16 >= 160 )&&(flag == 1) )
+			{
+				flag = 0;
+				if( para.wipper_type == AIR_WIPPER)
+					AIR_FW = 1;
+				else
+				{
+					SNT_H = 1; 
+					FW = 1;
+				}
+			}
+		}
+	}
 	while( motor.stop_flag == 0)
-	 rec_com();
-
+		   rec_com();
+	
 	if( cut_mode == STEPPER_MOTER_CUTTER )
 	{
 		if( u210 == 1)
@@ -1602,23 +1630,20 @@ void trim_action(void)
 		    dead_point_degree = u236 - after_trim_stop_angle_adjust;
 			find_dead_point();
 			delay_ms(100);
-			dead_point_degree = temp8;		
-		
+			dead_point_degree = temp8;			
 	}
+	
 	if( (u206 == 1)&&(u210 ==1) )		
 	{
-			SNT_H = 1; 
-			delay_ms(wiper_start_time);
-			if( para.wipper_type == AIR_WIPPER)
-				AIR_FW = 1;
-			else
-				FW = 1;
-				blow_air_counter = para.cut_air_counter;
-				if( blow_air_counter != 0)
-				{
-					blow_air_action_flag = 1;
-					BLOW_AIR = 1;
-				}
+			if( flag == 1)
+			{
+				SNT_H = 1; 
+			    delay_ms(wiper_start_time);
+			    if( para.wipper_type == AIR_WIPPER)
+			    	AIR_FW = 1;
+				else
+					FW = 1;	
+			}		
 			delay_ms(wiper_end_time);
 			if( para.wipper_type == AIR_WIPPER)
 				AIR_FW = 0;

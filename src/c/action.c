@@ -3212,22 +3212,22 @@ UINT32 Calculate_QuickMove_Time(UINT16 temp16_x,UINT16 temp16_y)
 		delta =(temp16_x-1)/20;
 		switch(delta)
 		{
-			case 0://<20
+			case 0://<2.0
 					temp32 = 60;				
 					break;
-			case 1://<40
+			case 1://<4.0
 					temp32 = 75;
 					break;
-			case 3://<60
+			case 3://<6.0
 					temp32 = 85;
 					break;
-			case 4://<80
+			case 4://<8.0
 					temp32 = 92;
 		    		break;
-			case 5://<100
+			case 5://<10.0
 					temp32 = 100;
 					break;
-			case 6://<120
+			case 6://<12.0
 					temp32 = 110;
 					break;
 			default:
@@ -3251,86 +3251,86 @@ UINT32 Calculate_QuickMove_Time(UINT16 temp16_x,UINT16 temp16_y)
 					temp32 = 150;				
 				break;
 			case 1://<100
-					temp32 = 250;
+					temp32 = 250;//250;
 				break;
 			case 2:
 			case 3://<200
-					temp32 = 450;
+					temp32 = 450;//450;
 				break;
 			case 4:
 			case 5://<300
-					temp32 = 550;
+					temp32 = 550;//550;
 		    	break;
 			case 6:
 			case 7://<400
-					temp32 = 650;
+					temp32 = 650;//650;
 				break;
 			case 8:
 			case 9://<500
-					temp32 = 750;
+					temp32 = 750;//750;
 				break;
 			case 10:
 			case 11://<600
-			        temp32 = 820;
+			        temp32 = 820;//820;
 				break;
 			case 12:
 			case 13://<700
-					temp32 = 900;
+					temp32 = 900;//900;
 				break;
 			case 14:
 			case 15://<800
-					temp32 = 1000;
+					temp32 = 1000;//1000;
 				break;
 			case 16:
 			case 17://<900
-					temp32 = 1100;
+					temp32 = 1100;//1100;
 				break;
 			case 18:
 			case 19://<1000
-					temp32 = 1200;
+					temp32 = 1200;//1200;
 					break;
 			case 20:
 			case 21://<1100
-					temp32 = 1300;
+					temp32 = 1200;//1300;
 					break;
 			case 22:
 			case 23://<1200
-					temp32 = 1400;
+					temp32 = 1400;//1400;
 					break;
 			case 24:
 			case 25://<1300
-					temp32 = 1500;
+					temp32 = 1500;//1500;
 					break;
 			case 26:
 			case 27://<1400
-					temp32 = 1600;
+					temp32 = 1600;//1600;
 					break;
 			case 28:
 			case 29://<1500
-					temp32 = 1700;
+					temp32 = 1700;//1700;
 					break;
 			case 30:
 			case 31://<1600
-					temp32 = 1800;
+					temp32 = 1800;//1800;
 					break;
 			case 32:
 			case 33://<1700
-					temp32 = 1900;
+					temp32 = 1900;//1900;
 					break;
 			case 34:
 			case 35://<1800
-					temp32 = 2000;
+					temp32 = 2000;//2000;
 					break;
 			case 36:
 			case 37://<1900
-					temp32 = 2100;
+					temp32 = 2100;//2100;
 					break;
 			case 38:
 			case 39://<2000
-					temp32 = 2200;
+					temp32 = 2200;//2200;
 					break;
 			default:
-					temp32 = 3000;
+					temp32 = 3000;//3000;
 					break;	
 			
 		}
@@ -3381,45 +3381,89 @@ UINT32 Calculate_QuickMove_Time(UINT16 temp16_x,UINT16 temp16_y)
 		{
 
 			case 0://<50
-					temp32 = 190;				
+					temp32 = 190;//190;				
 				break;
 			case 1://<100
-					temp32 = 350;
+					temp32 = 350;//350;
 				break;
 			case 2:
 			case 3://<200
-					temp32 = 490;
+					temp32 = 490;//490;
 				break;
 			case 4:
 			case 5://<300
-					temp32 = 600;
+					temp32 = 600;//600;
 		    	break;
 			case 6:
 			case 7://<400
-					temp32 = 690;
+					temp32 = 690;//690;
 				break;
 			case 8:
 			case 9://<500
-					temp32 = 780;
+					temp32 = 780;//780;
 				break;
 			case 10:
 			case 11://<600
-			        temp32 = 880;
+			        temp32 = 880;//880;
 				break;
 			case 12:
 			case 13://<700
-					temp32 = 990;
+					temp32 = 990;//990;
 				break;
 			case 14:
 			case 15://<800
-					temp32 = 1100;
+					temp32 = 1100;//1100;
 				break;
 			case 16:
 			case 17://<900
-					temp32 = 1210;
+					temp32 = 1200;//1210;
 				break;
+			case 18:
+			case 19://<1000
+					temp32 = 1200;//1200;
+					break;
+			case 20:
+			case 21://<1100
+					temp32 = 1200;//1300;
+					break;
+			case 22:
+			case 23://<1200
+					temp32 = 1300;//1400;
+					break;
+			case 24:
+			case 25://<1300
+					temp32 = 1400;//1500;
+					break;
+			case 26:
+			case 27://<1400
+					temp32 = 1500;//1600;
+					break;
+			case 28:
+			case 29://<1500
+					temp32 = 1500;//1700;
+					break;
+			case 30:
+			case 31://<1600
+					temp32 = 1500;//1800;
+					break;
+			case 32:
+			case 33://<1700
+					temp32 = 1600;//1900;
+					break;
+			case 34:
+			case 35://<1800
+					temp32 = 1700;//2000;
+					break;
+			case 36:
+			case 37://<1900
+					temp32 = 1800;//2100;
+					break;
+			case 38:
+			case 39://<2000
+					temp32 = 1900;//2200;
+					break;
 			default:
-					temp32 = 1400;
+					temp32 = 2000;//1400;
 			break;	
 			
 		}
@@ -7685,7 +7729,6 @@ void tail_sewing(void)
 			tail_sewing_speed_flag = 1;	
 			special_sewing(0,sewingcontrol_tail_stitches);
 			tail_sewing_speed_flag = 0;	
-			
 			while(motor.angle_adjusted >= 16)
 		  		rec_com();
 		}
