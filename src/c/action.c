@@ -7037,11 +7037,11 @@ void go_origin_yj(void)
     	{
     		movestep_yj(-1,1);
 			if(j < 2)
-			    delay_ms(3);	
+			    delay_ms(3);//	
 			else if(j <4 )
 				delay_us(2000);
 		    else
-				delay_us(1500);
+				delay_us(1500);//1500
 			if( j < 4 )
 				j++;
 			temp16 = temp16 + 1;			

@@ -1722,7 +1722,7 @@ void protocol(UINT8* command)
 				
 				
 				yj_step_current_level = rec_buf[58];
-				stepper_cutter_move_range = (INT8)rec_buf[59];
+				stepper_cutter_move_range = rec_buf[59];
 				stepper_cutter_move_time = 25 + (INT8)rec_buf[60];
 				if( stepper_cutter_move_time < 10)
 					stepper_cutter_move_time = 10;

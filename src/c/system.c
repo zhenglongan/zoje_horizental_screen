@@ -1423,7 +1423,7 @@ void trim_io_control(UINT8 a)
 void trim_action(void)
 {
 	UINT8 temp8,flag;
-	INT8 s8tmp;
+	INT16 s8tmp;
 	INT16 temp16;	
 	UINT8 action0_flag , action1_flag , action2_flag,action3_flag,action4_flag;
 	
@@ -1480,9 +1480,9 @@ void trim_action(void)
 				 }
 				 else
 				 {
-					 s8tmp = 100;//u222;
+					 s8tmp = u222;
 					 movestep_yj(-s8tmp ,stepper_cutter_move_time);
-					 cutter_delay_counter = u222;//stepper_cutter_move_time<<1;
+					 cutter_delay_counter = stepper_cutter_move_time<<1;
 					 cutter_delay_flag = 1;
 				 }
 			 }
@@ -1586,9 +1586,10 @@ void trim_action(void)
 				}
 			}
 		}
-		s8tmp = stepper_cutter_move_range - 100;//u222;
+		s8tmp = u222;
+		s8tmp = stepper_cutter_move_range - s8tmp;
 		movestep_yj( -s8tmp ,20);//¶ÏÏßÎ»ÖÃ
-		cutter_delay_counter = 20;
+		cutter_delay_counter = 40;
 		cutter_delay_flag = 1;
 	}
 	if( (u206 == 0 )&&(cut_mode == STEPPER_MOTER_CUTTER ) )
@@ -1608,8 +1609,10 @@ void trim_action(void)
 			{
 				 rec_com();
 			}
-			//delay_ms(u222*5);
+			delay_ms(25);
 			movestep_yj(stepper_cutter_move_range, stepper_cutter_move_time);
+			cutter_delay_counter = stepper_cutter_move_time;
+			cutter_delay_flag = 1;
 		}
 	}
 	else
@@ -1681,7 +1684,13 @@ void trim_action(void)
 	trim_io_control(OFF);
 	HOLDING_BOBBIN_SOLENOID = 0;
 	if( cut_mode == STEPPER_MOTER_CUTTER )
+	{
+		while( cutter_delay_flag == 1)
+			{
+				 rec_com();
+			}
 		go_origin_yj();
+	}
 		
 	#if BOBBIN_THREAD_DETECT
 	if( baseline_detect_switch == 1)
@@ -1697,14 +1706,14 @@ void trim_action(void)
 	#endif
 	if( baseline_alarm_flag == 1)
 	{
-			 if( pat_buff_total_counter >= baseline_alarm_stitchs)
-			 {
-			 	 sewing_stop();
-        		 sys.status = ERROR;
-				 StatusChangeLatch = ERROR;
-        		 sys.error =  ERROR_81;     		     
-				 status_now = READY;	   				 
-			 }
+		if( pat_buff_total_counter >= baseline_alarm_stitchs)
+		 {
+			sewing_stop();
+        	sys.status = ERROR;
+			StatusChangeLatch = ERROR;
+        	sys.error =  ERROR_81;     		     
+			status_now = READY;	   				 
+		 }
 	}
 	brkdt_flag = 0;
 	thbrk_count = 0;
