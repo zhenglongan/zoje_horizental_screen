@@ -345,7 +345,7 @@ void version_check(void)
 void movestep_x(int x_data)
 { 
 
-	while( spi_flag > 0 );  			//防止死机
+	while( spi_flag > 0 );  		
 
 	if( (sys.status == ERROR) || (x_data == 0) )//出错或0数据不发给驱动
 	 	return;
@@ -436,20 +436,11 @@ void movestep_y(int y_data)
 //--------------------------------------------------------------------------------------
 void movestep_zx(int zx_data,UINT16 time)
 {
-	 if(spi_flag > 0)
-		delay_us(400);
-	if(spi_flag > 0)
-	{
-		if( sys.error == 0)
-	   	    sys.error = ERROR_30;	
-		sys.status = ERROR;
-	    StatusChangeLatch = ERROR;
-		spi_flag=0;
-		dsp1=0;
-		dsp2=0;
-	}
-	if( time > fabsm(zx_data)*20 )
-	 	time =fabsm(zx_data)*20;
+	while(spi_flag > 0);
+	
+	if( (sys.status == ERROR) || (zx_data == 0) )
+	 	return;
+		
 	if( time >63)
 	    time = 63;
 		

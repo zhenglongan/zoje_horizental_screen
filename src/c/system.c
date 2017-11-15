@@ -1436,14 +1436,12 @@ void trim_action(void)
 	motor.spd_obj = 10*u211; 
 	
 #if FOLLOW_INPRESS_FUN_ENABLE
-	if( u206 == 1)
+	if( inpress_follow_high_flag == FOLLOW_INPRESS_HIGH )
 	{
-		if( inpress_follow_high_flag == FOLLOW_INPRESS_HIGH )
-	    {
-			movestep_zx(-inpress_follow_range,inpress_follow_down_speed);
-			inpress_follow_high_flag = FOLLOW_INPRESS_LOW;
-		}
+		movestep_zx(-inpress_follow_range,inpress_follow_down_speed);
+		inpress_follow_high_flag = FOLLOW_INPRESS_LOW;
 	}
+
 #endif
 	temp16 = motor.angle_adjusted;
 	if( (temp16 > cut_start_angle)||(temp16 > 1200) )//
@@ -1480,8 +1478,7 @@ void trim_action(void)
 				 }
 				 else
 				 {
-					 s8tmp = u222;
-					 movestep_yj(-s8tmp ,stepper_cutter_move_time);
+					 movestep_yj(-90 ,stepper_cutter_move_time);
 					 cutter_delay_counter = stepper_cutter_move_time<<1;
 					 cutter_delay_flag = 1;
 				 }
@@ -1551,17 +1548,7 @@ void trim_action(void)
 		{
 			rec_com();
 		}
-		/*
-		temp16 = motor.angle_adjusted;
-		while( temp16 < 40 )//350
-		{
-			temp16 = motor.angle_adjusted;
-			if( motor.stop_flag == 1)
-			    break;
-		}
-		*/
-		if( (u206 == 1)&&(u210 ==1) )
-		{
+
 			temp16 = motor.angle_adjusted;
 			while( temp16 > 1000 )//等待新的一圈
 			{
@@ -1573,22 +1560,24 @@ void trim_action(void)
 			while( motor.stop_flag == 0)
 			{	
 				temp16 = motor.angle_adjusted;
+				
 				if( (temp16 >= 160 )&&(flag == 1) )
 				{
-					flag = 0;
-					if( para.wipper_type == AIR_WIPPER)
-						AIR_FW = 1;
-					else
+					if( (u206 == 1)&&(u210 ==1) )
 					{
-						SNT_H = 1; 
-						FW = 1;
+						flag = 0;
+						if( para.wipper_type == AIR_WIPPER)
+							AIR_FW = 1;
+						else
+						{
+							SNT_H = 1; 
+							FW = 1;
+						}
 					}
 				}
 			}
-		}
-		s8tmp = u222;
-		s8tmp = stepper_cutter_move_range - s8tmp;
-		movestep_yj( -s8tmp ,20);//断线位置
+	
+		movestep_yj(90-stepper_cutter_move_range ,20);//断线位置
 		cutter_delay_counter = 40;
 		cutter_delay_flag = 1;
 	}
@@ -1599,7 +1588,7 @@ void trim_action(void)
 		
 	}
 	//while( motor.stop_flag == 0)
-	//	   rec_com();
+	// 	   rec_com();
 	
 	if( cut_mode == STEPPER_MOTER_CUTTER )
 	{
@@ -1609,9 +1598,8 @@ void trim_action(void)
 			{
 				 rec_com();
 			}
-			delay_ms(25);
-			movestep_yj(stepper_cutter_move_range, stepper_cutter_move_time);
-			cutter_delay_counter = stepper_cutter_move_time;
+			movestep_yj(stepper_cutter_move_range ,stepper_cutter_move_time);
+			cutter_delay_counter = stepper_cutter_move_time<<1;
 			cutter_delay_flag = 1;
 		}
 	}
@@ -1626,6 +1614,10 @@ void trim_action(void)
 			delay_ms(5);
 			fw_action_flag = 0;
 			FW = 0;
+			if( para.wipper_type == AIR_WIPPER)
+			{
+				AIR_FW = 0;
+			}
 		}
 	}
 	if(u210 == 1)
@@ -1660,7 +1652,8 @@ void trim_action(void)
 		    	AIR_FW = 1;
 			else
 				FW = 1;	
-		}		
+		}	
+	}	
 		delay_ms(wiper_end_time);
 		if( para.wipper_type == AIR_WIPPER)
 			AIR_FW = 0;
@@ -1668,7 +1661,7 @@ void trim_action(void)
 			FW = 0;
 		SNT_H = 0; 
 		delay_ms( 20 + delay_of_wipper_down );
-	}		
+		
 	
 	SNT_H = 0; 
 				
@@ -1686,9 +1679,10 @@ void trim_action(void)
 	if( cut_mode == STEPPER_MOTER_CUTTER )
 	{
 		while( cutter_delay_flag == 1)
-			{
-				 rec_com();
-			}
+		{
+			 rec_com();
+		}
+		delay_ms(25);
 		go_origin_yj();
 	}
 		
@@ -5692,7 +5686,7 @@ void checki11_status(void)
 				break;   
   		case 0x01: 
 				//movestep_yj(-stepper_cutter_move_range ,stepper_cutter_move_time);
-				movestep_yj(-80 ,stepper_cutter_move_time);
+				movestep_yj(-90 ,stepper_cutter_move_time);
 				cutter_delay_counter = stepper_cutter_move_time;
 				cutter_delay_flag = 1;
 				stepmotor_state = 1;  
@@ -5701,7 +5695,7 @@ void checki11_status(void)
 				break;   	            							
   	  	case 0x02: 
 				//movestep_yj(stepper_cutter_move_range ,stepper_cutter_move_time);
-				movestep_yj(80 - stepper_cutter_move_range ,20);//断线位置
+				movestep_yj(90 - stepper_cutter_move_range ,20);//断线位置
 				cutter_delay_counter = stepper_cutter_move_time;
 				cutter_delay_flag = 1;
 				stepmotor_state = 2;  

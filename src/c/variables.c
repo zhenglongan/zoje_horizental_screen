@@ -41,7 +41,7 @@ UINT16 wipe_time;
 
 UINT16 us_counter;         // 100us delay counter
 
-UINT8 pat_buf[24002];		//5000 
+UINT8 pat_buf[24004];		//5000 
 
 
 UINT8 *recpat_point;       // receive pattern point
