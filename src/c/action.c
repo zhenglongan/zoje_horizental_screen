@@ -1380,6 +1380,11 @@ void footer_both_down(void)
 //--------------------------------------------------------------------------------------
 void inpress_up(void)
 {
+	if( already_up_flag == 1)
+	{
+		already_up_flag = 0;
+		return;
+	}
 	if(inpress_type == AIR_INPRESSER) 
 	{
 		R_AIR = 0;
@@ -1404,6 +1409,7 @@ void inpress_up(void)
 	
 	if(delay_of_inpress_up!=0)
 	   delay_ms(delay_of_inpress_up);
+
 }
 //--------------------------------------------------------------------------------------
 //  Name:		inpress_down
@@ -1413,6 +1419,7 @@ void inpress_up(void)
 //--------------------------------------------------------------------------------------
 void inpress_down(UINT8 pos)
 {
+
 	if(inpress_type == AIR_INPRESSER)   
 	{
 		R_AIR = 1;
@@ -1423,7 +1430,7 @@ void inpress_down(UINT8 pos)
 	if(pos > 80)
        pos = 80;
     R_AIR = 1;
-	delay_ms(100);//200
+	delay_ms(100);
 	inpress_to(pos);  
 	inpress_flag = 0; 
 	inpress_com = 0;   
@@ -3912,7 +3919,9 @@ void go_beginpoint(UINT8 FirstNopmoveFlag)
 				}
 			}
 		}
-
+	brkdt_flag = 0;
+	thbrk_count = 0;
+	thbrk_flag = 0;
 }
 
 //--------------------------------------------------------------------------------------
@@ -6168,6 +6177,7 @@ void pause_stop(void)
 	    motor.spd_obj = 10*u211; 
 		trim_action();
 		SNT_H = 0; 
+		if( u206 == 1)
 		delay_ms(140+delay_of_wipper_down);
 		manual_cut_flag = 0;
 	}		
@@ -6179,7 +6189,8 @@ void pause_stop(void)
 	} 
 	}
 	if(making_pen_actoin_flag == 1 )
-	while(rec1_total_counter>0)delay_ms(20);
+	while(rec1_total_counter>0)
+	      delay_ms(20);
 	//--------------------------------------------------------------------------------------
 	//  switch system status 
 	//--------------------------------------------------------------------------------------  	     
@@ -6205,6 +6216,7 @@ void pause_stop(void)
 		{	
 			trim_action();
 			SNT_H = 0; 
+			if( u206 == 1)
 			delay_ms(140+delay_of_wipper_down);
 			manual_cut_flag = 0;
 		}
@@ -6865,15 +6877,11 @@ void zpl_process(void)
 //--------------------------------------------------------------------------------------
 void trim(void)
 {	
-
 	inpress_down(0); 
-	delay_ms(250);
-	
+	delay_ms(250);	
 	motor.dir = 0;
-	motor.spd_obj = 10*u211; 
-	 
+	motor.spd_obj = 10*u211; 	 
 	trim_action();
-
 	inpress_up();
 	delay_ms(300);
 }

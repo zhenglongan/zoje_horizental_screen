@@ -1423,6 +1423,7 @@ void trim_io_control(UINT8 a)
 void trim_action(void)
 {
 	UINT8 temp8,flag;
+	INT8 s8tmp;
 	INT16 temp16;	
 	UINT8 action0_flag , action1_flag , action2_flag,action3_flag,action4_flag;
 	
@@ -1435,10 +1436,13 @@ void trim_action(void)
 	motor.spd_obj = 10*u211; 
 	
 #if FOLLOW_INPRESS_FUN_ENABLE
-	if( inpress_follow_high_flag == FOLLOW_INPRESS_HIGH )
-    {
-		movestep_zx(-inpress_follow_range,inpress_follow_down_speed);
-		inpress_follow_high_flag = FOLLOW_INPRESS_LOW;
+	if( u206 == 1)
+	{
+		if( inpress_follow_high_flag == FOLLOW_INPRESS_HIGH )
+	    {
+			movestep_zx(-inpress_follow_range,inpress_follow_down_speed);
+			inpress_follow_high_flag = FOLLOW_INPRESS_LOW;
+		}
 	}
 #endif
 	temp16 = motor.angle_adjusted;
@@ -1476,7 +1480,8 @@ void trim_action(void)
 				 }
 				 else
 				 {
-					 movestep_yj(-80 ,stepper_cutter_move_time);
+					 s8tmp = 100;//u222;
+					 movestep_yj(-s8tmp ,stepper_cutter_move_time);
 					 cutter_delay_counter = u222;//stepper_cutter_move_time<<1;
 					 cutter_delay_flag = 1;
 				 }
@@ -1546,6 +1551,7 @@ void trim_action(void)
 		{
 			rec_com();
 		}
+		/*
 		temp16 = motor.angle_adjusted;
 		while( temp16 < 40 )//350
 		{
@@ -1553,39 +1559,46 @@ void trim_action(void)
 			if( motor.stop_flag == 1)
 			    break;
 		}
-		movestep_yj(80 - stepper_cutter_move_range ,20);//断线位置
-		cutter_delay_counter = 40;
-		cutter_delay_flag = 1;
-	}
-	if( (u206 == 1)&&(u210 ==1) )
-	{
-		temp16 = motor.angle_adjusted;
-		while( temp16 > 1000 )//等待新的一圈
+		*/
+		if( (u206 == 1)&&(u210 ==1) )
 		{
 			temp16 = motor.angle_adjusted;
-			if( motor.stop_flag == 1)
-				    break;
-		}
-	
-		flag = 1;
-		while( motor.stop_flag == 0)
-		{	
-			temp16 = motor.angle_adjusted;
-			if( (temp16 >= 160 )&&(flag == 1) )
+			while( temp16 > 1000 )//等待新的一圈
 			{
-				flag = 0;
-				if( para.wipper_type == AIR_WIPPER)
-					AIR_FW = 1;
-				else
+				temp16 = motor.angle_adjusted;
+				if( motor.stop_flag == 1)
+					    break;
+			}	
+			flag = 1;
+			while( motor.stop_flag == 0)
+			{	
+				temp16 = motor.angle_adjusted;
+				if( (temp16 >= 160 )&&(flag == 1) )
 				{
-					SNT_H = 1; 
-					FW = 1;
+					flag = 0;
+					if( para.wipper_type == AIR_WIPPER)
+						AIR_FW = 1;
+					else
+					{
+						SNT_H = 1; 
+						FW = 1;
+					}
 				}
 			}
 		}
+		s8tmp = stepper_cutter_move_range - 100;//u222;
+		movestep_yj( -s8tmp ,20);//断线位置
+		cutter_delay_counter = 20;
+		cutter_delay_flag = 1;
 	}
-	while( motor.stop_flag == 0)
-		   rec_com();
+	if( (u206 == 0 )&&(cut_mode == STEPPER_MOTER_CUTTER ) )
+	{
+		inpress_up();
+		already_up_flag = 1;	
+		
+	}
+	//while( motor.stop_flag == 0)
+	//	   rec_com();
 	
 	if( cut_mode == STEPPER_MOTER_CUTTER )
 	{
@@ -1594,7 +1607,6 @@ void trim_action(void)
 			while( cutter_delay_flag == 1)
 			{
 				 rec_com();
-				 temp16 = motor.angle_adjusted;
 			}
 			//delay_ms(u222*5);
 			movestep_yj(stepper_cutter_move_range, stepper_cutter_move_time);
@@ -1618,39 +1630,41 @@ void trim_action(void)
 		da0 = 0;
 	    tension_open_switch =0;
 	    tension_open_counter =0;
-	}	
+	}
+		
 	if( u42 == 1)
 	{
 		find_dead_point();
 	}
-	if(u42 == 0 && after_trim_stop_angle_adjust != 0)
+	
+	if( u42 == 0 && after_trim_stop_angle_adjust != 0)
 	{
-	        delay_ms(500);
-			temp8 = dead_point_degree;
-		    dead_point_degree = u236 - after_trim_stop_angle_adjust;
-			find_dead_point();
-			delay_ms(100);
-			dead_point_degree = temp8;			
+	    delay_ms(500);
+		temp8 = dead_point_degree;
+		dead_point_degree = u236 - after_trim_stop_angle_adjust;
+		find_dead_point();
+		delay_ms(100);
+		dead_point_degree = temp8;			
 	}
 	
 	if( (u206 == 1)&&(u210 ==1) )		
 	{
-			if( flag == 1)
-			{
-				SNT_H = 1; 
-			    delay_ms(wiper_start_time);
-			    if( para.wipper_type == AIR_WIPPER)
-			    	AIR_FW = 1;
-				else
-					FW = 1;	
-			}		
-			delay_ms(wiper_end_time);
-			if( para.wipper_type == AIR_WIPPER)
-				AIR_FW = 0;
+		if( flag == 1)
+		{
+			SNT_H = 1; 
+		    delay_ms(wiper_start_time);
+		    if( para.wipper_type == AIR_WIPPER)
+		    	AIR_FW = 1;
 			else
-				FW = 0;
-			SNT_H = 0; 
-		  	delay_ms(20+delay_of_wipper_down);
+				FW = 1;	
+		}		
+		delay_ms(wiper_end_time);
+		if( para.wipper_type == AIR_WIPPER)
+			AIR_FW = 0;
+		else
+			FW = 0;
+		SNT_H = 0; 
+		delay_ms( 20 + delay_of_wipper_down );
 	}		
 	
 	SNT_H = 0; 
@@ -1692,6 +1706,9 @@ void trim_action(void)
 				 status_now = READY;	   				 
 			 }
 	}
+	brkdt_flag = 0;
+	thbrk_count = 0;
+	thbrk_flag = 0;
 }
 //--------------------------------------------------------------------------------------
 //  Name:		run_status 
@@ -5665,7 +5682,8 @@ void checki11_status(void)
 				predit_shift = 0;
 				break;   
   		case 0x01: 
-				movestep_yj(-stepper_cutter_move_range ,stepper_cutter_move_time);
+				//movestep_yj(-stepper_cutter_move_range ,stepper_cutter_move_time);
+				movestep_yj(-80 ,stepper_cutter_move_time);
 				cutter_delay_counter = stepper_cutter_move_time;
 				cutter_delay_flag = 1;
 				stepmotor_state = 1;  
@@ -5673,7 +5691,8 @@ void checki11_status(void)
 				predit_shift = 0;
 				break;   	            							
   	  	case 0x02: 
-				movestep_yj(stepper_cutter_move_range ,stepper_cutter_move_time);
+				//movestep_yj(stepper_cutter_move_range ,stepper_cutter_move_time);
+				movestep_yj(80 - stepper_cutter_move_range ,20);//断线位置
 				cutter_delay_counter = stepper_cutter_move_time;
 				cutter_delay_flag = 1;
 				stepmotor_state = 2;  
@@ -5681,7 +5700,7 @@ void checki11_status(void)
 				predit_shift = 0;
 				break;     
   	  	case 0x03: 
-				movestep_yj(-stepper_cutter_move_range ,stepper_cutter_move_time);
+				movestep_yj(stepper_cutter_move_range ,stepper_cutter_move_time);
 				cutter_delay_counter = stepper_cutter_move_time;
 				cutter_delay_flag = 1;
 				stepmotor_state = 3;  
@@ -5689,9 +5708,7 @@ void checki11_status(void)
 				predit_shift = 0;
 				break;                        		            							   
   	  	case 0x04: 
-			    movestep_yj(stepper_cutter_move_range ,stepper_cutter_move_time);
-				cutter_delay_counter = stepper_cutter_move_time;
-				cutter_delay_flag = 1;
+			    go_origin_yj();
 				stepmotor_state = 4;  
 				stepmotor_comm = 0xff;  
 				predit_shift = 0;

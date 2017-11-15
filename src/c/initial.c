@@ -857,6 +857,8 @@ void init_var(void)
 	waitting_for_point_command = 0;
 	auto_function_skip_flag = 1;
 	main_control_lock_setup = 0;
+	
+	already_up_flag = 0;
 }			
 //--------------------------------------------------------------------------------------
 //  Name:		initial 

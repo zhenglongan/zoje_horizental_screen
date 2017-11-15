@@ -750,6 +750,7 @@ UINT16 blow_air_counter;
 UINT8 waitting_for_point_command;
 UINT8 main_control_lock_setup;
 
+UINT8 already_up_flag;
 //--------------------------------------------------------------------------------------
 //         COPYRIGHT(C) 2006 Beijing xingdahao technology Co., Ltd.
 //                     ALL RIGHTS RESERVED 

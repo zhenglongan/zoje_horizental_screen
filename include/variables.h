@@ -761,6 +761,7 @@ extern UINT16 blow_air_counter;
 extern UINT8 waitting_for_point_command;
 extern UINT8 auto_function_skip_flag;
 extern UINT8 main_control_lock_setup;
+extern UINT8 already_up_flag;
 //--------------------------------------------------------------------------------------
 //         COPYRIGHT(C) 2006 Beijing xingdahao technology Co., Ltd.
 //                     ALL RIGHTS RESERVED 
