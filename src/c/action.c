@@ -6158,35 +6158,38 @@ void pause_stop(void)
 	process_flag = 0;    	                       	
 	if(making_pen_actoin_flag == 0)  
 	{ 	                       	
-	sewing_stop();  
-	while(motor.stop_flag == 0)
-	{
-		rec_com();
-	}
-   	delay_ms(20);
-				
-	//if( u207 == 1)  
-	//{
-	//	find_dead_point();
-	//}
-	delay_ms(50); 
-	manual_cut_flag = 1;
-	if( ((u97 == 0)&&(stay_flag == 1))||( (LTR_trim_option == 0)&&(stay_flag == 0) ))
-	{	
-		motor.dir = 0;
-	    motor.spd_obj = 10*u211; 
-		trim_action();
-		SNT_H = 0; 
-		if( u206 == 1)
-		delay_ms(140+delay_of_wipper_down);
-		manual_cut_flag = 0;
-	}		
-	inpress_up();   
-	delay_ms(50);
-	if(u208 == 1)
-	{
-	   footer_both_up();
-	} 
+		sewing_stop();  
+		while(motor.stop_flag == 0)
+		{
+			rec_com();
+		}
+		delay_ms(50); 
+		manual_cut_flag = 1;
+		if( ((u97 == 0)&&(stay_flag == 1))||( (LTR_trim_option == 0)&&(stay_flag == 0) ))
+		{	
+			delay_ms(50); 	
+			motor.dir = 0;
+		    motor.spd_obj = 10*u211; 
+			while(1)
+		    {
+		    	rec_com(); 
+			   	if(motor.spd_ref == motor.spd_obj)
+			   	{
+			    	break;
+			   	}
+		    }
+			trim_action();
+			SNT_H = 0; 
+			if( u206 == 1)
+				delay_ms(140+delay_of_wipper_down);
+			manual_cut_flag = 0;
+		}		
+		inpress_up();   
+		delay_ms(50);
+		if(u208 == 1)
+		{
+		   footer_both_up();
+		} 
 	}
 	if(making_pen_actoin_flag == 1 )
 	while(rec1_total_counter>0)

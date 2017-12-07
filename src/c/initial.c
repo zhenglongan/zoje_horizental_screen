@@ -859,6 +859,9 @@ void init_var(void)
 	main_control_lock_setup = 0;
 	
 	already_up_flag = 0;
+	rfid_alarm_flag = 0;
+	rfid_alarm_counter = 0;
+	request_rfid_number = 0;
 }			
 //--------------------------------------------------------------------------------------
 //  Name:		initial 

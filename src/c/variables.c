@@ -751,6 +751,9 @@ UINT8 waitting_for_point_command;
 UINT8 main_control_lock_setup;
 
 UINT8 already_up_flag;
+
+UINT8 rfid_alarm_flag;
+UINT16 rfid_alarm_counter,request_rfid_number;
 //--------------------------------------------------------------------------------------
 //         COPYRIGHT(C) 2006 Beijing xingdahao technology Co., Ltd.
 //                     ALL RIGHTS RESERVED 

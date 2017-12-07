@@ -167,7 +167,8 @@ void main(void)
   		if((sys.status == READY)&&(formwork_identify_device !=0)&&(single_flag ==0)&&(auto_function_flag == 1)
 		    && (shift_flag == 0)&&(predit_shift == 0)&&(already_in_origin ==1))
 		{
-			rec1_com();
+			if( auto_function_skip_flag == 1 )
+				rec1_com();
 		}
 		
 	}
@@ -187,14 +188,26 @@ void ta0_int(void)
 	ms_scan_counter++;
 	aging_mode_counter_1++;
 	motor_control();
+	/*
 	if( barcoder_time_between_same_code == 1)
 	{
 		  pattern_change_counter++;
-	      if(pattern_change_counter >= 5000)
+	      if(pattern_change_counter >= 1000)
 	      {	     
 			  barcoder_time_between_same_code = 0;
 			  last_pattern_number =0;
 		  }  
+	}
+	*/
+	if( rfid_alarm_flag == 1 )
+	{
+		if( rfid_alarm_counter > 0)
+			rfid_alarm_counter--;
+		else
+		{
+			rfid_alarm_flag = 0;
+			SUM = 0;
+		}			
 	}
 	
 	if(CutActionFlag==1)

@@ -24,7 +24,7 @@
     
 #define MainFatherVersion		05
 #define MainChildVersion		07 
-#define MainSVNVersion			20522
+#define MainSVNVersion			20525
 
 #define USE_SC013K_PALTFORM         0
 #define DEBUG_PARA_OUTPUT		 	0

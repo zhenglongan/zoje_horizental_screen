@@ -129,6 +129,9 @@ void pattern_process(void)
 				   barcoder_time_between_same_code = 1;
 				   pattern_change_counter = 0;
 				   //return_from_setout = 0;
+				   SUM =1;
+				   rfid_alarm_counter = 800;
+				   rfid_alarm_flag = 1;
 				}
 			}
 		}	
@@ -622,6 +625,14 @@ void ready_status(void)
 			delay_ms(50);
 			motor.dir = 0;
 			motor.spd_obj = 10*u211; 
+			while(1)
+		    {
+		    	rec_com(); 
+			   	if(motor.spd_ref == motor.spd_obj)
+			   	{
+			    	break;
+			   	}
+		    }
 		 	trim_action();
 			delay_ms(100);
 			inpress_up();
@@ -690,13 +701,15 @@ void ready_status(void)
 	#else
 	if( new_pattern_done == 1 )
 	{
-			new_pattern_done = 0;
-			pattern_change_flag = 0;			
-		    pattern_change_counter = 0;				
-			pattern_number = 0;			
-			return_from_setout = 1;
-			ready_go_setout_com = 0;
-		
+		if( request_rfid_number == last_pattern_number)
+		{
+			pattern_change_flag = 0;					
+			pattern_number = 0;				
+		}
+		new_pattern_done = 0;
+		pattern_change_counter = 0;	
+		return_from_setout = 1;
+		ready_go_setout_com = 0;
 	}	
 	#endif
 	/*
@@ -1425,13 +1438,14 @@ void trim_action(void)
 	UINT8 temp8,flag;
 	INT16 s8tmp;
 	INT16 temp16;	
-	UINT8 action0_flag , action1_flag , action2_flag,action3_flag,action4_flag;
+	UINT8 action0_flag , action1_flag , action2_flag,action3_flag,action4_flag,action5_flag;
 	
 	action0_flag = 0;
 	action1_flag = 0;
 	action2_flag = 0;
 	action3_flag = 0;
 	action4_flag = 0;
+	action5_flag = 0;
 	motor.dir = 0;
 	motor.spd_obj = 10*u211; 
 	
@@ -1479,7 +1493,7 @@ void trim_action(void)
 				 else
 				 {
 					 movestep_yj(-90 ,stepper_cutter_move_time);
-					 cutter_delay_counter = stepper_cutter_move_time<<1;
+					 cutter_delay_counter = u222;//stepper_cutter_move_time<<1;
 					 cutter_delay_flag = 1;
 				 }
 			 }
@@ -1561,7 +1575,7 @@ void trim_action(void)
 			{	
 				temp16 = motor.angle_adjusted;
 				
-				if( (temp16 >= 160 )&&(flag == 1) )
+				if( (temp16 >= 40 )&&(flag == 1) )//160=>40
 				{
 					if( (u206 == 1)&&(u210 ==1) )
 					{
@@ -1573,13 +1587,24 @@ void trim_action(void)
 							SNT_H = 1; 
 							FW = 1;
 						}
-					}
+					}					
 				}
+				
+				if( (cutter_delay_flag == 0) &&(action5_flag ==0 ) )
+				{
+					action5_flag = 1;
+					movestep_yj(90-stepper_cutter_move_range ,20);//断线位置
+					cutter_delay_counter = 40;
+					cutter_delay_flag = 1;
+				}
+				
 			}
-	
-		movestep_yj(90-stepper_cutter_move_range ,20);//断线位置
-		cutter_delay_counter = 40;
-		cutter_delay_flag = 1;
+	    if(action5_flag ==0 )
+		{
+		   movestep_yj(90-stepper_cutter_move_range ,20);//断线位置
+		   cutter_delay_counter = 40;
+		   cutter_delay_flag = 1;
+		}
 	}
 	if( (u206 == 0 )&&(cut_mode == STEPPER_MOTER_CUTTER ) )
 	{

@@ -678,7 +678,7 @@ void protocol(UINT8* command)
 				tra_ind_r = 0; 
 				tra_ind_w = 0; 
 				send_command[0] = DATA_START;
-				send_command[1] = 18;
+				send_command[1] = 20;
 				send_command[2] = QUERY_RET;
 				send_command[3] = sys.status;
 				send_command[4] = sys.error;
@@ -728,10 +728,11 @@ void protocol(UINT8* command)
 				   send_command[17] = 220; 
 				else
 				   send_command[17] = inpress_position;  
-
-				send_command[18] = verify_code(18);
-				send_command[19] = DATA_END;
-				tra_com(send_command,20);
+				send_command[18] = last_pattern_number>>8;
+				send_command[19] = last_pattern_number;
+				send_command[20] = verify_code(20);
+				send_command[21] = DATA_END;
+				tra_com(send_command,22);
 				rec_ind_r = 0; 
 				rec_ind_w = 0;
 				
@@ -2975,6 +2976,7 @@ void protocol(UINT8* command)
 			
 			case AUTO_SELECT_PATTERN:					
 			    temp = pattern_number;
+				request_rfid_number = pattern_number;
 			    tra_ind_r = 0; 
 				tra_ind_w = 0;   
 			    send_command[0] = DATA_START;
@@ -2987,7 +2989,8 @@ void protocol(UINT8* command)
 				tra_com(send_command,7);    
 				rec_ind_r = 0; 
 				rec_ind_w = 0;				
-			//	pattern_change_flag = 0;	//?			
+			//	pattern_change_flag = 0;	//?		
+			
 			break;		
 			
 			case NEW_PATTERN_DONE:

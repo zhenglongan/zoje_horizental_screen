@@ -762,6 +762,9 @@ extern UINT8 waitting_for_point_command;
 extern UINT8 auto_function_skip_flag;
 extern UINT8 main_control_lock_setup;
 extern UINT8 already_up_flag;
+
+extern UINT8 rfid_alarm_flag;
+extern UINT16 rfid_alarm_counter,request_rfid_number;
 //--------------------------------------------------------------------------------------
 //         COPYRIGHT(C) 2006 Beijing xingdahao technology Co., Ltd.
 //                     ALL RIGHTS RESERVED 

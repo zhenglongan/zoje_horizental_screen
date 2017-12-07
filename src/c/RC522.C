@@ -390,19 +390,18 @@ INT8 PcdComMF522(UINT8 Command,
     {   
 		WriteRawRC(FIFODataReg, pInData[i]);    
 	}
-    WriteRawRC(CommandReg, Command);
-   
+    WriteRawRC(CommandReg, Command);   
     
     if (Command == PCD_TRANSCEIVE)
     {    SetBitMask(BitFramingReg,0x80);  }
     
-  i = 600;//根据时钟频率调整，操作M1卡最大等待时间25ms
-// 	i = 2000;
+    i = 600;//根据时钟频率调整，操作M1卡最大等待时间25ms
+ //	i = 250;
     do 
     {
          n = ReadRawRC(ComIrqReg);
          i--;
-		 //delay_ms(1);
+		 delay_us(100);
     }
     while ((i!=0) && !(n&0x01) && !(n&waitFor));
     ClearBitMask(BitFramingReg,0x80);
@@ -463,6 +462,7 @@ void PcdAntennaOff()
 {
     ClearBitMask(TxControlReg, 0x03);
 }
+/*
 /////////////////////////////////////////////////////////////////////
 //功  能：扣款和充值
 //参数说明: dd_mode[IN]：命令字
@@ -562,7 +562,7 @@ INT8 PcdBakValue(UINT8 sourceaddr, UINT8 goaladdr)
 
     return status;
 }
-
+*/
 void RFID_initial(void)
 {
 	PcdReset();
