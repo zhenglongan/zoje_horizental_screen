@@ -65,6 +65,10 @@ UINT8 send_command[250];  			 // transmit buffer  100 byte
 
 #define RFID_READ 				0x45
 #define RFID_READ_RET 			0xa5
+
+#define LED_CONTROL				0x4A
+#define LED_CONTROL_RET			0xAA
+
 #define NEW_PATTERN_DONE 		0x4e
 #define NEW_PATTERN_DONE_RET 	0xae
 
@@ -238,6 +242,8 @@ UINT8 send_command[250];  			 // transmit buffer  100 byte
 #define DRV_DATA_RET        		0xF5
 #define DRV_DATA_END            	0x96
 #define DRV_DATA_END_RET        	0xF6
+
+
 
 #define CONTROL_PARA				0x99
 #define CONTROL_PARA_RET 			0xF9
@@ -1224,7 +1230,15 @@ void protocol(UINT8* command)
 					case DOWNLOAD_DRV2:
 					    sys.status = DOWNLOAD_DRV2;
 						StatusChangeLatch = DOWNLOAD_DRV2;
-					    break;	           	                                                     	            	                            	           
+					    break;	  
+					case DOWNLOAD_DRV3:
+					    sys.status = DOWNLOAD_DRV3;
+						StatusChangeLatch = DOWNLOAD_DRV3;
+						break;
+					case DOWNLOAD_DRV4:
+					    sys.status = DOWNLOAD_DRV4;
+						StatusChangeLatch = DOWNLOAD_DRV4;
+					    break;         	                                                     	            	                            	           
 					case CONTINUE:
 					    sys.status = CONTINUE;
 						StatusChangeLatch = CONTINUE;
@@ -2015,7 +2029,7 @@ void protocol(UINT8* command)
 				tra_ind_r = 0; 
 				tra_ind_w = 0;                          		            
 				send_command[0] = DATA_START;
-				send_command[1] = 23;
+				send_command[1] = 34;
 				send_command[2] = VERSION_RET;
 
 				send_command[3] = Step1Version.MachineType;
@@ -2045,10 +2059,24 @@ void protocol(UINT8* command)
 				send_command[20] = MotorChildVersion;
 				send_command[21] = MotorSVNVersion>>8;
 				send_command[22] = MotorSVNVersion;
+				
+				send_command[23] = 0;//幅面信息
+				
+				send_command[24] = Step2Version.MachineType;//DSP3版本
+				send_command[25] = Step2Version.FatherVersion;
+				send_command[26] = Step2Version.ChildVersion;
+				send_command[27] = stepversion3>>8;
+				send_command[28] = stepversion3;
+				
+				send_command[29] = Step2Version.MachineType;	//DSP4版本
+				send_command[30] = Step2Version.FatherVersion;
+				send_command[31] = Step2Version.ChildVersion;
+				send_command[32] = stepversion4>>8;
+				send_command[33] = stepversion4;
 
-				send_command[23] = verify_code(23);
-				send_command[24] = DATA_END;  	                
-				tra_com(send_command,25);    
+				send_command[34] = verify_code(34);
+				send_command[35] = DATA_END;  	                
+				tra_com(send_command,36);    
 				rec_ind_r = 0; 
 				rec_ind_w = 0;
 				break;     
@@ -3483,7 +3511,33 @@ void protocol(UINT8* command)
 			
 				break; 
 			
-			
+			case LED_CONTROL://         0x4a
+			    tra_ind_r = 0; 
+				tra_ind_w = 0;            
+				if(  rec_buf[3] ==0 )
+				{
+					GREEN_LED = 1;
+					YELLOW_LED = 0;
+					RED_LED = 0;
+					led_stay_green_counter = 0;
+					led_turn_green_flag = 1;
+				}    
+				else
+				{
+					RED_LED = 1;
+					GREEN_LED = 0;
+					YELLOW_LED = 0;
+					led_turn_green_flag = 0;
+				}
+				send_command[0] = DATA_START;
+				send_command[1] = 0x03;
+				send_command[2] = LED_CONTROL_RET;
+				send_command[3] = verify_code(3);       				                 				          
+				send_command[4] = DATA_END;                  
+				tra_com(send_command,5);    
+				rec_ind_r = 0; 
+				rec_ind_w = 0;
+			break;
 			
 			//  no match function code
 			//--------------------------------------------------------------------------------------

@@ -185,19 +185,26 @@ void init_io(void)
 		
 	if( para.platform_type == FIFTH_GENERATION)
 	{
-  	p0  = 0x00; 
-  	pd0 = 0x00;     // set p0.0-p0.7 to input
-    
+	#if	MULTI_IO_FUNCTION
+  	p0  = 0x10; 
+  	pd0 = 0x10;     // set p0.0-p0.7 to input p0.4 output
+	#else
+	p0  = 0x00; 
+  	pd0 = 0x00;     // set p0.0-p0.7 to input 
+    #endif
   	p1  = 0x00;     // SNT_ON=1  SNT_H=0
   	pd1 = 0x43;     // set p1.0  p1.1 p1.6 to output   set p1.2-p1.7 to intput 
     POWER_OFF = 0;
 	
   	p2  = 0x00; 
   	pd2 = 0x00;     // set p2.0-p2.7 to input
-    
-  	p3  = 0x00;     // FW=0  FL_ON=0  LM_AIR=0  R_AIR=0  L_AIR=0
+    #if MULTI_IO_FUNCTION
+  	p3  = 0x40;     // FW=0  FL_ON=0  LM_AIR=0  R_AIR=0  L_AIR=0
   	pd3 = 0xF8;     // set p3.0 p3.1 p3.2 to inupt   set p3.3-p3.7 to output
-    
+	#else
+	p3  = 0x00;     // FW=0  FL_ON=0  LM_AIR=0  R_AIR=0  L_AIR=0
+  	pd3 = 0xF8;     // set p3.0 p3.1 p3.2 to inupt   set p3.3-p3.7 to output
+    #endif
   	p4  = 0x01;//0x21;     // OUTPUT_ON=1  FL=0  FA=0  T_CLK=0  T_DIR=0  T_HALF=0//1  BACKUP1=0  BACKUP2=0
   	pd4 = 0xFF;     // set p4.0-p4.7 to output 
     
@@ -633,6 +640,8 @@ void init_var(void)
 	dsp2_message = 0;	
 	err_num_dsp1 = 0;
 	err_num_dsp2 = 0;
+	err_num_dsp3 = 0;
+	err_num_dsp4 = 0;
 	baseline_alarm_flag = 0;
     baseline_alarm_stitchs =0;	
 	down_up_stitch = 0;	
@@ -666,12 +675,6 @@ void init_var(void)
 	test_nop_y = -16000;	
 	next_nop_x = 16000;
 	next_nop_y = 16000;	
-	cool_air_action_flag = 0;
-    cool_air_counter = 0;
-	cool_air_action_counter = 0;
-	cool_air_1_sec = 0;	
-	cool_air_close_time = 10;
-	cool_air_open_time = 5;	
 	
 	flag_start_waitcom = 0;
 	counter_wait_com = 0;
@@ -862,6 +865,18 @@ void init_var(void)
 	rfid_alarm_flag = 0;
 	rfid_alarm_counter = 0;
 	request_rfid_number = 0;
+	
+	cool_air_action_flag = 0;
+    cool_air_counter = 0;
+	cool_air_action_counter = 0;
+	cool_air_1_sec = 0;
+	
+	cool_air_close_time = 10;
+	cool_air_open_time = 5;
+	
+	led_turn_green_flag = 0;
+	led_stay_green_counter = 0;
+	led_stay_1s_counter = 0;
 }			
 //--------------------------------------------------------------------------------------
 //  Name:		initial 

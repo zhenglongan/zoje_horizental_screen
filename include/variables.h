@@ -571,7 +571,7 @@ extern UINT8  thread_switch;
 extern UINT16 dsp1_message,dsp2_message;
 
 extern UINT8 movezx_delay_counter,movezx_delay_flag;
-extern UINT16 err_num_dsp1,err_num_dsp2;
+extern UINT16 err_num_dsp1,err_num_dsp2,err_num_dsp3,err_num_dsp4;
 
 extern UINT8  main_control_lock_flag;
 extern UINT8	OW_RomID[8];
@@ -614,10 +614,6 @@ extern UINT16 test_counet_ms;
 extern UINT8  test_brk_flag;
 
 extern INT16 test_nop_x,test_nop_y,next_nop_x,next_nop_y;
-extern UINT8 cool_air_action_flag;
-extern UINT16 cool_air_counter,cool_air_action_counter,cool_air_1_sec;
-extern UINT16 cool_air_close_time,cool_air_open_time;
-
 extern UINT8 waiting_motor_flag,waiting_motor_counter;
 
 extern UINT8 flag_start_waitcom;
@@ -765,6 +761,15 @@ extern UINT8 already_up_flag;
 
 extern UINT8 rfid_alarm_flag;
 extern UINT16 rfid_alarm_counter,request_rfid_number;
+
+extern UINT16 stepversion3,stepversion4;
+
+extern UINT8 cool_air_action_flag;
+extern UINT16 cool_air_counter,cool_air_action_counter,cool_air_1_sec;
+extern UINT16 cool_air_close_time,cool_air_open_time;
+
+extern UINT8  led_turn_green_flag;
+extern UINT16 led_stay_green_counter,led_stay_1s_counter;
 //--------------------------------------------------------------------------------------
 //         COPYRIGHT(C) 2006 Beijing xingdahao technology Co., Ltd.
 //                     ALL RIGHTS RESERVED 

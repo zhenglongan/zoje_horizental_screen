@@ -24,7 +24,9 @@
     
 #define MainFatherVersion		05
 #define MainChildVersion		07 
-#define MainSVNVersion			20525
+#define MainSVNVersion			20527//20526
+
+#define ENABLE_LED_ALARM_FUNCTION   1 //led报警功能
 
 #define USE_SC013K_PALTFORM         0
 #define DEBUG_PARA_OUTPUT		 	0
@@ -39,6 +41,8 @@
 #define NEED_TAKE_UP_ORIGIN_PHASE   1 //
 #define OPEN_LAST_5_STITCH_SPEED    1 //
 
+
+#define MULTI_IO_FUNCTION       1//
 
 #if SUPPORT_0_5MM_FORMAT
 	#define RESOLUTION 				20
@@ -135,6 +139,8 @@
 #define CONTINUE    33    // 组合花样连续缝
 #define DOWNLOAD_DRV1 35  //DSP1升级
 #define DOWNLOAD_DRV2 36  //DSP2升级
+#define DOWNLOAD_DRV3 38  //0x26
+#define DOWNLOAD_DRV4 39  //0x27
 //--------------------------------------------------------------------------------------
 // system error number definition
 //--------------------------------------------------------------------------------------
@@ -273,8 +279,6 @@
 #define EXTSM       p1_5
 #define EXTEND      p1_6     	 //OUTPUT1   
 
-
-
 #define DVA         p1_7         //START
 #define DVB         p1_2         //PRESS
 
@@ -340,7 +344,7 @@
 #define FK_OFF_2      p5_4   		//OUTPUT3 
 #define FK_OFF      testpin   		//OUTPUT3 
 #else
-#define FK_OFF      p5_4   		//OUTPUT3 
+#define FK_OFF      p5_4   			//OUTPUT3 
 #endif
 
 #define EPM         p5_5
@@ -385,7 +389,13 @@
 
 #define SPISTE1     p10_0
 #define SPISTE2     p10_1
+#if MULTI_IO_FUNCTION
+#define SPISTE3     p0_4
+#define SPISTE4     p3_6
+#else
 #define SPISTE3     p10_2
+#define SPISTE4     p10_3
+#endif
 #define SENSOR6     p10_4      //INPUT 6---SC0419
 #define SENSOR7     p10_5      //INPUT 7---SC0419
 #define TSENS       p10_6
@@ -414,13 +424,13 @@
 
 #define HOLDING_BOBBIN_SOLENOID     FA
 #if AUTO_CHANGE_FRAMEWORK
-#define LASER_POWER_ON 	T_HALF_EXTEND
+#define LASER_POWER_ON 			T_HALF_EXTEND
 #else
 #define LASER_POWER_ON 			T_DIR  //气阀5 
 #endif
 #define LED_POWER     EXTEND  
 
-#define BLOW_AIR    T_CLK   
+#define BLOW_AIR      T_CLK   
 
 #if BOBBIN_CHANGER_ENABLE
 
@@ -453,6 +463,12 @@
 	#define AUTO_RIGHT_RUNNING_SWITCH    PSENS_2	//输入2
 	
 #endif
+
+#define FILL_OIL  			  FK_OFF   //气阀3 
+
+#define YELLOW_LED			  T_HALF   //气阀4	
+#define GREEN_LED			  T_DIR    //气阀5 
+#define RED_LED				  T_CLK    //气阀6
 
 //--------------------------------------------------------------------------------------
 // communication definition

@@ -412,6 +412,7 @@ UINT8 atum_flag,atum_data,hevi_flag,hevi_data,fun_flag,fun_code;
 
 UINT16 stepversion1;                              
 UINT16 stepversion2;
+UINT16 stepversion3,stepversion4;
 UINT8 manual_cut_flag;
 UINT8 x_sensor_pos;
 UINT8 stop_foot_status;
@@ -572,7 +573,7 @@ UINT8  cut_nopmove_flag;
 UINT8  thread_switch;
 
 UINT16 dsp1_message,dsp2_message;
-UINT16 err_num_dsp1,err_num_dsp2;
+UINT16 err_num_dsp1,err_num_dsp2,err_num_dsp3,err_num_dsp4;
 
 UINT8  main_control_lock_flag;
 UINT8	OW_RomID[8];
@@ -610,9 +611,7 @@ UINT16 test_counet_ms;
 UINT8  test_brk_flag;
 
 INT16 test_nop_x,test_nop_y,next_nop_x,next_nop_y;
-UINT8 cool_air_action_flag;
-UINT16 cool_air_counter,cool_air_action_counter,cool_air_1_sec;
-UINT16 cool_air_close_time,cool_air_open_time;
+
 UINT8 auto_function_skip_flag;
 UINT8 flag_start_waitcom;
 UINT8 counter_wait_com;
@@ -754,6 +753,13 @@ UINT8 already_up_flag;
 
 UINT8 rfid_alarm_flag;
 UINT16 rfid_alarm_counter,request_rfid_number;
+
+UINT8 cool_air_action_flag;
+UINT16 cool_air_counter,cool_air_action_counter,cool_air_1_sec;
+UINT16 cool_air_close_time,cool_air_open_time;
+
+UINT8  led_turn_green_flag;
+UINT16 led_stay_green_counter,led_stay_1s_counter;
 //--------------------------------------------------------------------------------------
 //         COPYRIGHT(C) 2006 Beijing xingdahao technology Co., Ltd.
 //                     ALL RIGHTS RESERVED 

@@ -1192,7 +1192,7 @@ void foot_half_up(void)
 	if(foot_half_flag == 0)
 	{
 		FL = 1;
-		FL_ON= 0;
+		//FL_ON= 0;
 	}
 	foot_half_flag = 1;      
 	foot_half_com = 1;      
@@ -1341,7 +1341,7 @@ void foot_half_down(void)
 {
 	if(foot_half_flag == 1)
 	{
-			FL_ON = 1;
+			//FL_ON = 1;
 			FL = 0;
 			delay_ms(10);
 	 }

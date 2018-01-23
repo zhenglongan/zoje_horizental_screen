@@ -2219,6 +2219,24 @@ void run_status(void)
     	//--------------------------------------------------------------------------------------                
   		while(1)
     	{	
+			#if ENABLE_LED_ALARM_FUNCTION 
+			if( sys.error == 0)
+			{
+				GREEN_LED = 1;
+				YELLOW_LED = 0;
+				RED_LED = 0;
+				led_stay_green_counter = 0;
+				led_turn_green_flag = 1;
+			}
+			else
+			{
+				RED_LED = 1;
+				GREEN_LED = 0;
+				YELLOW_LED = 0;
+				led_turn_green_flag = 0;
+			}
+			#endif
+			
 			if(StitchStartFlag == 1)
 			{
 				StitchStartFlag = 0;
@@ -2268,7 +2286,7 @@ void run_status(void)
 			}
 			*/
 			test_flag = 0;
-			
+			cool_air_counter++;
 			//-----------------------------------------------------------------------------------
 			//adjust speed
 			//---------------------------------------------------------------------------------
@@ -6242,6 +6260,12 @@ void download_drv_status(void)
 		case DOWNLOAD_DRV2:
 			 download_drv_flag = 2; 
 		break;
+		case DOWNLOAD_DRV3:
+			 download_drv_flag = 3;
+	 	break;
+		case DOWNLOAD_DRV4:
+			 download_drv_flag = 4; 
+		break;
 	}
 	delay_t = 13000;
 	if(DVB == para.dvab_open_level)  
@@ -6265,49 +6289,50 @@ void download_drv_status(void)
 	{  
 	    if(1 == erase_falg)
 		  jump_to_begin();
-		if(((stepversion1 >= 60000)&&(sys.status == DOWNLOAD_DRV1)) ||((stepversion2 >= 60000)&&(sys.status == DOWNLOAD_DRV2)))
+		if(((stepversion1 >= 60000)&&(sys.status == DOWNLOAD_DRV1)) ||((stepversion2 >= 60000)&&(sys.status == DOWNLOAD_DRV2))
+			||  ((stepversion3 >= 60000)&&(sys.status == DOWNLOAD_DRV3)) || sys.status == DOWNLOAD_DRV4)//DSP4版本上不做限定，直接升级
 		{
-		send_stepmotor_up_drv();
-		if(1 == erase_falg)
-		     delay_ms(delay_t); 
-		else  
-		    delay_ms(40);         
-	    drv_satus = read_stepmotor_up_drv();
-		//0XA0    功能码错误
-		//0XA1    文件校验错误
-		//0XA2    数据包自校验错误
-		//0XA3    SPI通信校验错误
-		//0XA4    flash擦除错误
-		//0XA5    flash烧写错误
-		//0XA6    flash校验错误
-		//0XA7    数据包crc校验错误
-		//0XA8    解锁错误
-		//0xa9    超时
-		delay = 0;
-		while(0x00 != drv_satus)
-		{
-			rec_com();
-			delay_ms(5);
-			drv_satus = read_stepmotor_up_drv();
-			delay++;
-			if( delay >1000)//超时
+			send_stepmotor_up_drv();
+			if(1 == erase_falg)
+			     delay_ms(delay_t); 
+			else  
+			    delay_ms(40);         
+		    drv_satus = read_stepmotor_up_drv();
+			//0XA0    功能码错误
+			//0XA1    文件校验错误
+			//0XA2    数据包自校验错误
+			//0XA3    SPI通信校验错误
+			//0XA4    flash擦除错误
+			//0XA5    flash烧写错误
+			//0XA6    flash校验错误
+			//0XA7    数据包crc校验错误
+			//0XA8    解锁错误
+			//0xa9    超时
+			delay = 0;
+			while(0x00 != drv_satus)
 			{
-			    sys.status = ERROR;
-				sys.error = ERROR_86;
-				de_bug.test1 = 0x00;
-				de_bug.test2 = 0xa9;
-				break;	
+				rec_com();
+				delay_ms(5);
+				drv_satus = read_stepmotor_up_drv();
+				delay++;
+				if( delay >1000)//超时
+				{
+				    sys.status = ERROR;
+					sys.error = ERROR_86;
+					de_bug.test1 = 0x00;
+					de_bug.test2 = 0xa9;
+					break;	
+				}
+				if( (drv_satus >=0xa0) && (drv_satus <=0xaf) )
+				{
+					sys.status = ERROR;
+					sys.error = ERROR_86; //50 号错误？？？？？？？？？？？
+					de_bug.test1 = 0x00;
+					de_bug.test2 = drv_satus;
+					break;
+				}
 			}
-			if( (drv_satus >=0xa0) && (drv_satus <=0xaf) )
-			{
-				sys.status = ERROR;
-				sys.error = ERROR_86; //50 号错误？？？？？？？？？？？
-				de_bug.test1 = 0x00;
-				de_bug.test2 = drv_satus;
-				break;
-			}
-		}
-		predit_shift = 0;
+			predit_shift = 0;
 
 		}
 		else
@@ -6317,7 +6342,8 @@ void download_drv_status(void)
 	}
 	if(6 == predit_shift ) //2升级结束校验证
 	{  
-		if(((stepversion1 >= 60000)&&(sys.status == DOWNLOAD_DRV1)) ||((stepversion2 >= 60000)&&(sys.status == DOWNLOAD_DRV2)))
+		if(((stepversion1 >= 60000)&&(sys.status == DOWNLOAD_DRV1)) ||((stepversion2 >= 60000)&&(sys.status == DOWNLOAD_DRV2))
+		  ||  ((stepversion3 >= 60000)&&(sys.status == DOWNLOAD_DRV3)) || sys.status == DOWNLOAD_DRV4)
 		{
 			send_stepmotor_end_drv();
 		    predit_shift = 0;

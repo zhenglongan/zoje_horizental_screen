@@ -27,9 +27,9 @@ static UINT16 yj_data_nf;
 static UINT16 zx_data_nf;
 static UINT16 step_cfg_data;
 static UINT16 trans_dsp1;
-static UINT16 trans_dsp2;
+static UINT16 trans_dsp2,trans_dsp3,trans_dsp4;
 static UINT8 dsp1;
-static UINT8 dsp2;
+static UINT8 dsp2,dsp3,dsp4;
 //--------------------------------------------------------------------------------------
 //  global variables declaration
 //--------------------------------------------------------------------------------------
@@ -47,6 +47,8 @@ void set_openorclose_loop(UINT8 set);
 void send_dsp_command(UINT8 port,UINT16 command);
 void send_dsp1_command(UINT16 command,UINT16 data);
 void send_dsp2_command(UINT16 command,UINT16 data);
+void send_dsp3_command(UINT16 command,UINT16 data);
+void send_dsp4_command(UINT16 command,UINT16 data);
 UINT16 read_stepmotor_curve_crc(UINT8 port);
 
 #pragma	INTERRUPT/E spiint
@@ -69,7 +71,9 @@ void spiint(void);
 void SPI_init(void)
 {
 	SPISTE1 = 1;     // DSP1 SPI disable 
-	SPISTE2 = 1;     // DSP2 SPI disable 	
+	SPISTE2 = 1;     // DSP2 SPI disable 
+	SPISTE3 = 1;     // DSP1 SPI disable 
+	SPISTE4 = 1;     // DSP2 SPI disable 	
 	prc2 = 1;        // protect disable
 	pd9_5 = 1;       // set SPI CLK  pin to output
 	pd9_7 = 0;       // set SPI SIN  pin to input
@@ -162,7 +166,8 @@ void spiint(void)
 		  	recieve_z.byte.byte2= s4trr;
 			SPISTE1=1;
 		  	SPISTE2=1;
-			
+			SPISTE3=1;
+		  	SPISTE4=1;
 		  	if((dsp1==1)&&(recieve_z.word != trans_dsp1))
 	  		{
 	  			check_dsp_error(recieve_z.word);		
@@ -172,7 +177,16 @@ void spiint(void)
 	  		{
 				check_dsp_error(recieve_z.word);
 	  		}
-			
+			#if MULTI_IO_FUNCTION
+			if((dsp3==1)&&(recieve_z.word != trans_dsp3))
+			{
+				check_dsp_error(recieve_z.word);		
+			}
+			if((dsp3==1)&&(recieve_z.word != trans_dsp4))
+			{
+			  		
+			}
+			#endif	
 			if(err_num_dsp1 >=1 )
 			{
 				if( sys.error == 0) 
@@ -182,10 +196,24 @@ void spiint(void)
 			{
 				if( sys.error == 0) 
 					sys.error = ERROR_30;		
-			}	
+			}
+			#if MULTI_IO_FUNCTION
+			if(err_num_dsp3 >=1 )
+			{
+				if( sys.error == 0) 
+					sys.error = ERROR_79;		
+			}
+			if(err_num_dsp4 >=1 )
+			{
+				if( sys.error == 0) 
+					sys.error = ERROR_30;		
+			}
+			#endif	
 			spi_flag=0;
 			dsp1=0;
 		  	dsp2=0;	
+			dsp3 =0;
+			dsp4 =0;
 			err_num_dsp1 = 0;
 			err_num_dsp2 = 0;	
 			if( sys.error != 0)
@@ -230,7 +258,17 @@ void spiint(void)
 	    	if(dsp2==1)
 	    	{
     			trans_dsp2=trans_y.word;    		
-    		}    	
+    		}    
+			#if MULTI_IO_FUNCTION
+			if(dsp3 == 1)
+			{
+				trans_dsp3 = trans_y.word;   		
+			}
+			if(dsp4 == 1)
+			{
+				trans_dsp4 = trans_y.word;   		
+			}
+			#endif		
 	    	s4trr=trans_z.byte.byte1;									
 	    	spi_flag=5;
 	    	break;
@@ -270,6 +308,16 @@ void spiint(void)
 	    	{
     			trans_dsp2=trans_x.word;    		
     		}
+			#if MULTI_IO_FUNCTION
+			if(dsp3 == 1)
+			{
+				trans_dsp3 = trans_x.word;   		
+			}
+			if(dsp4 == 1)
+			{
+				trans_dsp4 = trans_x.word;   		
+			}
+			#endif	
     		s4trr=trans_y.byte.byte1;	    										
     		spi_flag=3;
     		break;
@@ -307,7 +355,8 @@ void init_stepmotor_drv(void)
 	trans_dsp2 = 0x0d255;
 	dsp1 = 0;
 	dsp2 = 0;
-	
+	dsp3 = 0;
+	dsp4 = 0;
 }
 
 
@@ -333,7 +382,21 @@ void version_check(void)
 		send_dsp1_command(0x0006,0x5555);
 	}  
 	stepversion1 = recieve_x.word;	
-				
+	
+	#if MULTI_IO_FUNCTION
+	send_dsp3_command(0x0001,0x5555);  
+	if(recieve_x.word == 0x5555)
+	{
+		send_dsp3_command(0x0006,0x5555);
+	} 
+	stepversion3 = recieve_x.word;
+	send_dsp4_command(0x0001,0x5555);  
+	if(recieve_x.word == 0x5555)
+	{
+		send_dsp4_command(0x0006,0x5555);
+	} 
+	stepversion4 = recieve_x.word;
+	#endif			
 }
 //--------------------------------------------------------------------------------------
 //  Name:	     movestep_x
@@ -649,9 +712,17 @@ UINT16 read_stepmotor_up_drv(void)
 	 	{
 			send_dsp1_command(0x0010,0x5555);
 		}
-		else
+		else if( download_drv_flag==2)
 		{
 			send_dsp2_command(0x0010,0x5555);
+		}
+		else if( download_drv_flag==3)
+		{
+			send_dsp3_command(0x0010,0x5555);
+		}
+		else if( download_drv_flag==4)
+		{
+			send_dsp4_command(0x0010,0x5555);
 		}
 		return (UINT16)recieve_x.word;
 }
@@ -661,6 +732,7 @@ UINT16 read_stepmotor_up_drv(void)
 */
 void jump_to_begin(void)
 {
+    //确保是在应用程序状态升级，底下是bootloader就不用发这条指令了
     if((1==download_drv_flag)&&(stepversion1<60000))
 	{
 		while(spi_flag > 0);
@@ -672,6 +744,18 @@ void jump_to_begin(void)
 	    while(spi_flag > 0);
 		send_dsp_command(2,0x000F);
 		delay_ms(1000);
+	}
+	if((3==download_drv_flag)&&(stepversion3<60000))
+	{
+		while(spi_flag > 0);
+		send_dsp_command(3,0x000F);
+		delay_ms(1000);	
+	}
+	if( 4==download_drv_flag )
+	{
+		while(spi_flag > 0);
+		send_dsp_command(4,0x000F);
+		delay_ms(1000);	
 	}
 }
 
@@ -687,10 +771,20 @@ void send_dsp_command(UINT8 port,UINT16 command)
 		 dsp1 = 1;
 	 	 SPISTE1 = 0;
 	 }
-	 else
+	 else if(port == 2)
 	 {
 		 dsp2 = 1;
 	 	 SPISTE2 = 0;
+	 }
+	 else if(port == 3)
+	 {
+		 dsp3 = 1;
+	 	 SPISTE3 = 0;
+	 }
+	 else 
+	 {
+		 dsp4 = 1;
+	 	 SPISTE4 = 0;
 	 }
 	 s4trr=trans_x.byte.byte1; 
 	 delay_us(500);
@@ -705,6 +799,18 @@ void send_dsp2_command(UINT16 command,UINT16 data)
 {
 	 send_dsp_command(2,command);
 	 send_dsp_command(2,data);
+	 while(spi_flag > 0);
+} 
+void send_dsp3_command(UINT16 command,UINT16 data)    
+{
+	 send_dsp_command(3,command);
+	 send_dsp_command(3,data);
+	 while(spi_flag > 0);
+} 
+void send_dsp4_command(UINT16 command,UINT16 data)    
+{
+	 send_dsp_command(4,command);
+	 send_dsp_command(4,data);
 	 while(spi_flag > 0);
 } 
 /*

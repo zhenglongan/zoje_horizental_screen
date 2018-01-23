@@ -58,11 +58,12 @@ void main(void)
 	while(connect_flag == 0)  
   	{
   		delay_ms(100);
-		if( (sys.status == DOWNLOAD)||(sys.status == DOWNLOAD_DRV1)||(sys.status == DOWNLOAD_DRV2) )
+		if( (sys.status == DOWNLOAD)||(sys.status == DOWNLOAD_DRV1)||(sys.status == DOWNLOAD_DRV2)||(sys.status == DOWNLOAD_DRV3)||(sys.status == DOWNLOAD_DRV4) )
 		     break;
   	}  
 	
     enable_24V_output();
+	delay_ms(300); 
 	if( para.platform_type == FIFTH_GENERATION )	
 	{
 	    SNT_H = 1;    				//打开27V并提升到33V
@@ -75,7 +76,6 @@ void main(void)
 		}
 		SNT_H = 0; 
 	}
-	delay_ms(300);     
 	count = 0;
 	while(1)
 	{
@@ -83,7 +83,7 @@ void main(void)
 	    {
 			ir_ta0ic = 0;
 			count++;
-			if(count >= 83)
+			if(count >= 183)
 			break;
 		}
 	}
@@ -101,6 +101,8 @@ void main(void)
 		sys.status = DOWNLOAD_DRV1;   
 	else if ( stepversion2 >= 60000 )
 		sys.status = DOWNLOAD_DRV2;   
+	else if ( stepversion3 >= 60000 )
+		sys.status = DOWNLOAD_DRV3; //没写DSP4自动进入升级的条件，版本号也规划一下。
 	else 
 	{
 		setup_stepper_moter();	
@@ -131,9 +133,19 @@ void main(void)
   	//--------------------------------------------------------------------------------------
   	// system status switch
   	//--------------------------------------------------------------------------------------
+	#if ENABLE_LED_ALARM_FUNCTION 
+		if( sys.error == 0)
+		{
+			GREEN_LED = 1;
+			RED_LED = 0;
+			YELLOW_LED = 0;
+			led_turn_green_flag = 1;
+		}
+	#endif
 	while(1)
   	{
-		rec_com();    
+		rec_com();   
+		
 	  	switch(sys.status)
     	{
 	      	case READY:     ready_status();     break;	
@@ -157,7 +169,10 @@ void main(void)
 			case DOWNLOAD:  download_status();  break;
     		case CONTINUE:  continue_status();  break;
 			case DOWNLOAD_DRV1:
-			case DOWNLOAD_DRV2:download_drv_status(); break;
+			case DOWNLOAD_DRV2:
+			case DOWNLOAD_DRV3:
+			case DOWNLOAD_DRV4:
+							download_drv_status(); break;
 	      	default:  
 			       sys.status = READY; 
 				   StatusChangeLatch=READY;    
@@ -188,6 +203,35 @@ void ta0_int(void)
 	ms_scan_counter++;
 	aging_mode_counter_1++;
 	motor_control();
+	#if ENABLE_LED_ALARM_FUNCTION 
+	
+	if( led_turn_green_flag == 1 )
+	{
+		led_stay_1s_counter++;
+		if( led_stay_1s_counter >= 1000)
+		{
+			if( sys.error == 0)
+			{
+				led_stay_1s_counter = 0;
+				led_stay_green_counter++;
+				if( led_stay_green_counter >= 300 )
+				{
+					YELLOW_LED = 1;
+					GREEN_LED = 0;
+					RED_LED = 0;
+				}
+			}
+			else
+			{
+				YELLOW_LED = 0;
+				GREEN_LED = 0;
+				RED_LED = 1;
+				led_turn_green_flag = 0;
+			}
+		}
+	}
+	
+	#endif
 	/*
 	if( barcoder_time_between_same_code == 1)
 	{
@@ -199,6 +243,35 @@ void ta0_int(void)
 		  }  
 	}
 	*/
+	if( motor.spd_obj > 0)
+	{
+		if( cool_air_action_flag == 0)
+		{
+			FILL_OIL = 0;
+			if ( cool_air_counter >= cool_air_close_time)
+			{
+				 cool_air_counter = 0;
+				 cool_air_action_flag = 1;
+				 cool_air_1_sec = 0;	
+			}
+		}
+		else 
+		{
+			FILL_OIL = 1;
+			cool_air_1_sec++;
+			if(cool_air_1_sec > cool_air_open_time)
+			{
+				   cool_air_action_flag = 0;
+				   cool_air_counter = 0;
+				   cool_air_1_sec = 0;		
+			}
+		}
+		
+	}
+	else if( sys.status != CHECKI05) //不能影响到测试状态的输出
+	 COOL_AIR = 0;
+	 
+	 
 	if( rfid_alarm_flag == 1 )
 	{
 		if( rfid_alarm_counter > 0)

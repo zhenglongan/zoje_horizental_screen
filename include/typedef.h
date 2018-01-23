@@ -171,6 +171,8 @@ typedef struct
 	UINT16 y_barcode_position;	//80,81
 	UINT16 blow_air_counter;	//82,83
 	UINT16 cut_air_counter;		//84,85
+	UINT16  dsp3_step_crc;		//86,87
+	UINT16  dsp4_step_crc;		//88,89
 }SYSTEM_PARA;
 
 #endif
