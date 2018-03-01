@@ -995,6 +995,7 @@ void protocol(UINT8* command)
 								case CHECKI06:
 								case CHECKI07:
 								case PREWIND:
+								case MULTI_IO:
 									predit_shift = 1;
 									StatusChangeLatch = SLACK;
 									FW = 0;
@@ -1184,7 +1185,7 @@ void protocol(UINT8* command)
 									stepmotor_single = 0xff;   
 									sys.status = SLACK;
 									inpress_high =inpress_high_base;
-									inpress_action_flag =1;        
+									//inpress_action_flag =1;        
 									break;
 								default:
 									break;
@@ -1239,9 +1240,17 @@ void protocol(UINT8* command)
 					    sys.status = DOWNLOAD_DRV4;
 						StatusChangeLatch = DOWNLOAD_DRV4;
 					    break;         	                                                     	            	                            	           
+					case DOWNLOAD_SPFL:
+					    sys.status = DOWNLOAD_SPFL;
+						StatusChangeLatch = DOWNLOAD_SPFL;
+					    break;                                   	            	                            	           
 					case CONTINUE:
 					    sys.status = CONTINUE;
 						StatusChangeLatch = CONTINUE;
+					break;
+					case MULTI_IO:
+						sys.status = MULTI_IO;
+						StatusChangeLatch = MULTI_IO;
 					break;		           	                                                     	            	                            	           
 					//--------------------------------------------------------------------------------------      
 					//  system status change to com_error
@@ -2062,15 +2071,15 @@ void protocol(UINT8* command)
 				
 				send_command[23] = 0;//幅面信息
 				
-				send_command[24] = Step2Version.MachineType;//DSP3版本
-				send_command[25] = Step2Version.FatherVersion;
-				send_command[26] = Step2Version.ChildVersion;
+				send_command[24] = Step3Version.MachineType;//DSP3版本
+				send_command[25] = Step3Version.FatherVersion;
+				send_command[26] = Step3Version.ChildVersion;
 				send_command[27] = stepversion3>>8;
 				send_command[28] = stepversion3;
 				
-				send_command[29] = Step2Version.MachineType;	//DSP4版本
-				send_command[30] = Step2Version.FatherVersion;
-				send_command[31] = Step2Version.ChildVersion;
+				send_command[29] = Step4Version.MachineType;	//DSP4版本
+				send_command[30] = Step4Version.FatherVersion;
+				send_command[31] = Step4Version.ChildVersion;
 				send_command[32] = stepversion4>>8;
 				send_command[33] = stepversion4;
 
@@ -3320,12 +3329,20 @@ void protocol(UINT8* command)
 						send_command[2] = SYS_PARAM_GROUP_RET;						
 						send_command[3] = rec_buf[5];
 						send_command[4] = 0;//ok
+						for(i=0; i<205; i++)
+						{
+							svpara_disp_buf[i] = 0;	
+						}
 						if( temp == 1)
-							read_para_group(svpara_disp_buf,205);
+							read_para_group(100,svpara_disp_buf,205);
+						else if( temp == 2)
+							read_para_group(400,svpara_disp_buf,205);
 						else if( temp == 3)
 							read_stepmotor_config_para(1);
 						else if( temp == 4)
 							read_stepmotor_config_para(2);
+						else if( temp == 5)
+							read_stepmotor_config_para(3);
 						for( i=0; i< 205 ; i++)  
 						{
 							send_command[5+i] = svpara_disp_buf[i];
@@ -3352,11 +3369,14 @@ void protocol(UINT8* command)
 						}  
 						if( temp == 1)
 							write_eeprom_para_flag = 1;
+						else if( temp == 2)
+							write_eeprom_para_flag = 2;
 						else if( temp == 3)
 						    wirte_stepermotor_para_flag = 1;
 						else if( temp == 4)
 							wirte_stepermotor_para_flag = 2;
-				
+						else if( temp == 5)
+							wirte_stepermotor_para_flag = 3;
 						send_command[5] = verify_code(5);
 						send_command[6] = DATA_END;                  
 						tra_com(send_command,7);    
@@ -3463,9 +3483,11 @@ void protocol(UINT8* command)
 				
 				for(i=0;i<rec_buf[1]-6;i++)
 				{
-					if((2 == rec_buf[3])||(4 == rec_buf[3]))//
+					if((2 == rec_buf[3])||(4 == rec_buf[3])||(6 == rec_buf[3])||(8 == rec_buf[3]))
+						//DSP 升级曲线
 						pat_buf[((UINT16)temp8)*240 + i] = *(recpat_point+6);
 					else 
+					    //DSP 升级增益
 						svpara_disp_buf[((UINT16)temp8)*240 + i] = *(recpat_point+10);
 					recpat_point++;
 				} 
@@ -3488,6 +3510,18 @@ void protocol(UINT8* command)
 						case 4://DSP2曲线升级		
 							write_stepmotor_curve_flag = 2;
 							break;		
+						case 5://DSP3增益升级		  
+							wirte_stepermotor_para_flag = 3;
+							break;
+						case 6://DSP3曲线升级
+							write_stepmotor_curve_flag = 3;				                         
+							break;
+						case 7://DSP4增益升级
+							wirte_stepermotor_para_flag = 4;
+							break;
+						case 8://DSP4曲线升级		
+							write_stepmotor_curve_flag = 4;
+							break;
 						default:
 							break;
 					}

@@ -37,8 +37,8 @@ extern UINT16 read_par(UINT16 par_num);
 extern void write_par(UINT16 par_num,INT16 par);
 extern void load_par(void);
 extern void _WaitTime6ms(void);
-extern void read_para_group( UINT8 *point,UINT16 len);
-extern void write_para_group( UINT8 *point,UINT16 len);
+extern void read_para_group(UINT16 add,UINT8 *point,UINT16 len);
+extern void write_para_group(UINT16 add,UINT8 *point,UINT16 len);
 
 //--------------------------------------------------------------------------------------
 //         COPYRIGHT(C) 2006 Beijing xindahao technology Co., Ltd.

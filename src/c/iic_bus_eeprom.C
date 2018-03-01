@@ -447,20 +447,20 @@ void write_par(UINT16 par_num,INT16 par)
 	_WaitTime6ms();
 }
 
-void read_para_group( UINT8 *point,UINT16 len)
+void read_para_group( UINT16 address,UINT8 *point,UINT16 len)
 {
 	UINT16 i,data;
 	i = 0;
 	while( i<len )
 	{
-		data = read_par(100 + i);
+		data = read_par(address + i);
 		*point++ = (data >> 8)&0xff;
 		*point++ = data&0xff;
 		i+=2;
 	}
 }
 
-void write_para_group( UINT8 *point,UINT16 len)
+void write_para_group( UINT16 address,UINT8 *point,UINT16 len)
 {
 	UINT16 i,data;
 	i = 0;
@@ -468,9 +468,8 @@ void write_para_group( UINT8 *point,UINT16 len)
 	{
 		data = *point++;
 		data = (data <<8)+ *point++;
-		write_par(100 + i,data);
-		//for(delay=0;delay<2;delay++);
-			_WaitTime6ms();
+		write_par(address + i,data);
+		_WaitTime6ms();
 		i+=2;
 	}
 }

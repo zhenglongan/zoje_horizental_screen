@@ -34,8 +34,11 @@ extern PATTERN_DATA PatEnd;
 extern UINT8 EditCurrentCoorIndex;
 extern INT16 EditCurrentCoorLatch[255];
 extern INT16 ElementPointPositionLatch[255];
+
 extern STEPVERSION Step1Version;
 extern STEPVERSION Step2Version;
+extern STEPVERSION Step3Version;
+extern STEPVERSION Step4Version;
 
 extern UINT8 CourseBackStartFlag;
 
@@ -405,8 +408,6 @@ extern UINT8 allow;
 extern UINT8 atum_flag,atum_data,hevi_flag,hevi_data,fun_flag,fun_code;
 
 extern UINT8 cut_mode;
-extern UINT16 stepversion1;                              
-extern UINT16 stepversion2;
 extern UINT8 manual_cut_flag;
 //2011-4-20
 extern UINT8 x_sensor_pos;
@@ -569,9 +570,11 @@ extern UINT8  cut_nopmove_flag;
 extern UINT8  thread_switch;
 
 extern UINT16 dsp1_message,dsp2_message;
+extern UINT16 dsp3_message,dsp4_message;
 
 extern UINT8 movezx_delay_counter,movezx_delay_flag;
-extern UINT16 err_num_dsp1,err_num_dsp2,err_num_dsp3,err_num_dsp4;
+extern UINT16 err_num_dsp1,err_num_dsp2;
+extern UINT16 err_num_dsp3,err_num_dsp4;
 
 extern UINT8  main_control_lock_flag;
 extern UINT8	OW_RomID[8];
@@ -762,6 +765,7 @@ extern UINT8 already_up_flag;
 extern UINT8 rfid_alarm_flag;
 extern UINT16 rfid_alarm_counter,request_rfid_number;
 
+extern UINT16 stepversion1,stepversion2;
 extern UINT16 stepversion3,stepversion4;
 
 extern UINT8 cool_air_action_flag;
@@ -770,6 +774,7 @@ extern UINT16 cool_air_close_time,cool_air_open_time;
 
 extern UINT8  led_turn_green_flag;
 extern UINT16 led_stay_green_counter,led_stay_1s_counter;
+extern UINT8  first_power_on_flag;
 //--------------------------------------------------------------------------------------
 //         COPYRIGHT(C) 2006 Beijing xingdahao technology Co., Ltd.
 //                     ALL RIGHTS RESERVED 

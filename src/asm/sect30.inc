@@ -97,7 +97,7 @@ bss_FO_top:
 ; Far ROM data area
 ;---------------------------------------------------------------
  .section rom_FE,ROMDATA
- .org  0E0000H
+ .org  0D0000H
 rom_FE_top:
 
  .section rom_FO,ROMDATA

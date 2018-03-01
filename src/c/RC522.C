@@ -27,6 +27,7 @@ INT8 PcdRequest(UINT8 req_code,UINT8 *pTagType)
    UINT8 ucComMF522Buf[MAXRLEN]; 
 
    ClearBitMask(Status2Reg,0x08);
+   if(sys.error !=0 )return 1;
    WriteRawRC(BitFramingReg,0x07);
    SetBitMask(TxControlReg,0x03);
  
@@ -257,6 +258,7 @@ void CalulateCRC(UINT8 *pIndata,UINT8 len,UINT8 *pOutData)
 INT8 PcdReset(void)
 {	
   	WriteRawRC(CommandReg,PCD_RESETPHASE);
+	if(sys.error !=0 )return 0;
 	delay_ms(30); 
   	WriteRawRC(ModeReg,0x3D);            //和Mifare卡通讯，CRC初始值0x6363
 	delay_ms(30); 
@@ -566,12 +568,15 @@ INT8 PcdBakValue(UINT8 sourceaddr, UINT8 goaladdr)
 void RFID_initial(void)
 {
 	PcdReset();
+	if(sys.error !=0 )return;
     PcdAntennaOff(); 
 	delay_ms(20);
     PcdAntennaOn();
 	delay_ms(20);
 	//WriteRawRC(SerialSpeedReg,0x9A);//57600
 	//WriteRawRC(SerialSpeedReg,0xAB);//38400
+	WriteRawRC(RxThresholdReg,0x44);
+	delay_ms(20);
 	WriteRawRC(SerialSpeedReg,0xCB);//19200
 	delay_ms(20);
 }

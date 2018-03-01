@@ -58,7 +58,12 @@ void main(void)
 	while(connect_flag == 0)  
   	{
   		delay_ms(100);
-		if( (sys.status == DOWNLOAD)||(sys.status == DOWNLOAD_DRV1)||(sys.status == DOWNLOAD_DRV2)||(sys.status == DOWNLOAD_DRV3)||(sys.status == DOWNLOAD_DRV4) )
+		if((sys.status == DOWNLOAD)
+		||(sys.status == DOWNLOAD_DRV1)
+		||(sys.status == DOWNLOAD_DRV2)
+		||(sys.status == DOWNLOAD_DRV3)
+		||(sys.status == DOWNLOAD_DRV4)
+		 )
 		     break;
   	}  
 	
@@ -101,19 +106,31 @@ void main(void)
 		sys.status = DOWNLOAD_DRV1;   
 	else if ( stepversion2 >= 60000 )
 		sys.status = DOWNLOAD_DRV2;   
+	#if MULTIPULE_IO_ENABLE	
 	else if ( stepversion3 >= 60000 )
-		sys.status = DOWNLOAD_DRV3; //没写DSP4自动进入升级的条件，版本号也规划一下。
+		sys.status = DOWNLOAD_DRV3;
+	else if ( stepversion4 >= 60000 )
+		sys.status = DOWNLOAD_DRV4;
+	#endif	
 	else 
 	{
-		setup_stepper_moter();	
-		if(( para.dsp1_step_crc != read_stepmotor_curve_crc(1))||(para.dsp2_step_crc != read_stepmotor_curve_crc(2)))
-		{
-			sys.status = ERROR;
-			StatusChangeLatch = ERROR;
-	      	sys.error = ERROR_92; 	
-		}
 		if(PAUSE == PAUSE_OFF)
 		{
+			setup_stepper_moter();	
+			//if(( para.dsp1_step_crc != read_stepmotor_curve_crc(1))||(para.dsp2_step_crc != read_stepmotor_curve_crc(2)))
+			if( para.dsp1_step_crc != read_stepmotor_curve_crc(1))
+			{
+				sys.status = ERROR;
+				StatusChangeLatch = ERROR;
+		      	sys.error = ERROR_92; 				
+			}
+			if (para.dsp2_step_crc != read_stepmotor_curve_crc(2))
+			{
+				sys.status = ERROR;
+				StatusChangeLatch = ERROR;
+		      	sys.error = ERROR_99;
+			}
+		
 			if( u201 == 1 )         
 		   	    go_origin_allmotor();		
 			if((auto_function_flag == 1)&&(formwork_identify_device ==2))
@@ -173,14 +190,23 @@ void main(void)
 			case DOWNLOAD_DRV3:
 			case DOWNLOAD_DRV4:
 							download_drv_status(); break;
+					break;
+			case DOWNLOAD_SPFL:
+					download_multipul_program_status();
+					break;
 	      	default:  
 			       sys.status = READY; 
 				   StatusChangeLatch=READY;    
 				   break;        	   	
     	} 
 		
-  		if((sys.status == READY)&&(formwork_identify_device !=0)&&(single_flag ==0)&&(auto_function_flag == 1)
-		    && (shift_flag == 0)&&(predit_shift == 0)&&(already_in_origin ==1))
+  		if((sys.status == READY)
+			&&(formwork_identify_device !=0)
+			&&(single_flag ==0)
+			&&(auto_function_flag == 1)
+			&&(shift_flag == 0)
+			&&(predit_shift == 0)
+			&&(already_in_origin ==1))
 		{
 			if( auto_function_skip_flag == 1 )
 				rec1_com();
@@ -268,8 +294,6 @@ void ta0_int(void)
 		}
 		
 	}
-	else if( sys.status != CHECKI05) //不能影响到测试状态的输出
-	 COOL_AIR = 0;
 	 
 	 
 	if( rfid_alarm_flag == 1 )
@@ -289,7 +313,9 @@ void ta0_int(void)
 		if(CutActionCounter >= CUTACTIONTIME)
 		{
 			CutActionFlag = 0;
-			trim_io_control(OFF);
+			//trim_io_control(OFF);
+			L_AIR = 0;
+		    FA = 0;
 			CutActionCounter = 0;
 			
 		}

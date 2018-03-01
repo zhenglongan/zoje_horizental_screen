@@ -28,6 +28,8 @@ PATTERN_DATA *TempPat_point;
 
 STEPVERSION Step1Version = {0xa,1,0,0,2};
 STEPVERSION Step2Version = {0xa,1,0,0,2};
+STEPVERSION Step3Version = {0xa,1,0,0,2};
+STEPVERSION Step4Version = {0xa,1,0,0,2};
 
 INT16 Ud_i,Uq_i,d_iq_last;//SCX
 UINT8 MAIN_MOTOR_TYPE;//0 550W 1:1730  2:2530
@@ -412,7 +414,8 @@ UINT8 atum_flag,atum_data,hevi_flag,hevi_data,fun_flag,fun_code;
 
 UINT16 stepversion1;                              
 UINT16 stepversion2;
-UINT16 stepversion3,stepversion4;
+UINT16 stepversion3;                              
+UINT16 stepversion4;
 UINT8 manual_cut_flag;
 UINT8 x_sensor_pos;
 UINT8 stop_foot_status;
@@ -573,7 +576,10 @@ UINT8  cut_nopmove_flag;
 UINT8  thread_switch;
 
 UINT16 dsp1_message,dsp2_message;
-UINT16 err_num_dsp1,err_num_dsp2,err_num_dsp3,err_num_dsp4;
+UINT16 dsp3_message,dsp4_message;
+
+UINT16 err_num_dsp1,err_num_dsp2;
+UINT16 err_num_dsp3,err_num_dsp4;
 
 UINT8  main_control_lock_flag;
 UINT8	OW_RomID[8];
@@ -760,6 +766,7 @@ UINT16 cool_air_close_time,cool_air_open_time;
 
 UINT8  led_turn_green_flag;
 UINT16 led_stay_green_counter,led_stay_1s_counter;
+UINT8  first_power_on_flag;
 //--------------------------------------------------------------------------------------
 //         COPYRIGHT(C) 2006 Beijing xingdahao technology Co., Ltd.
 //                     ALL RIGHTS RESERVED 

@@ -182,7 +182,7 @@ const UINT8 MoveTime_Speed_10080_x[] =
 {
 //	0	1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	20	21	22	23	24	25  26  27  28  29  30  31  32
 //	63, 63, 63, 63, 63,	63,	63,	59,	50,	45,	42,	40,	39,	37,	36,	34,	33,	31,	29,	28,	27,	26,	25,	24, 23, 22, 21, 20, 19, 19, 18, 18, 17
-	63, 63, 63, 63, 63,	63,	63,	59,	50,	45,	42,	40,	39,	37,	35,	32,	30,	27,	24,	22,	20,	19,	18,	17, 16, 15, 17, 16, 15, 15, 14, 14, 13
+	63, 63, 63, 63, 63,	63,	63,	59,	50,	45,	42,	40,	39,	37,	35,	32,	30,	27,	24,	22,	20,	19,	18,	17, 16, 15, 17, 16, 15, 15, 15, 14, 13
 };
 
 const UINT16 spdlimit_10080_345_tab[]=                         
@@ -879,8 +879,15 @@ void go_origin_allmotor(void)
     if(temp8 == OUT)    
     {
 		find_dead_center();
-	}	
+	}
+	if( first_power_on_flag == 0)
+	{
+		R_AIR = 1;	
+		delay_ms(50);
+		first_power_on_flag = 1;
+	}
 	go_origin_zx(); 
+	R_AIR = 0;	
 	if(sys.status == ERROR)
     {
 		origin_com = 0;
@@ -1401,8 +1408,9 @@ void inpress_up(void)
 	}
 	#endif
 	inpress_to(inpress_origin);
-	delay_ms(20);
+	delay_ms(50);
 	R_AIR = 0;
+	delay_ms(30);
 	inpress_flag = 1;     
 	inpress_com = 2;      
 	MotorPositionSet = 0;
@@ -1419,7 +1427,6 @@ void inpress_up(void)
 //--------------------------------------------------------------------------------------
 void inpress_down(UINT8 pos)
 {
-
 	if(inpress_type == AIR_INPRESSER)   
 	{
 		R_AIR = 1;
@@ -3355,25 +3362,25 @@ UINT32 Calculate_QuickMove_Time(UINT16 temp16_x,UINT16 temp16_y)
 		switch(delta)
 		{
 			case 0://<20
-					temp32 = 60;				
+					temp32 = 48;//60;				
 					break;
 			case 1://<40
-					temp32 = 75;
+					temp32 = 60;//75;
 					break;
 			case 3://<60
-					temp32 = 90;
+					temp32 = 72;//90;
 					break;
 			case 4://<80
-					temp32 = 105;
+					temp32 = 84;//105;
 		    		break;
 			case 5://<100
-					temp32 = 120;
+					temp32 = 96;//120;
 					break;
 			case 6://<120
-					temp32 = 130;
+					temp32 = 104;//130;
 					break;
 			default:
-					temp32 = 140;
+					temp32 = 112;//140;
 					break;	
 		}
 		if( making_pen_actoin_flag == 1)
@@ -3388,96 +3395,100 @@ UINT32 Calculate_QuickMove_Time(UINT16 temp16_x,UINT16 temp16_y)
 		{
 
 			case 0://<50
-					temp32 = 190;//190;				
+					temp32 = 152;//190;//190;				
 				break;
 			case 1://<100
-					temp32 = 350;//350;
+					temp32 = 280;//350;//350;
 				break;
 			case 2:
 			case 3://<200
-					temp32 = 490;//490;
+					temp32 = 392;//490;//490;
 				break;
 			case 4:
 			case 5://<300
-					temp32 = 600;//600;
+					temp32 = 500;//600;//600;
 		    	break;
 			case 6:
 			case 7://<400
-					temp32 = 690;//690;
+					temp32 = 590;//690;//690;
 				break;
 			case 8:
 			case 9://<500
-					temp32 = 780;//780;
+					temp32 = 680;//780;//780;
 				break;
 			case 10:
 			case 11://<600
-			        temp32 = 880;//880;
+			        temp32 = 780;//880;//880;
 				break;
 			case 12:
 			case 13://<700
-					temp32 = 990;//990;
+					temp32 = 890;//990;//990;
 				break;
 			case 14:
 			case 15://<800
-					temp32 = 1100;//1100;
+					temp32 = 1000;//1100;//1100;
 				break;
 			case 16:
 			case 17://<900
-					temp32 = 1200;//1210;
+					temp32 = 1100;//1200;//1210;
 				break;
 			case 18:
 			case 19://<1000
-					temp32 = 1200;//1200;
+					temp32 = 1100;//1200;//1200;
 					break;
 			case 20:
 			case 21://<1100
-					temp32 = 1200;//1300;
+					temp32 = 1100;//1200;//1300;
 					break;
 			case 22:
 			case 23://<1200
-					temp32 = 1300;//1400;
+					temp32 = 1200;//1300;//1400;
 					break;
 			case 24:
 			case 25://<1300
-					temp32 = 1400;//1500;
+					temp32 = 1300;//1400;//1500;
 					break;
 			case 26:
 			case 27://<1400
-					temp32 = 1500;//1600;
+					temp32 = 1400;//1500;//1600;
 					break;
 			case 28:
 			case 29://<1500
-					temp32 = 1500;//1700;
+					temp32 = 1400;//1500;//1700;
 					break;
 			case 30:
 			case 31://<1600
-					temp32 = 1500;//1800;
+					temp32 = 1400;//1500;//1800;
 					break;
 			case 32:
 			case 33://<1700
-					temp32 = 1600;//1900;
+					temp32 = 1500;//1600;//1900;
 					break;
 			case 34:
 			case 35://<1800
-					temp32 = 1700;//2000;
+					temp32 = 1600;//1700;//2000;
 					break;
 			case 36:
 			case 37://<1900
-					temp32 = 1800;//2100;
+					temp32 = 1700;//1800;//2100;
 					break;
 			case 38:
 			case 39://<2000
-					temp32 = 1900;//2200;
+					temp32 = 1800;//1900;//2200;
 					break;
 			default:
-					temp32 = 2000;//1400;
+					temp32 = 1900;//2000;//1400;
 			break;	
 			
 		}
 		if( making_pen_actoin_flag == 1)	
 			temp32 =temp32*4- (temp32*3)*sw_value/9;
 		else 
+		#if MACHINE_14090_MASC_PLUS
+			temp32 =temp32*2- temp32*sw_value/9;//10;
+		#else
 			temp32 =temp32*2- temp32*sw_value/9;
+		#endif
 	}
 	else
 		temp32 = 0;
@@ -7068,9 +7079,10 @@ void go_origin_yj(void)
   	{
   		temp16 = 0;
 		j = 0;
-  		while(get_CORG_statu() == 0)    
+  		while(get_CORG_statu() == 0)    //0--对应Z高电平
     	{
     		movestep_yj(1,1);
+			//SUM = 1;
 		    if(j < 2)
 			    delay_ms(3);	
 			else if(j <4 )
@@ -7104,6 +7116,7 @@ void go_origin_yj(void)
 		delay_ms(2);
 		temp16 = 0;
 		j = 0;
+		//SUM = 0;
 		while(get_CORG_statu() == 1)                   
    		{
       		movestep_yj(-1,1);
@@ -7387,7 +7400,11 @@ void special_sewing(UINT8 flag,UINT8 cnt)
 					 if( (temp16 > inpress_up_angle ) &&( action_flag3 == 1) )
 					 {
 						  action_flag3 = 0;
+						  #if FIRST_STITCH_NOT_ACTION 
+						  if( (inpress_follow_high_flag == FOLLOW_INPRESS_LOW )&&(stitch_counter > 1) )
+						  #else
 						  if( inpress_follow_high_flag == FOLLOW_INPRESS_LOW )
+							#endif
 						  {
 								test_flag =21;
 								movestep_zx(inpress_follow_range,inpress_follow_up_speed);//先升后降

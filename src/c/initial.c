@@ -185,7 +185,7 @@ void init_io(void)
 		
 	if( para.platform_type == FIFTH_GENERATION)
 	{
-	#if	MULTI_IO_FUNCTION
+	#if	MULTIPULE_IO_ENABLE
   	p0  = 0x10; 
   	pd0 = 0x10;     // set p0.0-p0.7 to input p0.4 output
 	#else
@@ -198,7 +198,7 @@ void init_io(void)
 	
   	p2  = 0x00; 
   	pd2 = 0x00;     // set p2.0-p2.7 to input
-    #if MULTI_IO_FUNCTION
+    #if MULTIPULE_IO_ENABLE
   	p3  = 0x40;     // FW=0  FL_ON=0  LM_AIR=0  R_AIR=0  L_AIR=0
   	pd3 = 0xF8;     // set p3.0 p3.1 p3.2 to inupt   set p3.3-p3.7 to output
 	#else
@@ -638,6 +638,8 @@ void init_var(void)
 	thread_switch = 0;	
 	dsp1_message = 0;
 	dsp2_message = 0;	
+	dsp3_message = 0;
+	dsp4_message = 0;
 	err_num_dsp1 = 0;
 	err_num_dsp2 = 0;
 	err_num_dsp3 = 0;
@@ -712,6 +714,8 @@ void init_var(void)
 	DRV_DATA_LEN=0;
 	stepversion1 = 0;
 	stepversion2 = 0;
+	stepversion3 = 0;
+	stepversion4 = 0;
 	find_communication_start_flag = 0; 
 	jiting_flag = 0;
 	MAIN_MOTOR_TYPE = 1;
@@ -877,6 +881,8 @@ void init_var(void)
 	led_turn_green_flag = 0;
 	led_stay_green_counter = 0;
 	led_stay_1s_counter = 0;
+	
+	first_power_on_flag = 0;
 }			
 //--------------------------------------------------------------------------------------
 //  Name:		initial 
@@ -1062,10 +1068,10 @@ void restore_para_from_eeprom(void)
 {
 	UINT16 index;
 	index = 0;
-	read_para_group(svpara_disp_buf,205);
-	//mymemcpy(svpara_disp_buf,(UINT8 *)&para,205);	
-	para.DSP1_para_1F   = string2int(&svpara_disp_buf[index]);	index +=2;
-	para.DSP1_para_20   = string2int(&svpara_disp_buf[index]);	index +=2;
+	read_para_group(100,svpara_disp_buf,205);
+
+	para.DSP1_para_1F   = string2int(&svpara_disp_buf[index]);	index +=2;  //0,1
+	para.DSP1_para_20   = string2int(&svpara_disp_buf[index]);	index +=2;  //2,3
 	para.DSP1_para_21   = string2int(&svpara_disp_buf[index]);	index +=2;
 	para.DSP1_para_22   = string2int(&svpara_disp_buf[index]);	index +=2;
 	para.DSP1_para_23   = string2int(&svpara_disp_buf[index]);  index +=2;
@@ -1125,6 +1131,22 @@ void restore_para_from_eeprom(void)
 	para.blow_air_counter = string2int(&svpara_disp_buf[index]);	index +=2;
 	para.cut_air_counter = string2int(&svpara_disp_buf[index]);		index +=2;
 	
+	para.dsp3_step_crc   = string2int(&svpara_disp_buf[index]);			index +=2;
+	para.dsp4_step_crc   = string2int(&svpara_disp_buf[index]);			index +=2;
+	
+	para.DSP3_para_1F   = string2int(&svpara_disp_buf[index]);	index +=2;
+	para.DSP3_para_20   = string2int(&svpara_disp_buf[index]);	index +=2;
+	para.DSP3_para_21   = string2int(&svpara_disp_buf[index]);	index +=2;
+	para.DSP3_para_22   = string2int(&svpara_disp_buf[index]);	index +=2;
+	para.DSP3_para_23   = string2int(&svpara_disp_buf[index]);	index +=2;
+	para.DSP3_para_27   = string2int(&svpara_disp_buf[index]);	index +=2;
+	para.DSP3_para_28H  = string2int(&svpara_disp_buf[index]);	index +=2;
+	para.DSP3_para_28M1 = string2int(&svpara_disp_buf[index]);	index +=2;
+	para.DSP3_para_28M2 = string2int(&svpara_disp_buf[index]);	index +=2;
+	para.DSP3_para_28L  = string2int(&svpara_disp_buf[index]);	index +=2;
+	
+	para.dsp3A_half_current = svpara_disp_buf[index++];
+	para.dsp3B_half_current = svpara_disp_buf[index++];
 }
 
 void cpy_para_buff(void)
@@ -1177,6 +1199,7 @@ void cpy_para_buff(void)
 	svpara_disp_buf[index++] = para.last_2_speed;
 	svpara_disp_buf[index++] = para.last_1_speed;
 	svpara_disp_buf[index++] = para.dvab_open_level;
+	
 	int2string(&svpara_disp_buf[index],para.dsp1_step_crc);  index += 2;
 	int2string(&svpara_disp_buf[index],para.dsp2_step_crc);  index += 2;//66,67
 	
@@ -1192,6 +1215,23 @@ void cpy_para_buff(void)
 	
 	int2string(&svpara_disp_buf[index],para.blow_air_counter);  index += 2;//82,83
 	int2string(&svpara_disp_buf[index],para.cut_air_counter);  index += 2;//
+	
+	int2string(&svpara_disp_buf[index],para.dsp3_step_crc);  index += 2;
+	int2string(&svpara_disp_buf[index],para.dsp3_step_crc);  index += 2;
+	
+	int2string(&svpara_disp_buf[index],para.DSP3_para_1F);  index += 2;
+	int2string(&svpara_disp_buf[index],para.DSP3_para_20);  index += 2;
+	int2string(&svpara_disp_buf[index],para.DSP3_para_21);  index += 2;
+	int2string(&svpara_disp_buf[index],para.DSP3_para_22);  index += 2;
+	int2string(&svpara_disp_buf[index],para.DSP3_para_23);  index += 2;
+	int2string(&svpara_disp_buf[index],para.DSP3_para_27);  index += 2;
+	int2string(&svpara_disp_buf[index],para.DSP3_para_28H); index += 2;
+	int2string(&svpara_disp_buf[index],para.DSP3_para_28M1);index += 2;
+	int2string(&svpara_disp_buf[index],para.DSP3_para_28M2);index += 2;
+	int2string(&svpara_disp_buf[index],para.DSP3_para_28L); index += 2;	
+	
+	svpara_disp_buf[index++] = para.dsp3A_half_current;
+	svpara_disp_buf[index++] = para.dsp3B_half_current;
 	
 	svpara_disp_buf[index++] = 55;
 	svpara_disp_buf[index++] = 66;
@@ -1254,7 +1294,7 @@ void init_para_variables(void)
 		para.cut_air_counter = 0;
 		//mymemcpy((UINT8 *)&para,svpara_disp_buf,sizeof(SYSTEM_PARA));
 		cpy_para_buff();
-		write_para_group(svpara_disp_buf,205);	
+		write_para_group(100,svpara_disp_buf,205);	
 	
 	}	
 }

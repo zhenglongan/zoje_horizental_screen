@@ -1433,6 +1433,8 @@ void trim_io_control(UINT8 a)
 		break;
 	}
 }
+
+
 void trim_action(void)
 {
 	UINT8 temp8,flag;
@@ -1492,9 +1494,16 @@ void trim_action(void)
 				 }
 				 else
 				 {
+					 #if MACHINE_14090_MASC_PLUS
+					 movestep_yj(stepper_cutter_move_range ,stepper_cutter_move_time);//平刀的分线过程
+					 cutter_delay_counter = u222;//stepper_cutter_move_time<<1;
+					 cutter_delay_flag = 1;
+					 #else
 					 movestep_yj(-90 ,stepper_cutter_move_time);
 					 cutter_delay_counter = u222;//stepper_cutter_move_time<<1;
 					 cutter_delay_flag = 1;
+					 #endif
+					 
 				 }
 			 }
 		 }
@@ -1558,6 +1567,49 @@ void trim_action(void)
 	
 	if( cut_mode == STEPPER_MOTER_CUTTER )
 	{
+		#if MACHINE_14090_MASC_PLUS
+			flag = 1;
+			if( (u206 == 1)&&(u210 ==1) )
+			{
+				flag = 0;
+				if( para.wipper_type == AIR_WIPPER)
+					AIR_FW = 1;
+				else
+				{
+					SNT_H = 1; 
+					FW = 1;
+				}
+			}	
+			
+			while( cutter_delay_flag == 1)
+			{
+				rec_com();
+			}
+			action5_flag = 1;
+					 movestep_yj(-stepper_cutter_move_range ,stepper_cutter_move_time);//开始断线
+					 cutter_delay_counter = stepper_cutter_move_time;
+					 cutter_delay_flag = 1;
+					 
+					 HOLDING_BOBBIN_SOLENOID = 1;
+				 	 CutActionFlag = 1;
+				 	 CutActionCounter = 0;
+			/*
+			while( motor.stop_flag == 0)//等待停车到位
+			{
+				if( cutter_delay_flag == 0)	
+				{
+					 action5_flag = 1;
+					 movestep_yj(-stepper_cutter_move_range ,stepper_cutter_move_time);//开始断线
+					 cutter_delay_counter = stepper_cutter_move_time;
+					 cutter_delay_flag = 1;
+					 
+					 HOLDING_BOBBIN_SOLENOID = 1;
+				 	 CutActionFlag = 1;
+				 	 CutActionCounter = 0;
+				}	
+			}
+			*/
+		#else
 		while( cutter_delay_flag == 1)
 		{
 			rec_com();
@@ -1571,7 +1623,7 @@ void trim_action(void)
 					    break;
 			}	
 			flag = 1;
-			while( motor.stop_flag == 0)
+			while( motor.stop_flag == 0)//等待停车到位
 			{	
 				temp16 = motor.angle_adjusted;
 				
@@ -1593,17 +1645,31 @@ void trim_action(void)
 				if( (cutter_delay_flag == 0) &&(action5_flag ==0 ) )
 				{
 					action5_flag = 1;
-					movestep_yj(90-stepper_cutter_move_range ,20);//断线位置
-					cutter_delay_counter = 40;
-					cutter_delay_flag = 1;
+					 #if MACHINE_14090_MASC_PLUS
+					 movestep_yj(-stepper_cutter_move_range ,stepper_cutter_move_time);//开始断线
+					 cutter_delay_counter = stepper_cutter_move_time;
+					 cutter_delay_flag = 1;
+					 #else
+				 	 movestep_yj(90-stepper_cutter_move_range ,20);//断线位置
+					 cutter_delay_counter = 40;
+					 cutter_delay_flag = 1;
+					 #endif
 				}
 				
 			}
+		#endif	
 	    if(action5_flag ==0 )
 		{
+		   action5_flag = 1;
+		   #if MACHINE_14090_MASC_PLUS
+		   movestep_yj(-stepper_cutter_move_range ,stepper_cutter_move_time);//开始断线
+		   cutter_delay_counter = stepper_cutter_move_time;
+		   cutter_delay_flag = 1;
+		   #else
 		   movestep_yj(90-stepper_cutter_move_range ,20);//断线位置
 		   cutter_delay_counter = 40;
 		   cutter_delay_flag = 1;
+		   #endif
 		}
 	}
 	if( (u206 == 0 )&&(cut_mode == STEPPER_MOTER_CUTTER ) )
@@ -1619,6 +1685,8 @@ void trim_action(void)
 	{
 		if( u210 == 1)
 		{
+			#if MACHINE_14090_MASC_PLUS
+			#else
 			while( cutter_delay_flag == 1)
 			{
 				 rec_com();
@@ -1626,6 +1694,7 @@ void trim_action(void)
 			movestep_yj(stepper_cutter_move_range ,stepper_cutter_move_time);
 			cutter_delay_counter = stepper_cutter_move_time<<1;
 			cutter_delay_flag = 1;
+			#endif
 		}
 	}
 	else
@@ -1634,8 +1703,7 @@ void trim_action(void)
 		{
 			CutActionCounter = 0;
 			CutActionFlag = 0;
-			trim_io_control(OFF);
-			HOLDING_BOBBIN_SOLENOID = 0;
+			trim_io_control(OFF);			
 			delay_ms(5);
 			fw_action_flag = 0;
 			FW = 0;
@@ -1679,15 +1747,15 @@ void trim_action(void)
 				FW = 1;	
 		}	
 	}	
-		delay_ms(wiper_end_time);
-		if( para.wipper_type == AIR_WIPPER)
-			AIR_FW = 0;
-		else
-			FW = 0;
-		SNT_H = 0; 
-		delay_ms( 20 + delay_of_wipper_down );
+	delay_ms(wiper_end_time);
+	HOLDING_BOBBIN_SOLENOID = 0;
+	if( para.wipper_type == AIR_WIPPER)
+		AIR_FW = 0;
+	else
+		FW = 0;
+	SNT_H = 0; 
+	delay_ms( 20 + delay_of_wipper_down );
 		
-	
 	SNT_H = 0; 
 				
 	if(u42 == 0 && after_trim_stop_angle_adjust != 0)
@@ -1734,6 +1802,8 @@ void trim_action(void)
 			status_now = READY;	   				 
 		 }
 	}
+	while( motor.stop_flag == 0)
+	 	   rec_com();
 	brkdt_flag = 0;
 	thbrk_count = 0;
 	thbrk_flag = 0;
@@ -2083,7 +2153,6 @@ void run_status(void)
              {
 				if( inpress_lower_stitchs != 0)
 				{
-				
 					inpress_down( inpress_high_base - inpress_lower_steps);
 					inpress_high = inpress_high_base - inpress_lower_steps;
 					flag1 = 1;	
@@ -2883,7 +2952,7 @@ void run_status(void)
 					    
 					
 						temp16 = motor.angle_adjusted;
-					
+						
 						while( temp16 < 1400 )//350d
 						{
 							temp16 = motor.angle_adjusted;
@@ -2902,6 +2971,7 @@ void run_status(void)
 									if( movezx_delay_flag == 1)
 										while( movezx_delay_counter >0 );
 										
+									//if( (inpress_delta >0 ) &&(inpress_high_flag == 1) )
 									if( (inpress_high_action_flag == 1) &&(inpress_follow_delta>0))
 									{		
 										inpress_high_action_flag = 0;
@@ -2923,11 +2993,16 @@ void run_status(void)
 							if( (temp16 > inpress_up_angle ) &&( action_flag1 == 1) )
 							{
 								action_flag1 = 0;
-								if( inpress_follow_high_flag == FOLLOW_INPRESS_LOW )
+								#if FIRST_STITCH_NOT_ACTION 
+								  if( (inpress_follow_high_flag == FOLLOW_INPRESS_LOW )&&(stitch_counter > 1) )
+								#else
+								  if( inpress_follow_high_flag == FOLLOW_INPRESS_LOW )
+								#endif
 								{
 									if( movezx_delay_flag == 1)
 										while( movezx_delay_counter >0 );
 
+									//if( (inpress_delta < 0 ) &&(inpress_high_flag == 1) )
 									if( (inpress_high_action_flag == 1) &&(inpress_follow_delta<0))
 									{									
 										inpress_high_action_flag = 0;
@@ -2963,18 +3038,19 @@ void run_status(void)
 								}
 							}
 					
+						    temp16 = motor.angle_adjusted;
 							if( (xstep_cou != 0) &&(temp16 > movestepx_angle ) &&( action_flag2 == 1) )
 							{
 								if( movex_delay_flag == 1)
 								    while(movex_delay_counter >0 );
 								movex_delay_flag =0;
 								movestep_x(xstep_cou);					
-								//test_flag = 1;				
 								movex_delay_counter = movestepx_time + 1;
 								movex_delay_flag = 1;
 								action_flag2 = 0;
 								allx_step = allx_step + xstep_cou;  							
-							}							
+							}
+							temp16 = motor.angle_adjusted;							
 							if( (ystep_cou != 0) &&(temp16 > movestepy_angle ) &&( action_flag3 == 1) )
 							{
 								if( movey_delay_flag == 1)
@@ -2985,7 +3061,8 @@ void run_status(void)
 								movey_delay_counter = movestepy_time + 1;
 								movey_delay_flag = 1;
 								action_flag3 = 0;
-								ally_step = ally_step + ystep_cou;							
+								ally_step = ally_step + ystep_cou;
+															
 							}
 						}//1400
 					}
@@ -4690,17 +4767,26 @@ void slack_status(void)
 		main_control_lock_setup = 0;
 	}
 #endif	
-	if( write_eeprom_para_flag == 1)
-	{
-		write_eeprom_para_flag = 0;
-		write_para_group(svpara_disp_buf,205);
-		delay_ms(300);
-		restore_para_from_eeprom();	
-		SUM = 1;
-		delay_ms(100);
-		SUM = 0;
-		predit_shift =0;
-	}
+  if( write_eeprom_para_flag >= 1)
+  {
+	  if( write_eeprom_para_flag == 1)
+	  {
+	    	write_para_group(100,svpara_disp_buf,205);
+			delay_ms(300);
+	    	restore_para_from_eeprom();
+	  }
+	  else 
+	  {
+			write_para_group(400,svpara_disp_buf,205);
+			delay_ms(300);
+			//app_GetProgramFromEeprom();
+	  }
+	  write_eeprom_para_flag = 0;	
+	  SUM = 1;
+	  delay_ms(100);
+	  SUM = 0;
+	  predit_shift =0;
+  }
 	//--------------------------------------------------------------------------------------
 	//  coordinate command 
 	//--------------------------------------------------------------------------------------
@@ -5166,12 +5252,13 @@ void checki05_status(void)
     	//--------------------------------------------------------------------------------------
     	case 2: 
 
-			//SNT_H = 1;        
+			FA = 1;       
 			trim_io_control(ON);
 			delay_ms(200);
 			trim_io_control(OFF);
+			FA = 0;
 			delay_ms(200);
-			//SNT_H = 0;    
+
 	        output_com = 0;
 	        break;
 	  	//--------------------------------------------------------------------------------------      
@@ -5728,8 +5815,11 @@ void checki11_status(void)
 				predit_shift = 0;
 				break;   
   		case 0x01: 
-				//movestep_yj(-stepper_cutter_move_range ,stepper_cutter_move_time);
+				#if MACHINE_14090_MASC_PLUS
+				movestep_yj(stepper_cutter_move_range ,stepper_cutter_move_time);
+				#else
 				movestep_yj(-90 ,stepper_cutter_move_time);
+				#endif
 				cutter_delay_counter = stepper_cutter_move_time;
 				cutter_delay_flag = 1;
 				stepmotor_state = 1;  
@@ -5737,15 +5827,18 @@ void checki11_status(void)
 				predit_shift = 0;
 				break;   	            							
   	  	case 0x02: 
-				//movestep_yj(stepper_cutter_move_range ,stepper_cutter_move_time);
+				#if MACHINE_14090_MASC_PLUS
+				movestep_yj(-stepper_cutter_move_range ,stepper_cutter_move_time);
+				#else
 				movestep_yj(90 - stepper_cutter_move_range ,20);//断线位置
+				#endif
 				cutter_delay_counter = stepper_cutter_move_time;
 				cutter_delay_flag = 1;
 				stepmotor_state = 2;  
 				stepmotor_comm = 0xff;  
 				predit_shift = 0;
 				break;     
-  	  	case 0x03: 
+  	  	case 0x03: 				
 				movestep_yj(stepper_cutter_move_range ,stepper_cutter_move_time);
 				cutter_delay_counter = stepper_cutter_move_time;
 				cutter_delay_flag = 1;
@@ -6359,6 +6452,55 @@ void download_drv_status(void)
     rec_com();		
 }
 
+void download_multipul_program_status(void)
+{
+  UINT16 delay;
+  if(5 == predit_shift) 
+  {  
+	    if(1 == erase_falg)
+	       multipule_program_beginning(4);
+	   
+	    send_multipule_program_data(4);//发送升级程序内容
+	    if(1 == erase_falg)
+	        delay_ms(2500); 
+	    else  
+	    	delay_ms(60);
+	
+	    drv_satus = read_multipule_program_status(4);//读取升级状态
+	    delay = 0;
+	    while(0x00 != drv_satus)
+	    {
+	        rec_com();
+	        delay_ms(5);
+	        drv_satus = read_multipule_program_status(4);//读取升级状态
+	        delay++;
+	        if( delay >1000)//超时
+	        {
+	          sys.status = ERROR;
+	          sys.error = ERROR_86;
+	          de_bug.test1 = 0x00;
+	          de_bug.test2 = 0xa9;
+	          break;	
+	        }
+	        if( (drv_satus >=0xa0) && (drv_satus <=0xaf) )
+	        {
+	          sys.status = ERROR;
+	          sys.error = ERROR_86; //50 号错误？？？？？？？？？？？
+	          de_bug.test1 = 0x00;
+	          de_bug.test2 = drv_satus;
+	          break;
+	        }
+	     }
+      	 predit_shift = 0;
+  }
+  
+  if(6 == predit_shift ) //2升级结束校验证
+  {  
+      multipule_program_end(4);
+      predit_shift = 0;
+  }
+  rec_com();		
+}
 void continue_status(void)
 {
 	

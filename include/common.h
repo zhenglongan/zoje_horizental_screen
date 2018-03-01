@@ -26,7 +26,8 @@
 #define MainChildVersion		07 
 #define MainSVNVersion			20527//20526
 
-#define ENABLE_LED_ALARM_FUNCTION   1 //led报警功能
+#define ENABLE_LED_ALARM_FUNCTION   0 //led报警功能
+#define MACHINE_14090_MASC_PLUS     1 // 14090
 
 #define USE_SC013K_PALTFORM         0
 #define DEBUG_PARA_OUTPUT		 	0
@@ -41,8 +42,8 @@
 #define NEED_TAKE_UP_ORIGIN_PHASE   1 //
 #define OPEN_LAST_5_STITCH_SPEED    1 //
 
-
-#define MULTI_IO_FUNCTION       1//
+#define MULTIPULE_IO_ENABLE         1 //开放多功能IO编程功能
+#define FIRST_STITCH_NOT_ACTION     1 //第一针不抬起功能
 
 #if SUPPORT_0_5MM_FORMAT
 	#define RESOLUTION 				20
@@ -139,8 +140,9 @@
 #define CONTINUE    33    // 组合花样连续缝
 #define DOWNLOAD_DRV1 35  //DSP1升级
 #define DOWNLOAD_DRV2 36  //DSP2升级
-#define DOWNLOAD_DRV3 38  //0x26
-#define DOWNLOAD_DRV4 39  //0x27
+#define DOWNLOAD_DRV3 38  //DSP3升级
+#define DOWNLOAD_DRV4 39  //DSP4升级
+#define DOWNLOAD_SPFL 40  //IO程序升级
 //--------------------------------------------------------------------------------------
 // system error number definition
 //--------------------------------------------------------------------------------------
@@ -243,6 +245,7 @@
 #define ERROR_96    96 //剪线电机异常
 #define ERROR_97    97 //读卡模块异常
 #define ERROR_98    98 //90V电压过载
+#define ERROR_99    99 //步进曲线
 //--------------------------------------------------------------------------------------
 // inpresser origin definition 
 //--------------------------------------------------------------------------------------
@@ -311,7 +314,7 @@
 #else
 	#define LM_AIR      p3_5
 #endif 	
-#define FL_ON   	p3_6
+//#define FL_ON   	p3_6
 #define FW   		p3_7		
 
 #define OUTPUT_ON   p4_0
@@ -389,7 +392,7 @@
 
 #define SPISTE1     p10_0
 #define SPISTE2     p10_1
-#if MULTI_IO_FUNCTION
+#if MULTIPULE_IO_ENABLE
 #define SPISTE3     p0_4
 #define SPISTE4     p3_6
 #else
@@ -423,11 +426,13 @@
 #define AIR_FW	     FK_OFF   //气阀3
 
 #define HOLDING_BOBBIN_SOLENOID     FA
+
 #if AUTO_CHANGE_FRAMEWORK
 #define LASER_POWER_ON 			T_HALF_EXTEND
 #else
 #define LASER_POWER_ON 			T_DIR  //气阀5 
 #endif
+
 #define LED_POWER     EXTEND  
 
 #define BLOW_AIR      T_CLK   
@@ -570,8 +575,6 @@
 		#define STOPANGLE				239
 		#define DEADPOINT				14
 		#define ROTATE_ANGLE			323
-
-
 
 
 #define OVC_DSP1           				0xD1A1  // dsp1's motor overcurrent

@@ -173,6 +173,22 @@ typedef struct
 	UINT16 cut_air_counter;		//84,85
 	UINT16  dsp3_step_crc;		//86,87
 	UINT16  dsp4_step_crc;		//88,89
+	
+	UINT16 DSP3_para_1F;		//90,91
+	UINT16 DSP3_para_20;		//92,93
+	UINT16 DSP3_para_21;		//94,95
+	UINT16 DSP3_para_22;		//96,97
+	UINT16 DSP3_para_23;		//98,99
+
+	UINT16 DSP3_para_27;		//100,101
+	UINT16 DSP3_para_28H;		//102,103
+	UINT16 DSP3_para_28M1;		//104,105
+	UINT16 DSP3_para_28M2;		//106,107
+	UINT16 DSP3_para_28L;		//108,109
+	
+	UINT8  dsp3A_half_current;	//110
+	UINT8  dsp3B_half_current;	//111
+
 }SYSTEM_PARA;
 
 #endif
