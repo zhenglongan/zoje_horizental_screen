@@ -541,7 +541,8 @@ extern UINT8 new_pattern_done;
 extern UINT8 marking_speed,marking_flag,marking_finish_flag;
 extern UINT8 formwork_identify_device;
 extern INT16 x_bios_offset,y_bios_offset;
-
+extern INT16 x_pen_offset,y_pen_offset;
+extern INT16 x_laser_offset,y_laser_offset; 
 extern INT16 angle_test_x,angle_test_y;
 extern UINT8 speed_down_stitchs,start_to_speed_down,speed_down_counter;
 extern UINT16 ratio_array[],Corner_deceleration_speed;
@@ -775,6 +776,9 @@ extern UINT16 cool_air_close_time,cool_air_open_time;
 extern UINT8  led_turn_green_flag;
 extern UINT16 led_stay_green_counter,led_stay_1s_counter;
 extern UINT8  first_power_on_flag;
+extern UINT8 rotated_function_flag;
+extern INT16 rotated_position;
+extern INT16 rotated_abs_angle;
 //--------------------------------------------------------------------------------------
 //         COPYRIGHT(C) 2006 Beijing xingdahao technology Co., Ltd.
 //                     ALL RIGHTS RESERVED 

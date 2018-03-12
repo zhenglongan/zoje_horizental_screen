@@ -37,7 +37,6 @@ extern void switch_stepmotor_open_close(void);
 
 extern UINT8 check_motion_done(void);
 extern void jump_to_begin(void);
-
 extern void nop_move_emergency(UINT16 x, UINT16 y);
 
 extern void write_stepmotor_config_para(UINT8 port,UINT8 *pdata);
@@ -56,6 +55,11 @@ extern UINT16 read_multipule_program_status(UINT8 port);
 extern void multipule_program_beginning(UINT8 port);
 extern void send_multipule_program_data(UINT8 port) ;
 extern void multipule_program_beginning(UINT8 port);
+
+extern void ready_dsp1_time(void);
+extern void qd_quickmove(UINT16 quick_time,INT32 tempx_step);
+extern void movestep_qd(int zx_data,UINT16 time);
+extern void rotated_by_data(INT16 rotated_abs_angle);
 #endif
 
 //--------------------------------------------------------------------------------------

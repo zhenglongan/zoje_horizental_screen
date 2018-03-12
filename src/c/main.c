@@ -128,7 +128,7 @@ void main(void)
 			{
 				sys.status = ERROR;
 				StatusChangeLatch = ERROR;
-		      	sys.error = ERROR_99;
+		      	sys.error = ERROR_99;//ÒªÐÞ¸Ä
 			}
 		
 			if( u201 == 1 )         
@@ -158,6 +158,9 @@ void main(void)
 			YELLOW_LED = 0;
 			led_turn_green_flag = 1;
 		}
+	#endif
+	#if BOBBIN_CHANGER_POWERON
+		FA = 1;
 	#endif
 	while(1)
   	{

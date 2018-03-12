@@ -111,7 +111,7 @@ UINT8 scan_pause_func(UINT8 *pause_flag_tmp,UINT8 system_staus_tmp);
 UINT8 check_footer_status(void);
 void process_making_pen_signal(UINT8 flag);
 void go_origin_yj(void);
-
+void go_origin_qd(void);
 const INT16 inpress_tab[]=
 {
 	// 0.0  0.1  0.2  0.3  0.4  0.5  0.6  0.7  0.8  0.9
@@ -325,15 +325,21 @@ void go_origin_x(void)
       	    		sys.error = ERROR_25;
       	    	return;
   	  	    }			
-				if (PAUSE == PAUSE_ON)
+			if (PAUSE == PAUSE_ON)
+			{
+				delay_ms(10);                           
+				if(PAUSE == PAUSE_ON)	
 				{
-					delay_ms(10);                           
-					if(PAUSE == PAUSE_ON)	
-					{
-						pause_flag = 1;
-						return;
-					}	
-				}
+					pause_flag = 1;
+					return;
+				}	
+			}
+			if(sys.status == ERROR)
+			{
+				sys.status = ERROR;
+				StatusChangeLatch = ERROR;
+				return;
+			}
 			rec_com();		
         }
 		
@@ -365,6 +371,12 @@ void go_origin_x(void)
 			 else
     		 	 movestep_x(1);
 			 delay_ms(12);
+			 if(sys.status == ERROR)
+			{
+				sys.status = ERROR;
+				StatusChangeLatch = ERROR;
+				return;
+			}
 		}
 		
 		for(i=0;i<5;i++)
@@ -424,6 +436,12 @@ void go_origin_x(void)
 						return;
 					}	
 				}	
+			if(sys.status == ERROR)
+			{
+				sys.status = ERROR;
+				StatusChangeLatch = ERROR;
+				return;
+			}
 			rec_com();
        }
        if( j>=40 )
@@ -541,14 +559,20 @@ void go_origin_y(void)
       			return;
   	  		}
 			if (PAUSE == PAUSE_ON)
+			{
+				delay_ms(10);                           
+				if(PAUSE == PAUSE_ON)	
 				{
-					delay_ms(10);                           
-					if(PAUSE == PAUSE_ON)	
-					{
-						pause_flag = 1;
-						return;
-					}	
-				}
+					pause_flag = 1;
+					return;
+				}	
+			}
+			if(sys.status == ERROR)
+			{
+				sys.status = ERROR;
+				StatusChangeLatch = ERROR;
+				return;
+			}
 			rec_com();
 	  	}
 	 
@@ -572,10 +596,16 @@ void go_origin_y(void)
 		delay_ms(20);
 		while( YORG != para.y_sensor_open_level)
 		{
-				 movestepy_time = OPEN_LOOP_TIME;
+			movestepy_time = OPEN_LOOP_TIME;
 				 
-		    	 movestep_y(1);
-				 delay_ms(12);
+		    movestep_y(1);
+			delay_ms(12);
+			if(sys.status == ERROR)
+			{
+				sys.status = ERROR;
+				StatusChangeLatch = ERROR;
+				return;
+			}
 		}
 		
 		for( i=0;i<5;i++)
@@ -624,14 +654,20 @@ void go_origin_y(void)
       			return;
   	  		}
 			if (PAUSE == PAUSE_ON)
+			{
+				delay_ms(10);                           
+				if(PAUSE == PAUSE_ON)	
 				{
-					delay_ms(10);                           
-					if(PAUSE == PAUSE_ON)	
-					{
-						pause_flag = 1;
-						return;
-					}	
-				}
+					pause_flag = 1;
+					return;
+				}	
+			}
+			if(sys.status == ERROR)
+			{
+				sys.status = ERROR;
+				StatusChangeLatch = ERROR;
+				return;
+			}
 			rec_com();	
     	}
 	    if(j>=40)
@@ -674,14 +710,20 @@ void go_origin_y(void)
       			return;
   	  		}
 			if (PAUSE == PAUSE_ON)
+			{
+				delay_ms(10);                           
+				if(PAUSE == PAUSE_ON)	
 				{
-					delay_ms(10);                           
-					if(PAUSE == PAUSE_ON)	
-					{
-						pause_flag = 1;
-						return;
-					}	
-				}
+					pause_flag = 1;
+					return;
+				}	
+			}
+			if(sys.status == ERROR)
+			{
+				sys.status = ERROR;
+				StatusChangeLatch = ERROR;
+				return;
+			}
 			rec_com();	
     	}    
 		delay_ms(20);  
@@ -760,15 +802,21 @@ void go_origin_xy_both(void)
 		    run_time = 400;	
 		delay_us(run_time);
 		if (PAUSE == PAUSE_ON)
-				{
-					delay_ms(10);                           
-					if(PAUSE == PAUSE_ON)	
-					{
-						pause_flag = 1;
-						return;
-					}	
-				}
+		{
+			delay_ms(10);                           
+			if(PAUSE == PAUSE_ON)	
+			{
+				pause_flag = 1;
+				return;
+			}	
+		}
 		rec_com();
+		if(sys.status == ERROR)
+		{
+			sys.status = ERROR;
+			StatusChangeLatch = ERROR;
+			return;
+		}
 		if( moving_flag == 1)
 		    break;
 	}
@@ -799,6 +847,12 @@ void go_origin_xy_both(void)
       			return;
   	  		}
 			rec_com();	
+			if(sys.status == ERROR)
+			{
+				sys.status = ERROR;
+				StatusChangeLatch = ERROR;
+				return;
+			}
     	}    
 		delay_ms(20);  
   	}
@@ -825,6 +879,12 @@ void go_origin_xy_both(void)
 		    movestep_x(1);  
 		delay_ms(2);
 		i++;
+		if(sys.status == ERROR)
+		{
+			sys.status = ERROR;
+			StatusChangeLatch = ERROR;
+			return;
+		}
 	}
 	temp16 = 0;
 	delay_ms(5);
@@ -848,6 +908,12 @@ void go_origin_xy_both(void)
       		    	   sys.error = ERROR_25;     	 	            
       		    	return;
   	  	    	}
+				if(sys.status == ERROR)
+				{
+					sys.status = ERROR;
+					StatusChangeLatch = ERROR;
+					return;
+				}
 				
   	  	}
 		delay_ms(20);
@@ -860,8 +926,108 @@ void go_origin_xy_both(void)
 	ally_step = 0;	 
 	
 }
+#if ROTATE_CUTTER_ENABLE
+void go_origin_qd(void)
+{	
+	UINT8 i;
+	UINT16 temp16,j ;
+    j = 0;
 
+	if(PSENS != 0)           // sensor is not covered   
+	{	
+		temp16 = 0;
+    	while(PSENS != 0)   
+    	{
+    		movestep_qd(-1,0);
+			if(j < 2)
+			    delay_ms(3);//	
+			else if(j <4 )
+				delay_us(2000);
+		    else
+				delay_us(1500);//1500
+			if( j < 4 )
+				j++;
+			temp16 = temp16 + 1;			
+			if( sys.status == ERROR)
+		    {
+				sys.status = ERROR;
+				StatusChangeLatch = ERROR;
+				return;
+			}
+			if( temp16 > 60000)
+  		  	{
+  		  		sys.status = ERROR;
+				StatusChangeLatch = ERROR;
+    	  		sys.error = ERROR_85; 	 	            
+    	  		return;
+  		  	}	
+			rec_com();	
+    	}
+  	}
+  	else                    // sensor is covered
+  	{
+  		temp16 = 0;
+		j = 0;
+  		while(PSENS == 0)    
+    	{
+    		movestep_qd(1,0);
+		    if(j < 2)
+			    delay_ms(3);	
+			else if(j <4 )
+				delay_us(2000);
+		    else
+				delay_us(1500);
+			if( j < 4 )
+				j++;
+			
+  		  	temp16 = temp16 + 1;			
+			if(sys.status == ERROR)
+			{
+				  sys.status = ERROR;
+				  StatusChangeLatch = ERROR;
+				  return;
+			}
+  		  	if(temp16 > 60000)
+  		  	{
+  		  		sys.status = ERROR;
+				StatusChangeLatch = ERROR;
+    	  		sys.error = ERROR_85;      	 	            
+    	  		return;
+  		  	}	
+			rec_com();	
+    	}
+    	for(i=2;i>0;i--)     			 // continue running
+		{
+			movestep_qd(1,0);
+  	  		delay_ms(2);
+		}
+		delay_ms(2);
+		temp16 = 0;
+		j = 0;
+		while(PSENS == 1)                   
+   		{
+      		movestep_qd(-1,0);
+			delay_ms(2);			
+	  		temp16 = temp16 + 1;			
+			if( sys.status == ERROR)
+			{
+			    sys.status = ERROR;
+				StatusChangeLatch = ERROR;
+				return;
+			}
+  	  		if(temp16 > 60000)
+  	  		{
+  	  			sys.status = ERROR;
+				StatusChangeLatch = ERROR;
+      			sys.error = ERROR_85;    	            
+      			return;
+  	  		}	
+			rec_com();	
+    	}
+  	}
 
+}
+#endif
 //--------------------------------------------------------------------------------------
 //  Name:		go_origin_allmotor
 //  Parameters:	None
@@ -874,6 +1040,7 @@ void go_origin_allmotor(void)
 	PATTERN_DATA *TempStart_pointTemp;	
 	pause_flag = 0;	 
 	PEN_SIGNAL = 0;
+	LASER_SIGNAL = 0;
 	SUM = 0;
     temp8 = detect_position();	
     if(temp8 == OUT)    
@@ -904,6 +1071,9 @@ void go_origin_allmotor(void)
 	}
 	if( cut_mode == STEPPER_MOTER_CUTTER )
 		go_origin_yj();
+	#if ROTATE_CUTTER_ENABLE
+		go_origin_qd();	
+	#endif	
 	if(sys.status == ERROR)
     {
 		origin_com = 0;
@@ -994,7 +1164,7 @@ void go_origin_allmotor(void)
 		#else
 		if( special_machine_type ==0)
 		{
-			T_DIR =0;;
+		T_DIR =0;
 			T_CLK = 0;
 			T_HALF =0;           
 			FK_OFF =0;
@@ -1404,11 +1574,11 @@ void inpress_up(void)
 	{
 		movestep_zx(-inpress_follow_range,inpress_follow_down_speed);
 		inpress_follow_high_flag = FOLLOW_INPRESS_LOW;
-		delay_ms(63);
+		delay_ms(80);
 	}
 	#endif
 	inpress_to(inpress_origin);
-	delay_ms(50);
+	delay_ms(80);
 	R_AIR = 0;
 	delay_ms(30);
 	inpress_flag = 1;     
@@ -2969,6 +3139,14 @@ void process_data(void)
 						SewingStopValue = pat_point->xstep;
 						SewingStopFlag = 1;
 					break;
+					case 5://1c 05 00 00 //旋转机头角度控制
+						
+						temp16 = (UINT8)pat_point->ystep;
+						temp16 = temp16 <<8;
+					  	temp16 = temp16 + (UINT8)pat_point->xstep;
+					  	rotated_abs_angle =temp16;
+						rotated_function_flag = 1;
+					break;
 				}	
 				break_flag = 1;
 		    break;				
@@ -3361,6 +3539,8 @@ UINT32 Calculate_QuickMove_Time(UINT16 temp16_x,UINT16 temp16_y)
 		delta =(temp16_y-1)/20;
 		switch(delta)
 		{
+			
+	#if	MACHINE_14090_MASC_PLUS			
 			case 0://<20
 					temp32 = 48;//60;				
 					break;
@@ -3381,7 +3561,30 @@ UINT32 Calculate_QuickMove_Time(UINT16 temp16_x,UINT16 temp16_y)
 					break;
 			default:
 					temp32 = 112;//140;
+					break;
+		#else
+		case 0://<20
+					temp32 = 60;				
+					break;
+			case 1://<40
+					temp32 = 75;
+					break;
+			case 3://<60
+					temp32 = 90;
+					break;
+			case 4://<80
+					temp32 = 105;
+		    		break;
+			case 5://<100
+					temp32 = 120;
+					break;
+			case 6://<120
+					temp32 = 130;
+					break;
+			default:
+					temp32 = 140;
 					break;	
+		#endif						
 		}
 		if( making_pen_actoin_flag == 1)
 			temp32 =temp32*4- (temp32*3)*sw_value/9;
@@ -3393,7 +3596,7 @@ UINT32 Calculate_QuickMove_Time(UINT16 temp16_x,UINT16 temp16_y)
 		delta =(temp16_y-1)/500;
 		switch(delta)
 		{
-
+		#if MACHINE_14090_MASC_PLUS
 			case 0://<50
 					temp32 = 152;//190;//190;				
 				break;
@@ -3479,7 +3682,92 @@ UINT32 Calculate_QuickMove_Time(UINT16 temp16_x,UINT16 temp16_y)
 			default:
 					temp32 = 1900;//2000;//1400;
 			break;	
-			
+	#else			
+			case 0://<50
+					temp32 = 190;//190;				
+				break;
+			case 1://<100
+					temp32 = 350;//350;
+				break;
+			case 2:
+			case 3://<200
+					temp32 = 490;//490;
+				break;
+			case 4:
+			case 5://<300
+					temp32 = 600;//600;
+		    	break;
+			case 6:
+			case 7://<400
+					temp32 = 690;//690;
+				break;
+			case 8:
+			case 9://<500
+					temp32 = 780;//780;
+				break;
+			case 10:
+			case 11://<600
+			        temp32 = 880;//880;
+				break;
+			case 12:
+			case 13://<700
+					temp32 = 990;//990;
+				break;
+			case 14:
+			case 15://<800
+					temp32 = 1100;//1100;
+				break;
+			case 16:
+			case 17://<900
+					temp32 = 1200;//1210;
+				break;
+			case 18:
+			case 19://<1000
+					temp32 = 1200;//1200;
+					break;
+			case 20:
+			case 21://<1100
+					temp32 = 1200;//1300;
+					break;
+			case 22:
+			case 23://<1200
+					temp32 = 1300;//1400;
+					break;
+			case 24:
+			case 25://<1300
+					temp32 = 1400;//1500;
+					break;
+			case 26:
+			case 27://<1400
+					temp32 = 1500;//1600;
+					break;
+			case 28:
+			case 29://<1500
+					temp32 = 1500;//1700;
+					break;
+			case 30:
+			case 31://<1600
+					temp32 = 1500;//1800;
+					break;
+			case 32:
+			case 33://<1700
+					temp32 = 1600;//1900;
+					break;
+			case 34:
+			case 35://<1800
+					temp32 = 1700;//2000;
+					break;
+			case 36:
+			case 37://<1900
+					temp32 = 1800;//2100;
+					break;
+			case 38:
+			case 39://<2000
+					temp32 = 1900;//2200;
+					break;
+			default:
+					temp32 = 2000;//1400;
+		#endif		
 		}
 		if( making_pen_actoin_flag == 1)	
 			temp32 =temp32*4- (temp32*3)*sw_value/9;
@@ -3638,7 +3926,14 @@ void go_beginpoint(UINT8 FirstNopmoveFlag)
 	bakeup_total_counter = pat_buff_total_counter;
 	add_x = 0;
 	add_y = 0;
-	if(making_pen_actoin_flag == 1)PEN_SIGNAL = 0;
+	
+	if(making_pen_actoin_flag == 1)
+	{
+		if( making_pen_status == 1 )
+			PEN_SIGNAL = 0;
+		else if( making_pen_status == 4 )
+			LASER_SIGNAL = 0;
+	}
 	//--------------------------------------------------------------------------------------
   	//  process pattern data
   	//--------------------------------------------------------------------------------------
@@ -3670,7 +3965,7 @@ void go_beginpoint(UINT8 FirstNopmoveFlag)
 				target_total_counter = pat_buff_total_counter;
 				
 				
-				if( (sewingcontrol_flag == 2)&&(need_backward_sewing == 1) )
+				if( (sewingcontrol_flag == 2)&&(need_backward_sewing == 1) &&(making_pen_actoin_flag == 0) )
 				{
 					process_data();
 					if(origin2_lastmove_flag == 1) 
@@ -5004,14 +5299,6 @@ void course_next(void)
 			delay_ms(200);
 		}
 	}
-	else
-	{
-		if(inpress_flag == 0)  
-			{
-				inpress_up();
-				delay_ms(100);
-			}
-	}
 	if(end_flag == 1)
   	{   
   		single_flag = 0; 	    	
@@ -5186,14 +5473,6 @@ void course_back(void)
 			delay_ms(200);
 		  }
 	   }
-	}
-	else
-	{
-		if(inpress_flag == 0)  
-			{
-				inpress_up();
-				delay_ms(100);
-			}
 	}
 	
 	if(move_flag == 1)
@@ -6305,7 +6584,12 @@ void pause_stop(void)
 	}	
 #endif
     if( making_pen_actoin_flag == 1)
-		PEN_SIGNAL = 0;
+	{
+		if( making_pen_status == 1 )
+			PEN_SIGNAL = 0;
+		else if( making_pen_status == 4 )
+			LASER_SIGNAL = 0;
+	}
 		
 }
 //--------------------------------------------------------------------------------------
@@ -6485,7 +6769,8 @@ void go_commandpoint(INT16 commandpointcoorx,INT16 commandpointcoory)
 	allx_temp_step = allx_step;
 	ally_temp_step = ally_step;
 	bakeup_total_counter = pat_buff_total_counter;
-	
+	if(inpress_flag == 0)
+		inpress_up();
   	temp16_xo = commandpointcoorx - allx_step; 
   	temp16_yo = commandpointcoory - ally_step;   
 	tempx_step = temp16_xo;
@@ -7881,8 +8166,18 @@ void process_making_pen_signal(UINT8 flag)
 	
 	if( flag == 0) //正向过程
 	{
-		if( making_pen_status == 1 )//记号笔开始
+		if(( making_pen_status == 1 )||( making_pen_status == 4 ))//记号笔开始
 			{
+				if( making_pen_status == 1 )
+				{
+					x_bios_offset = x_pen_offset;
+					y_bios_offset = y_pen_offset;
+				}
+				else
+				{
+					x_bios_offset = x_laser_offset;
+					y_bios_offset = y_laser_offset;
+				}
 				if( marking_finish_flag ==1)//之前是结束状态，防止用户连续多次的输入记号笔开始信号，只偏移一次
 				{
 					if( (x_bios_offset != 0)||(y_bios_offset != 0) )//
@@ -7907,7 +8202,10 @@ void process_making_pen_signal(UINT8 flag)
 				}
 				if( sys.error == 0)
 				{
-				   // PEN_SIGNAL = 1;
+					if( making_pen_status == 1 )
+						PEN_SIGNAL = 1;
+					else if( making_pen_status == 4 )
+						LASER_SIGNAL = 1;
 					if( para.laser_function_enable == 1)
 					{
 						LASER_POWER_ON = 1;
@@ -7916,7 +8214,7 @@ void process_making_pen_signal(UINT8 flag)
 				making_pen_actoin_flag = 1;
 			    //turnon_buz();
 			}
-			else//记号笔结束
+			else if(( making_pen_status == 0 )||( making_pen_status == 3 ))//记号笔结束
 			{
 				#if INSERPOINT_ENABLE
 				while( rec1_total_counter > 0 )
@@ -7930,7 +8228,10 @@ void process_making_pen_signal(UINT8 flag)
 				{
 					LASER_POWER_ON = 0;
 				}
-				PEN_SIGNAL = 0;
+				if( making_pen_status == 0 )
+					PEN_SIGNAL = 0;
+				else if( making_pen_status == 3 )
+					LASER_SIGNAL = 0;
 				delay_ms(200);
 				if( marking_finish_flag ==0)//没执行过结束
 				{
@@ -7953,9 +8254,12 @@ void process_making_pen_signal(UINT8 flag)
 	}
 	else //倒退的过程
 	{
-		if( making_pen_status == 1 )//记号笔开始
+		if(( making_pen_status == 1 )||( making_pen_status == 4 ))//记号笔开始
 		{
-			PEN_SIGNAL = 0;
+			if( making_pen_status == 1 )
+				PEN_SIGNAL = 0;
+			else if( making_pen_status == 4 )
+				LASER_SIGNAL = 0;
 			delay_ms(200);
 			if( (x_bios_offset != 0)||(y_bios_offset != 0) )
 			{
@@ -7969,7 +8273,7 @@ void process_making_pen_signal(UINT8 flag)
 				marking_finish_flag = 1;
 			}
 		}
-		else //退回到记号笔结束
+		else if(( making_pen_status == 0 )||( making_pen_status == 3 ))//退回到记号笔结束
 		{
 			if( (x_bios_offset != 0)||(y_bios_offset != 0) )//
 			{
@@ -7989,7 +8293,10 @@ void process_making_pen_signal(UINT8 flag)
 				}
 			}
 			delay_ms(200);
-			PEN_SIGNAL = 1;
+			if( making_pen_status == 0 )
+				PEN_SIGNAL = 1;
+			else if( making_pen_status == 3 )
+				LASER_SIGNAL = 1;
 		}
 	}
 	delay_ms(200);
@@ -8206,11 +8513,11 @@ void PBP_Line (UINT8 stitch_cnt)
 {   
 	INT32  lDevVal;              	//偏差值  	
 	INT32  XEnd,YEnd; 			 	//目标位置、当前位置
-	UINT16 StepCount,StepMount;	 	//插补次数计数器  
+//	UINT16 StepCount,StepMount;	 	//插补次数计数器  
 	UINT8  x_count,y_count;
 	UINT8  nDir;			     	//当前点所在象限     
 
-	StepCount = 0;
+//	StepCount = 0;
 	XEnd    = xstep_cou;
 	YEnd    = ystep_cou;			//目标位置	
 	nDir=Judge_Quadrant(XEnd,YEnd); //象限判断 	
@@ -8219,7 +8526,7 @@ void PBP_Line (UINT8 stitch_cnt)
 	YEnd = fabs(YEnd);     
 	x_count = XEnd;
 	y_count = YEnd;
-	StepMount = (UINT16) (XEnd+YEnd);    
+//	StepMount = (UINT16) (XEnd+YEnd);    
 
 	while ((x_count>0)||(y_count>0))//(StepCount < StepMount) //终点判别  
 	{
@@ -8270,7 +8577,7 @@ void PBP_Line (UINT8 stitch_cnt)
 			}  
 			lDevVal+=XEnd; 
 		} 
-		StepCount++; 
+//		StepCount++; 
 	} 
 } 
 

@@ -24,16 +24,26 @@
     
 #define MainFatherVersion		05
 #define MainChildVersion		07 
-#define MainSVNVersion			20527//20526
+#define MainSVNVersion			20528//20527//20526
 
-#define ENABLE_LED_ALARM_FUNCTION   0 //led报警功能
-#define MACHINE_14090_MASC_PLUS     1 // 14090
 
-#define USE_SC013K_PALTFORM         0
+
+#define ENABLE_LED_ALARM_FUNCTION   0 // led报警功能
+#define MACHINE_14090_MASC_PLUS     0 // 14090
+#define MULTIPULE_IO_ENABLE         0 // 开放多功能IO编程功能
+#define MACHINE_SC0716_SERVO_SUPU   0 // 舒普
+#define ROTATE_CUTTER_ENABLE		0 // 旋转切刀功能
+#define BOBBIN_CHANGER_ENABLE       1 // 自动换梭
+#define BOBBIN_THREAD_DETECT        0 
+#define BOBBIN_CHANGER_POWERON      1 //自动供电
+
+#define USE_SC013K_PALTFORM         1
 #define DEBUG_PARA_OUTPUT		 	0
 #define IIC_FUNCTION_ENABLE         1
 #define INSERPOINT_ENABLE           1  //插补算?
 
+#define Rot_Trans_Ratio			    5//旋转切刀减速器传动比
+#define cur_laser_control			1//旋转切刀激光刀切换  0：激光刀 1：旋转切刀
 #define ERROR_OUTPUT_DEBUG      	0
 #define BOTE_AGING_MAINMOTOR    	1
 #define NOPMOVE_STOP_ENABLE     	1 //空送急停
@@ -42,7 +52,7 @@
 #define NEED_TAKE_UP_ORIGIN_PHASE   1 //
 #define OPEN_LAST_5_STITCH_SPEED    1 //
 
-#define MULTIPULE_IO_ENABLE         1 //开放多功能IO编程功能
+
 #define FIRST_STITCH_NOT_ACTION     1 //第一针不抬起功能
 
 #if SUPPORT_0_5MM_FORMAT
@@ -56,8 +66,6 @@
 #define COM_MONITOR_FUN         	0
 #define FOLLOW_INPRESS_FUN_ENABLE   1
 
-#define BOBBIN_CHANGER_ENABLE       0 
-#define BOBBIN_THREAD_DETECT        0 
 
 #define ONE_STITCH_STOP         	1	 //一针停车
 #define DEBUG_DLG               	1
@@ -245,7 +253,13 @@
 #define ERROR_96    96 //剪线电机异常
 #define ERROR_97    97 //读卡模块异常
 #define ERROR_98    98 //90V电压过载
-#define ERROR_99    99 //步进曲线
+#define ERROR_99    99
+#define ERROR_100    100
+#define ERROR_101    101
+#define ERROR_102    102
+#define ERROR_103    103
+#define ERROR_104    104
+#define ERROR_105    105
 //--------------------------------------------------------------------------------------
 // inpresser origin definition 
 //--------------------------------------------------------------------------------------
@@ -417,9 +431,10 @@
 	#define PEN_SIGNAL   testpin
 	#define COOL_AIR     testpin//L_AIR    //
 #else
-	#define AIR_OUT      T_HALF   //气阀4	
-	#define PEN_SIGNAL   T_CLK  //气阀6
 	#define COOL_AIR     L_AIR    //
+	#define AIR_OUT      T_HALF   //气阀4	
+    #define PEN_SIGNAL     T_DIR  //画笔 气阀5
+    #define LASER_SIGNAL   T_CLK  //激光 气阀6
 #endif	
 
 #define DV2          p10_7

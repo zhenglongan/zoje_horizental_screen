@@ -2180,7 +2180,7 @@ void run_status(void)
 		AIR_OUT = 0;
 		delay_ms(30);   //200	
 		temp8 = 0;
-		if( sewingcontrol_flag == 2 )
+		if(( sewingcontrol_flag == 2 )&&( making_pen_actoin_flag == 0))
 		{
 			if( need_action_once == 1)
 			   temp8 = 1;
@@ -2200,7 +2200,7 @@ void run_status(void)
 				
 			}
 		}
-		else if( sewingcontrol_flag ==1 )
+		else if(( sewingcontrol_flag ==1 )&&( making_pen_actoin_flag == 0))
 		{
 			if( need_action_two ==1)
 			  temp8 = 2;
@@ -2398,7 +2398,7 @@ void run_status(void)
 					{
 						allx_step = allx_step - xstep_cou;                        
 	  					ally_step = ally_step - ystep_cou;
-						if( sewingcontrol_tail_flag ==1 )
+						if(( sewingcontrol_tail_flag ==1 )&&(making_pen_actoin_flag == 0) )
 						{
 							if( (pat_point->func ==0x02)||(pat_point->func ==0x1f))//||(pat_point->func ==0x03)||(pat_point->func ==0x1b) 
 							{
@@ -2437,7 +2437,12 @@ void run_status(void)
 				}	
 			 }
 			 if( making_pen_actoin_flag == 1)
-			     PEN_SIGNAL = 1;
+			 {
+				 if ( making_pen_status == 1 )
+				 	PEN_SIGNAL = 1;
+				 else if ( making_pen_status == 4 )
+				 	LASER_SIGNAL =1;
+			 }
       		//--------------------------------------------------------------------------------------
       		//  pause
       		//-------------------------------------------------------------------------------------- 
@@ -2879,6 +2884,23 @@ void run_status(void)
 			}
 	
 			#endif
+			
+			#if ROTATE_CUTTER_ENABLE
+			if( rotated_function_flag == 1)
+			{	
+				while( rec1_total_counter > 0 )
+				{
+					rec_com();
+					SUM =1;
+				}
+				//tb4s = 0;
+				SUM = 0;
+				delay_ms(500);				
+				rotated_by_data(rotated_abs_angle);
+				delay_ms(500);
+				rotated_function_flag = 0;				
+			}
+			#endif
 	      	//--------------------------------------------------------------------------------------
 	      	//  move stepper motor
 	      	//--------------------------------------------------------------------------------------   
@@ -2887,6 +2909,8 @@ void run_status(void)
 				if( making_pen_actoin_flag == 1)//车缝中的记号笔功能
 				{				
 					#if INSERPOINT_ENABLE
+					if(inpress_flag == 0)
+						inpress_up();
 					PBP_Line(0);
 					if (laser_cutter_aciton_flag == 0)
 					{
@@ -3196,6 +3220,8 @@ void error_status(void)
 		case 83:
 		case 84:
 			break;	
+		case 97: 
+			break;  
     	//--------------------------------------------------------------------------------------
     	// thread breakage
     	//--------------------------------------------------------------------------------------	 	         
@@ -3866,7 +3892,7 @@ void setout_status(void)
 						stay_end_flag = 1;	
 						}
 						PEN_SIGNAL = 0;
-						
+						LASER_SIGNAL = 0;
 						if(u38 == 0) //allow footer taken up
 						{
 	                		if( LRfooter_up_mode == 0 )
@@ -3887,7 +3913,7 @@ void setout_status(void)
 	              
 		  		case 1: 
 					    PEN_SIGNAL = 0;
-											
+						LASER_SIGNAL = 0;					
 						if(u38 == 0)
 						{
 	                		if( LRfooter_up_mode == 0 )
@@ -3984,7 +4010,7 @@ void setout_status(void)
 						stay_end_flag = 1;
 						}
 						PEN_SIGNAL = 0;
-						
+						LASER_SIGNAL = 0;
 						predit_shift = 0;
 						FootUpCom = 1;
 	           	break;
@@ -4577,7 +4603,7 @@ void finish_status(void)
 						}
 					}
 					PEN_SIGNAL = 0;					
-					
+					LASER_SIGNAL = 0;
 					if( (u38 == 0)&&(finish_nopmove_pause_flag == 0) ) //allow footer taken up
 					{
                 		if( LRfooter_up_mode == 0 )
@@ -4599,7 +4625,7 @@ void finish_status(void)
 	              
 	  		case 1: 
 				    PEN_SIGNAL = 0;
-					
+					LASER_SIGNAL = 0;
 					if(u38 == 0)
 					{
                 		if( LRfooter_up_mode == 0 )
@@ -4672,6 +4698,7 @@ void finish_status(void)
 					}
 					
 					PEN_SIGNAL = 0;
+					LASER_SIGNAL = 0;
 					predit_shift = 0;
 					FootUpCom = 1;
            	   break;
@@ -4750,6 +4777,7 @@ void slack_status(void)
 		{	
 			if(rfid_config_flag == 0)
 			{
+				init_uart1();
 				RFID_initial();
 		   		init_uart1_RC522(); 	
 		   		rfid_config_flag = 1;
@@ -5764,7 +5792,118 @@ void checki10_status(void)
 		sys.status = StatusChangeLatch;
 	}
 }
+#if ROTATE_CUTTER_ENABLE  //旋转切刀测试
+void checki11_status(void)
+{
+	UINT8 temp8;
 
+   	if(sys.status == ERROR)
+  	{
+  	  predit_shift = 0;
+  	  return;
+  	}	
+	
+ 	if(origin_com == 1) 
+	{		
+	   	origin_com = 0;     
+   	}
+	
+	//--------------------------------------------------------------------------------------
+	//  start sensor
+	//--------------------------------------------------------------------------------------  
+	if( DVA == para.dvab_open_level )           					
+	{
+		delay_ms(10);
+		if(DVA == para.dvab_open_level)
+		{				
+			temp8 = detect_position();
+		    if(temp8 == OUT)  
+  		    {
+			   find_dead_center();
+  		    }	
+					
+			go_origin_qd();
+      		stepmotor_state = 0x00;
+      		stepmotor_comm = 0xff;
+			while(DVA == para.dvab_open_level)
+		    {
+		      	rec_com();  
+		    }	 	      	    
+		}
+	}
+	
+  	//--------------------------------------------------------------------------------------
+  	//  manual shift step  
+  	//--------------------------------------------------------------------------------------
+  	switch(stepmotor_comm)
+  	{
+  		case 0x00: 
+				go_origin_qd();
+				stepmotor_state = 0;  
+				stepmotor_comm = 0xff;  
+				predit_shift = 0;
+				break;   
+  		case 0x01: 
+				//movestep_yj(-stepper_cutter_move_range ,stepper_cutter_move_time);
+				movestep_qd(-90 ,stepper_cutter_move_time);
+				cutter_delay_counter = stepper_cutter_move_time;
+				cutter_delay_flag = 1;
+				stepmotor_state = 1;  
+				stepmotor_comm = 0xff;  
+				predit_shift = 0;
+				break;   	            							
+  	  	case 0x02: 
+				//movestep_yj(stepper_cutter_move_range ,stepper_cutter_move_time);
+				movestep_qd(90 - stepper_cutter_move_range ,20);//断线位置
+				cutter_delay_counter = stepper_cutter_move_time;
+				cutter_delay_flag = 1;
+				stepmotor_state = 2;  
+				stepmotor_comm = 0xff;  
+				predit_shift = 0;
+				break;     
+  	  	case 0x03: 
+				movestep_qd(stepper_cutter_move_range ,stepper_cutter_move_time);
+				cutter_delay_counter = stepper_cutter_move_time;
+				cutter_delay_flag = 1;
+				stepmotor_state = 3;  
+				stepmotor_comm = 0xff;  
+				predit_shift = 0;
+				break;                        		            							   
+  	  	case 0x04: 
+			    go_origin_qd();
+				stepmotor_state = 4;  
+				stepmotor_comm = 0xff;  
+				predit_shift = 0;
+				break;                              	     		            									  		            								    
+  	  	default: break;	
+  	}
+  	//--------------------------------------------------------------------------------------
+  	//  single shift step 09.3.26 wr add 
+  	//--------------------------------------------------------------------------------------
+  	switch(stepmotor_single)
+  	{
+  		case 0x00://-ccw
+  			movestep_qd(-1,1);
+  			stepmotor_single = 0xff;
+			predit_shift = 0;
+  	  		break; 
+  		case 0x01://+cw 
+  			movestep_qd(1,1);
+  			stepmotor_single = 0xff;
+			predit_shift = 0;
+  			break;              	     		            									  		            								    
+  	  	default:
+  	  	    break;	
+  	}
+	delay_ms(20);
+	predit_shift = 0;
+	if(StatusChangeLatch != CHECKI11) 
+	{
+ 		predit_shift = 0;
+		sys.status = StatusChangeLatch;
+	}
+}
+#else  //剪线电机调试
 void checki11_status(void)
 {
 	UINT8 temp8;
@@ -5880,6 +6019,7 @@ void checki11_status(void)
 		sys.status = StatusChangeLatch;
 	}
 }
+#endif
 typedef unsigned char ( *pt2FunctionErase)(unsigned long, unsigned short * );
 #define BOOTLOADER_ADDR 0xfb000L
 void download_status(void)
@@ -6119,6 +6259,7 @@ void single_move_func(void)
 			case 3:
 						predit_shift = 1;
 						PEN_SIGNAL = 0;
+						LASER_SIGNAL =0;
 						temp8 = detect_position();
 						if(temp8 == OUT)
 						{

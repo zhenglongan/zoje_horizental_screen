@@ -547,6 +547,8 @@ UINT8 new_pattern_done;
 
 UINT8 marking_speed,marking_finish_flag;
 UINT8 formwork_identify_device;  
+INT16 x_pen_offset,y_pen_offset;
+INT16 x_laser_offset,y_laser_offset; 
 INT16 x_bios_offset,y_bios_offset;
 UINT16 serail_number;   /* ÌõÂëÊ¶±ðºÅ */
 UINT8  serail_module_sleep;
@@ -767,6 +769,9 @@ UINT16 cool_air_close_time,cool_air_open_time;
 UINT8  led_turn_green_flag;
 UINT16 led_stay_green_counter,led_stay_1s_counter;
 UINT8  first_power_on_flag;
+UINT8 rotated_function_flag;
+INT16 rotated_position;
+INT16 rotated_abs_angle;
 //--------------------------------------------------------------------------------------
 //         COPYRIGHT(C) 2006 Beijing xingdahao technology Co., Ltd.
 //                     ALL RIGHTS RESERVED 

@@ -188,6 +188,7 @@ typedef struct
 	
 	UINT8  dsp3A_half_current;	//110
 	UINT8  dsp3B_half_current;	//111
+	UINT8  qd_org_direction;    //112
 
 }SYSTEM_PARA;
 

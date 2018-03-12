@@ -147,7 +147,58 @@ void check_dsp_error(UINT16 error_code)
 				sys.error = ERROR_61;//伺服通讯错误3
 		break;
 	}
+	#elif ROTATE_CUTTER_ENABLE
+	case OVC_DSP1:
+			if( dsp1 == 1)
+				sys.error = ERROR_50;//X电机过流	
+			else if( dsp2 == 1)
+				sys.error = ERROR_94;//剪线电机过流
+			else if( dsp3 == 1)
+			    sys.error = ERROR_105;//旋转切刀电机过流
+		break;
+
+		case OVD_DSP1:
+		    if( dsp1 == 1)
+				sys.error = ERROR_54;//X电机超差
+			else if( dsp2 == 1)	
+				sys.error = ERROR_96;//剪线电机超差	
+			else if( dsp3 == 1)
+				sys.error = ERROR_100;//旋转切刀电机超差
+		break;					
+		case OVC_DSP2:
+		    if( dsp1 == 1)
+				sys.error = ERROR_51;//Y电机过流	
+			else if( dsp2 == 1)
+				sys.error = ERROR_93;//中压脚电机过流
+			else if( dsp3 == 1) 
+				sys.error = ERROR_101;
+		break;
+		case OVD_DSP2:
+		    if( dsp1 == 1)
+				sys.error = ERROR_55;//Y电机超差	
+			else if( dsp2 == 1)
+				sys.error = ERROR_95;//中压脚电机超差	
+			else if( dsp3 == 1)
+				sys.error = ERROR_102;
+		break;
+		case SPI_RX_ERR_CHK:
+			if( dsp1 == 1)
+				sys.error = ERROR_59;//伺服通讯错误1
+			else if( dsp2 == 1)
+				sys.error = ERROR_61;//伺服通讯错误3
+			else if( dsp3 == 1) 
+				sys.error = ERROR_103;//伺服通讯错误4
+		break;
+		case SPI_RX_ERR_ILLG:
+			if( dsp1 == 1)
+				sys.error = ERROR_60;//伺服通讯错误2
+			else  if( dsp2 == 1)
+				sys.error = ERROR_62;//伺服通讯错误3
+			else  if( dsp3 == 1)
+				sys.error = ERROR_104;//伺服通讯错误5
+		break;
 	#else
+	//dsp1: x + y   dsp2: cutter + inpresser
 	switch(error_code)
 	{
 		case OVC_DSP1:
@@ -187,20 +238,7 @@ void check_dsp_error(UINT16 error_code)
 			else
 				sys.error = ERROR_62;//伺服通讯错误3
 		break;
-		/*
-		default:
-		    if( dsp1 == 1)
-			{
-				err_num_dsp1++;
-				dsp1_message = error_code;
-			}
-			else
-			{
-				err_num_dsp2++;
-				dsp2_message = error_code;
-			}
-		break;
-		*/
+
 	}
 	#endif
 }
@@ -250,18 +288,19 @@ void spiint(void)
 				if( sys.error == 0) 
 					sys.error = ERROR_30;		
 			}
-			#if MULTIPULE_IO_ENABLE
+			
 			if(err_num_dsp3 >=1 )
 			{
 				if( sys.error == 0) 
 					sys.error = ERROR_61;		
 			}
+
 			if(err_num_dsp4 >=1 )
 			{
 				if( sys.error == 0) 
 					sys.error = ERROR_30;		
 			}
-			#endif	
+
 			spi_flag=0;
 			dsp1=0;
 		  	dsp2=0;	
@@ -322,7 +361,7 @@ void spiint(void)
 	    	{
     			trans_dsp2=trans_y.word;    		
     		}    
-			#if MULTIPULE_IO_ENABLE
+
 			if(dsp3 == 1)
 			{
 				trans_dsp3 = trans_y.word;   		
@@ -331,7 +370,7 @@ void spiint(void)
 			{
 				trans_dsp4 = trans_y.word;   		
 			}
-			#endif		
+	
 	    	s4trr=trans_z.byte.byte1;									
 	    	spi_flag=5;
 	    	break;
@@ -379,7 +418,7 @@ void spiint(void)
 	    	{
     			trans_dsp2=trans_x.word;    		
     		}
-			#if MULTIPULE_IO_ENABLE
+
 			if(dsp3 == 1)
 			{
 				trans_dsp3 = trans_x.word;   		
@@ -388,7 +427,7 @@ void spiint(void)
 			{
 				trans_dsp4 = trans_x.word;   		
 			}
-			#endif	
+
     		s4trr=trans_y.byte.byte1;	    										
     		spi_flag=3;
     		break;
@@ -669,7 +708,67 @@ void movestep_yj(int zx_data,UINT16 time)
 	s4trr=trans_x.byte.byte1; 	
 }
 
+#if ROTATE_CUTTER_ENABLE
+//--------------------------------------------------------------------------------------
+//  Name:	     movestep_qd
+//  Parameters:	 None
+//  Returns:	 None
+//  Description: move qd step motor 
+//--------------------------------------------------------------------------------------
+void movestep_qd(int zx_data,UINT16 time)
+{
+	while(spi_flag > 0) ;
 
+	if( time >63)
+	    time = 63;	
+	if(zx_data>0)
+	{
+		spi_flag=1;
+		
+		if( para.qd_org_direction == 0)
+			trans_x.word=(UINT16)0x4000+((UINT16)zx_data <<6 )+(UINT16)time;         
+		else
+			trans_x.word=(UINT16)0x0000+((UINT16)zx_data <<6 )+(UINT16)time;	   
+		if( trans_x.word  == 0x5555) 
+		{
+			trans_x.word += 1;
+		}
+		trans_y.word=(~trans_x.word)&0x7fff;
+		trans_z.word=0x5555;
+		dsp3 = 1;
+		SPISTE3=0;                                                               
+		s4trr=trans_x.byte.byte1;                                              
+	}	                                                                      
+	else if(zx_data < 0)
+	{                                                                       
+		zx_data_nf = -zx_data;                                                  
+		spi_flag = 1;	
+		
+		if( para.qd_org_direction == 0)
+			trans_x.word=(UINT16)0x0000+((UINT16)zx_data_nf<<6)+(UINT16)time;         
+		else
+			trans_x.word=(UINT16)0x4000+((UINT16)zx_data_nf<<6)+(UINT16)time;
+		if( trans_x.word  == 0x5555 ) 
+		{
+			trans_x.word += 1;
+		}
+		trans_y.word=(~trans_x.word)&0x7fff;
+		trans_z.word=0x5555;
+		dsp3 = 1;
+		SPISTE3 =0;		                         
+		s4trr=trans_x.byte.byte1;  
+	}	
+}
+
+void movestep_qiedao(INT16 StepNum,UINT16 time)//0上/1下轴、步数，时间
+{
+    UINT16 setdata=0;
+	UINT32 tmp32;
+	while(spi_flag > 0) ;
+//	qd_quickmove(StepNum,time);
+		
+}
+#endif
 //======================================================
 UINT16 get_x_distance(void)
 {
@@ -710,7 +809,16 @@ void nop_move_emergency(UINT16 x, UINT16 y)
 		delay_ms(2);
 	}
 }
-
+void ready_dsp1_time(void)
+{ 	
+	spi_flag=1;				
+	trans_x.word=(UINT16)0x0003;	      
+	trans_y.word=(~trans_x.word)&0x7fff;
+	trans_z.word=0x5555;
+	dsp1 = 1;
+	SPISTE1=0;                                                       
+	s4trr=trans_x.byte.byte1;                                            
+}
 
 void stepmotor_para(void)    //0-dsp1 1-dsp2
 {
@@ -942,7 +1050,7 @@ void setup_stepper_moter(void)
 	send_dsp1_command(para.DSP1_para_28M1,para.DSP1_para_28M2);  //第二路超差+第一路精度系数  X精确Y伺服
     send_dsp_command(1,para.DSP1_para_28L);
 	
-	//if( PAUSE == PAUSE_OFF )
+
 	if(!((PAUSE == PAUSE_ON)&&((DVA == para.dvab_open_level)||(DVB == para.dvab_open_level))))
 	{
 	 	if( para.platform_type == FIFTH_GENERATION )
@@ -967,7 +1075,7 @@ void setup_stepper_moter(void)
 	    send_dsp_command(2,para.DSP2_para_28L);
 	}
 	
-	#if 0//MACHINE_14090_MASC_PLUS
+	#if MACHINE_14090_MASC_PLUS || ROTATE_CUTTER_ENABLE
 	if( PAUSE == PAUSE_OFF)
 	{
 		send_dsp3_command(0x0011,0X0004);
@@ -1158,7 +1266,7 @@ void x_quickmove(UINT16 quick_time,INT32 tempx_step)
 		else
 			high16 = (UINT16)0x0000 + ((tmp32>>16)&0xff);
 	}
-	#if  MACHINE_14090_MASC_PLUS
+	#if  MACHINE_14090_MASC_PLUS || MACHINE_SC0716_SERVO_SUPU
 	if(fabsm(tempx_step)<(quick_time))
 	{
 		high16 |= (1<<13);
@@ -1326,6 +1434,42 @@ void zx_quickmove(UINT16 quick_time,INT32 tempz_step)
 	#endif
 	delay_ms(1);	
 }
+void qd_quickmove(UINT16 quick_time,INT32 tempx_step)
+{
+	UINT16 low16,high16;
+	UINT32 tmp32;
+	send_dsp_command(3,0x0000);	
+	if( tempx_step > 0)
+	{
+		tmp32 = tempx_step;
+		low16  = tmp32 & 0xffff;
+		if( x_motor_dir == 0)	
+		    high16 = (UINT16)0x0000 + ((tmp32>>16)&0xff);
+		else
+			high16 = (UINT16)0x4000 + ((tmp32>>16)&0xff);
+	}
+	else
+	{
+		tmp32 = - tempx_step;
+		low16  = tmp32 & 0xffff;		
+		if( x_motor_dir == 0)		
+		    high16 = (UINT16)0x4000 + ((tmp32>>16)&0xff);
+		else
+			high16 = (UINT16)0x0000 + ((tmp32>>16)&0xff);
+	}
+	if(fabsm(tempx_step)<(quick_time>>3))
+	{
+		high16 |= (1<<13);
+	}
+	send_dsp_command(3,high16);	
+
+	if( low16 == 0x5555)
+	    low16 = low16 +1;
+	send_dsp_command(3,low16);	
+	if( quick_time == 0x5555)
+	    quick_time = quick_time +1;
+	send_dsp_command(3,quick_time);
+}
 UINT16 get_IORG_statu(void)
 {
 	#if MACHINE_14090_MASC_PLUS
@@ -1382,7 +1526,69 @@ void multipule_program_end(UINT8 port)
 	 send_dsp_command(port,0x1104);//升级完成	 
 	 delay_ms(2);
 } 
+/*
+  2017-9-9
+  角度由小变大是逆时针旋转
+  rotated_position  ----当前主轴角度位置
+  rotated_abs_angle ----目标主轴角度位置		 
+  约定的是第一象限是0度区间，逆方向旋转是角度逐步变大的过程。
+*/
 
+#if ROTATE_CUTTER_ENABLE
+void rotated_by_data(INT16 rotated_now_angle)
+{
+	INT16 temp16;
+	INT16 delta1,delta2,rotated_change_angle;
+	UINT16 time;
+	INT8 rotated_dir;
+	
+	if(rotated_position != rotated_now_angle)
+	{
+		//确认最佳的旋转方向和位移
+		rotated_dir = 0;		
+		if(rotated_position > rotated_now_angle)//设计是从高到低，正常是顺时转
+		{
+			delta1 = rotated_position  - rotated_now_angle;		//顺时旋转的度数范围
+			delta2 = rotated_now_angle + 360 - rotated_position;  //逆时旋转的度数范围
+			if( delta1 < delta2 ) 
+			{
+				rotated_dir = 0;  //顺时针
+				temp16 = delta1;
+			}
+			else
+			{
+				rotated_dir = 1;  //逆时针
+				temp16 = delta2;
+			}
+		}
+		else if(rotated_position < rotated_now_angle)
+		{
+			delta1 = rotated_now_angle - rotated_position;
+			delta2 = rotated_position  + 360 - rotated_now_angle;
+			if( delta1 > delta2 ) //逆时针转的范围 大于 顺时针范围 ，采用顺时旋转
+			{
+				rotated_dir = 0;  //顺时针
+				temp16 = delta2;
+			}
+			else
+			{
+				rotated_dir = 1;  //逆时针
+				temp16 = delta1;
+			}
+		}
+	
+		//每步是1度		
+		if(rotated_dir ==0) rotated_change_angle =-temp16*Rot_Trans_Ratio;
+		else rotated_change_angle =temp16*Rot_Trans_Ratio;//16;		
+		
+		time = fabsm(temp16)<<1;
+		if(time<u230)time = u230;
+		
+		qd_quickmove(time,rotated_change_angle);
+	    rotated_position = rotated_now_angle;
+	}
+}
+#endif
 //--------------------------------------------------------------------------------------
 //         COPYRIGHT(C) 2006 Beijing xindahao technology Co., Ltd.
 //                     ALL RIGHTS RESERVED 

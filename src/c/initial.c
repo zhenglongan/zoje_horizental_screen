@@ -190,7 +190,7 @@ void init_io(void)
   	pd0 = 0x10;     // set p0.0-p0.7 to input p0.4 output
 	#else
 	p0  = 0x00; 
-  	pd0 = 0x00;     // set p0.0-p0.7 to input 
+  	pd0 = 0x10;     // set p0.0-p0.7 to input  p0.4 to output
     #endif
   	p1  = 0x00;     // SNT_ON=1  SNT_H=0
   	pd1 = 0x43;     // set p1.0  p1.1 p1.6 to output   set p1.2-p1.7 to intput 
@@ -612,7 +612,10 @@ void init_var(void)
 	marking_speed = 1;
 	x_bios_offset = 0;
 	y_bios_offset = 0;
-
+	x_pen_offset = 0;
+	y_pen_offset = 0;
+	x_laser_offset = 0;
+	y_laser_offset = 0;
 	marking_finish_flag = 1;
 	speed_down_stitchs = 0;
 	start_to_speed_down= 0;
@@ -1147,6 +1150,7 @@ void restore_para_from_eeprom(void)
 	
 	para.dsp3A_half_current = svpara_disp_buf[index++];
 	para.dsp3B_half_current = svpara_disp_buf[index++];
+	para.qd_org_direction = svpara_disp_buf[index++];
 }
 
 void cpy_para_buff(void)
@@ -1232,6 +1236,7 @@ void cpy_para_buff(void)
 	
 	svpara_disp_buf[index++] = para.dsp3A_half_current;
 	svpara_disp_buf[index++] = para.dsp3B_half_current;
+	svpara_disp_buf[index++] = para.qd_org_direction;
 	
 	svpara_disp_buf[index++] = 55;
 	svpara_disp_buf[index++] = 66;
@@ -1292,6 +1297,18 @@ void init_para_variables(void)
 		para.y_barcode_position = 0;
 		para.blow_air_counter = 0;
 		para.cut_air_counter = 0;
+		para.DSP3_para_1F   = 0x0202;
+		para.DSP3_para_20   = 1000;
+		para.DSP3_para_21   = 1000;
+		para.DSP3_para_22   = 8192;
+		para.DSP3_para_23   = 32768;
+
+		para.DSP3_para_27   = 100;
+		para.DSP3_para_28H  = (128<<6)+40;
+		para.DSP3_para_28M1 = (128<<6)+40;
+		para.DSP3_para_28M2 = (3<<12)+4095;
+		para.DSP3_para_28L  = (3<<12)+4095;
+	    para.qd_org_direction = 0;
 		//mymemcpy((UINT8 *)&para,svpara_disp_buf,sizeof(SYSTEM_PARA));
 		cpy_para_buff();
 		write_para_group(100,svpara_disp_buf,205);	

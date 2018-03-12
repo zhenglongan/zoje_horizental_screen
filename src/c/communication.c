@@ -1616,15 +1616,15 @@ void protocol(UINT8* command)
 				{
 					temp16 = (UINT16)rec_buf[186]<<8;
 					temp16 = temp16|(UINT16)rec_buf[187];
-					x_bios_offset = (INT16)temp16;//»­±ÊXÆ«ÒÆ
-					x_bios_offset = x_bios_offset * RESOLUTION;
+					x_pen_offset = (INT16)temp16;//»­±ÊXÆ«ÒÆ
+			
 		            temp16 = (UINT16)rec_buf[188]<<8;
 					temp16 = temp16|(UINT16)rec_buf[189];
-					y_bios_offset = (INT16)temp16;
-					y_bios_offset = y_bios_offset * RESOLUTION;
+					y_pen_offset = (INT16)temp16;
+			
 					marking_speed = rec_buf[190];
-					if(marking_speed<3)
-					marking_speed =3;
+					//if(marking_speed<3)
+					marking_speed =marking_speed+3;
 				}
 				
 				if(data_length >190)
@@ -1672,14 +1672,13 @@ void protocol(UINT8* command)
 					if(after_trim_stop_angle_adjust>u236)
 					   after_trim_stop_angle_adjust = u236;
 					   
-					   
-					temp = (UINT16)rec_buf[223]<<8;						// 
-				    start_angle_speed_curve8 = temp | (UINT16)rec_buf[224];
-				    start_angle_speed_curve8 = start_angle_speed_curve8%CODE_SCALE;
-					
-					temp = (UINT16)rec_buf[225]<<8;						// 
-				    end_angle_speed_curve8 = temp | (UINT16)rec_buf[226];
-				    end_angle_speed_curve8 = end_angle_speed_curve8%CODE_SCALE;
+					temp16 = (UINT16)rec_buf[223]<<8;
+					temp16 = temp16|(UINT16)rec_buf[224];
+					x_laser_offset = (INT16)temp16;//¼¤¹âXÆ«ÒÆ
+				
+		            temp16 = (UINT16)rec_buf[225]<<8;
+					temp16 = temp16|(UINT16)rec_buf[226];
+					y_laser_offset = (INT16)temp16;//¼¤¹âYÆ«ÒÆ
 					
 					delay_start_function = rec_buf[227];					
 					delay_start_time     = rec_buf[228];
