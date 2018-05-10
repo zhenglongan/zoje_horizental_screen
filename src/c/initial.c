@@ -1221,7 +1221,7 @@ void cpy_para_buff(void)
 	int2string(&svpara_disp_buf[index],para.cut_air_counter);  index += 2;//
 	
 	int2string(&svpara_disp_buf[index],para.dsp3_step_crc);  index += 2;
-	int2string(&svpara_disp_buf[index],para.dsp3_step_crc);  index += 2;
+	int2string(&svpara_disp_buf[index],para.dsp4_step_crc);  index += 2;
 	
 	int2string(&svpara_disp_buf[index],para.DSP3_para_1F);  index += 2;
 	int2string(&svpara_disp_buf[index],para.DSP3_para_20);  index += 2;

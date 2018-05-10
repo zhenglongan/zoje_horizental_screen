@@ -140,18 +140,21 @@ const UINT16 inpress_follow_down_angle_tab[]=
 const UINT8 inpress_follow_down_speed_tab[]=
 {
 	// 0   1   2   3   4   5   6   7   8   9   10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32
-	  60, 60, 60, 60, 60, 47, 42, 37, 33, 29, 26, 24, 22, 20, 18, 17, 16, 15, 15, 13, 13, 13, 12, 12, 11, 11, 11, 10, 10, 10, 10, 9, 9
+	//60, 60, 60, 60, 60, 47, 42, 37, 33, 29, 26, 24, 22, 20, 18, 17, 16, 15, 15, 13, 13, 13, 12, 12, 11, 11, 11, 10, 10, 10, 10, 9, 9
+	   60, 60, 60, 60, 60, 47, 42, 37, 33, 29, 26, 24, 22, 20, 18, 17, 16, 15, 15, 13, 13, 13, 12, 12, 11, 11, 10, 10, 10, 10, 10, 9, 9
  };
 
 const UINT16 inpress_follow_up_angle_tab[]= 
 {
 	// 0   1   2   3   4   5   6   7   8   9   10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32
-  	   250,250,250,230,230,230,220,210,210,210,210,210,210,210,210,210,210,210,200,200,200,200,200,200,200,200,190,190,185,185,185,185,185
+  	// 250,250,250,230,230,230,220,210,210,210,210,210,210,210,210,210,210,210,200,200,200,200,200,200,200,200,190,190,185,185,185,185,185
+	   250,250,250,230,230,230,220,210,210,210,210,210,210,210,210,210,210,210,200,200,200,200,200,200,200,200,170,190,185,185,185,185,185
 }; 
 const UINT8 inpress_follow_up_speed_tab[]=
 {
 	// 0   1   2   3   4   5   6   7   8   9   10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32
-	  60,  60, 60, 60, 60, 47, 42, 37, 33, 29, 26, 24, 22, 20, 18, 17, 16, 15, 15, 13, 13, 13, 12, 12, 11, 11, 11, 10, 10, 10, 10, 9, 9
+	//60,  60, 60, 60, 60, 47, 42, 37, 33, 29, 26, 24, 22, 20, 18, 17, 16, 15, 15, 13, 13, 13, 12, 12, 11, 11, 11, 10, 10, 10, 10, 9, 9
+	  60,  60, 60, 60, 60, 47, 42, 37, 33, 29, 26, 24, 22, 20, 18, 17, 16, 15, 15, 13, 13, 13, 12, 12, 11, 11, 10, 10, 10, 10, 10, 9, 9
 };
 //======================================================================================================================================	
 const UINT8 MoveTime_Speed_10080_ND80[] =
@@ -2893,6 +2896,7 @@ void check_data(UINT8 control_flag)
 	    inpress_follow_down_angle = inpress_follow_down_angle_tab[temp_speed] + follow_up_inpresser_angle_adj;
 	if(inpress_follow_down_angle>340)
 		inpress_follow_down_angle=inpress_follow_down_angle-340;
+		
 	inpress_follow_down_speed = inpress_follow_down_speed_tab[temp_speed] + follow_up_inpresser_time_adj;
 	inpress_follow_up_angle   = inpress_follow_up_angle_tab[temp_speed]+ follow_up_inpresser_angle_adj;
 	if(inpress_follow_up_angle>340)
@@ -5451,28 +5455,28 @@ void course_back(void)
 		  TempStart_pointTemp = pat_point;
 		  TempStart_pointTemp--;
 	  
-		  while(pat_buff_total_counter_temp > 0)
+	  while(pat_buff_total_counter_temp > 0)
+		{
+			if( (TempStart_pointTemp->func == 0x1d) && (TempStart_pointTemp->para == 2) )
 			{
-				if( (TempStart_pointTemp->func == 0x1d) && (TempStart_pointTemp->para == 2) )
-				{
-					inpress_delta = ((INT16)((TempStart_pointTemp)->xstep));
-					inpress_high = inpress_high_base + inpress_delta;
-					if(inpress_high > 80)
-						inpress_high = 80;
-					if(inpress_high < 0)
-						inpress_high = 0;
-				    break;
-			 TempStart_pointTemp--;
-			}
-			if(pat_buff_total_counter_temp == 0)
-			    inpress_high = inpress_high_base;
+				inpress_delta = ((INT16)((TempStart_pointTemp)->xstep));
+				inpress_high = inpress_high_base + inpress_delta;
+				if(inpress_high > 80)
+					inpress_high = 80;
+				if(inpress_high < 0)
+					inpress_high = 0;
+			    break;
+			}		
+		 TempStart_pointTemp--;
+		}
+		if(pat_buff_total_counter_temp == 0)
+		    inpress_high = inpress_high_base;
 
-			last_inpress_position = inpress_high;
-		    inpress_to(inpress_high);
-		    inpress_high_flag = 0;
-			delay_ms(200);
-		  }
-	   }
+		last_inpress_position = inpress_high;
+	    inpress_to(inpress_high);
+	    inpress_high_flag = 0;
+		delay_ms(200);
+	}
 	}
 	
 	if(move_flag == 1)
@@ -7686,7 +7690,7 @@ void special_sewing(UINT8 flag,UINT8 cnt)
 					 {
 						  action_flag3 = 0;
 						  #if FIRST_STITCH_NOT_ACTION 
-						  if( (inpress_follow_high_flag == FOLLOW_INPRESS_LOW )&&(stitch_counter > 1) )
+						  if( (inpress_follow_high_flag == FOLLOW_INPRESS_LOW )&&(stitch_counter >inpress_lower_stitchs) )
 						  #else
 						  if( inpress_follow_high_flag == FOLLOW_INPRESS_LOW )
 							#endif

@@ -103,39 +103,31 @@ void check_dsp_error(UINT16 error_code)
 	#if MACHINE_14090_MASC_PLUS
 	switch(error_code)
 	{
-		//dsp1: x + zx   dsp2:y  dsp3:cutter
-		case OVC_DSP1:
+		//dsp1:x + y   dsp2:cutter + inpresser
+		case OVC_DSP1:					
 			if( dsp1 == 1)
-				sys.error = ERROR_50;//X电机过流	
+				sys.error = ERROR_50;//X电机过流				
 			else if( dsp2 == 1)
-				sys.error = ERROR_51;//Y电机过流	
-			else if( dsp3 == 1)
 				sys.error = ERROR_94;//剪线电机过流
 		break;
 
 		case OVD_DSP1:
 		    if( dsp1 == 1)
 				sys.error = ERROR_54;//X电机超差
-			else if( dsp2 == 1)
-				sys.error = ERROR_55;//Y电机超差	
-			else if( dsp3 == 1)	
+			else if( dsp2 == 1)				
 				sys.error = ERROR_96;//剪线电机超差	
 		break;					
 		case OVC_DSP2:
 		    if( dsp1 == 1)
-				sys.error = ERROR_93;//中压脚电机过流
-			else if( dsp2 == 1)
 				sys.error = ERROR_51;//Y电机过流	
-			else if( dsp3 == 1)
-				sys.error = ERROR_94;//剪线电机过流	
+			else if( dsp2 == 1)
+				sys.error = ERROR_93;//中压脚电机过流
 		break;
 		case OVD_DSP2:
 		    if( dsp1 == 1)
-				sys.error = ERROR_95;//中压脚电机超差
+				sys.error = ERROR_55;//Y电机超差				
 			else if( dsp2 == 1)
-				sys.error = ERROR_55;//Y电机超差	
-			else if( dsp3 == 1)	
-				sys.error = ERROR_96;//剪线电机超差
+				sys.error = ERROR_95;//中压脚电机超差
 		break;
 		case SPI_RX_ERR_CHK:
 		case SPI_RX_ERR_ILLG:
@@ -268,7 +260,7 @@ void spiint(void)
 	  		{
 				check_dsp_error(recieve_z.word);
 	  		}
-			#if MULTIPULE_IO_ENABLE
+
 			if((dsp3==1)&&(recieve_z.word != trans_dsp3))
 			{
 				check_dsp_error(recieve_z.word);		
@@ -277,7 +269,7 @@ void spiint(void)
 	  		{
 				check_dsp_error(recieve_z.word);
 	  		}
-			#endif	
+	
 			if(err_num_dsp1 >=1 )
 			{
 				if( sys.error == 0) 
@@ -495,7 +487,7 @@ void version_check(void)
 	}  
 	stepversion1 = recieve_x.word;	
 	
-	#if 0//MULTIPULE_IO_ENABLE
+	#if MULTIPULE_IO_ENABLE
 	send_dsp3_command(0x0001,0x5555);  
 	if(recieve_x.word == 0x5555)
 	{
@@ -550,7 +542,6 @@ void movestep_x(int x_data)
 	if( trans_x.word == 0x5555 )
 	    trans_x.word = trans_x.word + 1;
 	trans_y.word=(~trans_x.word)&0x7fff;
-	//trans_z.word = 0x5500 | (motor.spd_obj/100);
 	trans_z.word = 0x5555;
 	dsp1 = 1;
 	SPISTE1=0;                                                            
@@ -597,13 +588,8 @@ void movestep_y(int y_data)
 	   trans_x.word = trans_x.word + 1;
 	trans_y.word=(~trans_x.word)&0x7fff;
 	trans_z.word = 0x5555;
-	#if  MACHINE_14090_MASC_PLUS
-	dsp2 = 1;
-	SPISTE2=0;
-	#else
 	dsp1 = 1;
 	SPISTE1=0; 
-	#endif
 	s4trr=trans_x.byte.byte1; 
 
 }
@@ -650,13 +636,8 @@ void movestep_zx(int zx_data,UINT16 time)
 	}
 	trans_y.word=(~trans_x.word)&0x7fff;
 	trans_z.word=0x5555;
-	#if  MACHINE_14090_MASC_PLUS
-	dsp1    = 1;
-	SPISTE1 = 0;
-	#else
 	dsp2    = 1;
 	SPISTE2 = 0;    
-	#endif                                                           
 	s4trr=trans_x.byte.byte1;  	
 }
 
@@ -698,13 +679,8 @@ void movestep_yj(int zx_data,UINT16 time)
 	}
 	trans_y.word=(~trans_x.word)&0x7fff;
 	trans_z.word=0x5555;
-	#if  MACHINE_14090_MASC_PLUS
-	dsp3 = 1;
-	SPISTE3=0; 
-	#else
 	dsp2 = 1;
 	SPISTE2=0;             
-	#endif                                                  
 	s4trr=trans_x.byte.byte1; 	
 }
 
@@ -781,11 +757,7 @@ UINT16 get_x_distance(void)
 UINT16 get_y_distance(void)
 {
 	UINT16 tmp;
-	#if  MACHINE_14090_MASC_PLUS
-	send_dsp2_command(0x0008,0x5555);
-	#else
 	send_dsp1_command(0x0008,0x5555);
-	#endif  
 	tmp = recieve_x.word;
 	return tmp;
 }
@@ -801,11 +773,7 @@ void nop_move_emergency(UINT16 x, UINT16 y)
 	}
 	if(  y > QUICKMOVE_JUDGEMENT )//
 	{
-		#if  MACHINE_14090_MASC_PLUS
-		send_dsp_command(2,0x0009);
-		#else	
 		send_dsp_command(1,0x0009);
-		#endif
 		delay_ms(2);
 	}
 }
@@ -1075,7 +1043,7 @@ void setup_stepper_moter(void)
 	    send_dsp_command(2,para.DSP2_para_28L);
 	}
 	
-	#if MACHINE_14090_MASC_PLUS || ROTATE_CUTTER_ENABLE
+	#if ROTATE_CUTTER_ENABLE
 	if( PAUSE == PAUSE_OFF)
 	{
 		send_dsp3_command(0x0011,0X0004);
@@ -1211,12 +1179,10 @@ UINT8 write_stepmotor_curve(UINT8 port,UINT8 *pdata)
 			para.dsp1_step_crc = crc;
 		if(2 == write_stepmotor_curve_flag)
 			para.dsp2_step_crc = crc;
-/*
 		if(3 == write_stepmotor_curve_flag)
 			para.dsp3_step_crc = crc;
 		if(4 == write_stepmotor_curve_flag)
 			para.dsp4_step_crc = crc;
-*/
 		cpy_para_buff();
 		write_para_group(100,svpara_disp_buf,205);
 	    return 1;
@@ -1228,12 +1194,10 @@ UINT8 write_stepmotor_curve(UINT8 port,UINT8 *pdata)
 			para.dsp1_step_crc = 0;
 		if(2 == write_stepmotor_curve_flag)
 			para.dsp2_step_crc = 0;
-/*
 		if(3 == write_stepmotor_curve_flag)
 			para.dsp3_step_crc = 0;
 		if(4 == write_stepmotor_curve_flag)
 			para.dsp4_step_crc = 0;
-*/
 		cpy_para_buff();
 		write_para_group(100,svpara_disp_buf,205);
 	 	return 0;
@@ -1303,11 +1267,7 @@ void y_quickmove(UINT16 quick_time,INT32 tempy_step)
 {
 	UINT16 low16,high16;
 	UINT32 tmp32;
-	#if MACHINE_14090_MASC_PLUS
-	send_dsp_command(2,0x0000);	
-	#else
 	send_dsp_command(1,0x0000);	
-	#endif
 	delay_us(500);	
 	if( tempy_step > 0)
 	{
@@ -1344,27 +1304,20 @@ void y_quickmove(UINT16 quick_time,INT32 tempy_step)
 		high16 |= (1<<13);
 	//quick_time  = ((UINT16)u230)*10;
 	}
-	#if MACHINE_14090_MASC_PLUS
-	send_dsp_command(2,high16);	
-	#else
 	send_dsp_command(1,high16);	
-	#endif
+
 	delay_ms(1);
 	if( low16 == 0x5555)
 	    low16 = low16 +1;
-	#if MACHINE_14090_MASC_PLUS
-	send_dsp_command(2,low16);
-	#else	
+
 	send_dsp_command(1,low16);	
-	#endif
+
 	delay_ms(1);
 	if( quick_time == 0x5555)
 	    quick_time = quick_time +1;
-	#if MACHINE_14090_MASC_PLUS
-	send_dsp_command(2,quick_time);
-	#else	
+	
 	send_dsp_command(1,quick_time);
-	#endif
+
 	delay_ms(1);
 
 }
@@ -1373,11 +1326,9 @@ void zx_quickmove(UINT16 quick_time,INT32 tempz_step)
 {
 	UINT16 low16,high16;
 	UINT32 tmp32;
-	#if MACHINE_14090_MASC_PLUS
-	send_dsp_command(1,0x0000);	
-	#else
+
 	send_dsp_command(2,0x0000);	
-	#endif
+
 	delay_us(500);	
 	if( tempz_step > 0)
 	{
@@ -1411,27 +1362,20 @@ void zx_quickmove(UINT16 quick_time,INT32 tempz_step)
 	}
 
 	high16 |= (1<<13);
-	#if MACHINE_14090_MASC_PLUS
-	send_dsp_command(1,high16);	
-	#else
 	send_dsp_command(2,high16);	
-	#endif
+
 	delay_ms(1);
 	if( low16 == 0x5555)
 	    low16 = low16 +1;
-	#if MACHINE_14090_MASC_PLUS
-	send_dsp_command(1,low16);
-	#else
+
 	send_dsp_command(2,low16);
-	#endif	
+
 	delay_ms(1);
 	if( quick_time == 0x5555)
 	    quick_time = quick_time +1;
-	#if MACHINE_14090_MASC_PLUS
-	send_dsp_command(1,quick_time);
-	#else	
+	
 	send_dsp_command(2,quick_time);
-	#endif
+
 	delay_ms(1);	
 }
 void qd_quickmove(UINT16 quick_time,INT32 tempx_step)
@@ -1472,25 +1416,15 @@ void qd_quickmove(UINT16 quick_time,INT32 tempx_step)
 }
 UINT16 get_IORG_statu(void)
 {
-	#if MACHINE_14090_MASC_PLUS
-	send_dsp1_command(0x0029,0xa000);
-	send_dsp_command(1,0x5555);
-	#else
 	send_dsp2_command(0x0029,0xa000);
 	send_dsp_command(2,0x5555);
-	#endif
 	return recieve_x.word;
 }
 
 UINT16 get_CORG_statu(void)
 {
-	#if MACHINE_14090_MASC_PLUS
-	send_dsp3_command(0x0029,0x2000);
-	send_dsp_command(3,0x5555);
-	#else
 	send_dsp2_command(0x0029,0x2000);
 	send_dsp_command(2,0x5555);
-	#endif
 	return recieve_x.word;
 }
 //多功能IO升级程序

@@ -128,7 +128,7 @@ void main(void)
 			{
 				sys.status = ERROR;
 				StatusChangeLatch = ERROR;
-		      	sys.error = ERROR_99;//要修改
+		      	sys.error = ERROR_92;//要修改
 			}
 		
 			if( u201 == 1 )         

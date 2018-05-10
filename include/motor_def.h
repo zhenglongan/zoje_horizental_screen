@@ -159,8 +159,8 @@ enum { SPD_UP=1,SPD_CST,SPD_DWN };//SCX
 #define KIspd_CONSTANT1	 4//20//(30)//30	 //    7
 #define KDspd_CONSTANT1	 0//0	 	 //    7
 
-#define KPspd_CONSTANT2	 10//8//(14)//15	 //    7
-#define KIspd_CONSTANT2	 4//20//(30)//30	 //    7
+#define KPspd_CONSTANT2	 12//10//8//(14)//15	 //    7
+#define KIspd_CONSTANT2	 8//4//20//(30)//30	 //    7
 #define KDspd_CONSTANT2	 0//0	 	 //    7
 
 

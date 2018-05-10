@@ -24,7 +24,7 @@
 //--------------------------------------------------------------------------------------
 #define BUF_MASK 255
 #define BUF_MAX  900                   
-#define BUF_MID  260                   
+#define BUF_MID  300                   
 #define BUF_MIN  300
 //--------------------------------------------------------------------------------------
 //  Global variables define
@@ -33,7 +33,7 @@ static UINT16 tra_ind_r;             // transmit buffer reading index
 static UINT16 tra_ind_w;             // transmit buffer writing index
 static UINT16 rec_ind_r;             // receive  buffer reading index
 static UINT16 rec_ind_w;             // receive  buffer writing index
-static UINT8 tra_buf[BUF_MID];       // transmit buffer  100 byte
+static UINT8 tra_buf[BUF_MIN];       // transmit buffer  100 byte
 UINT8 rec_buf[BUF_MID];       		 // receive  buffer  300 byte
 UINT8 rec_status;                    // receive status
 
@@ -462,13 +462,13 @@ void uart_tra_int(void)
   volatile UINT16 i= 300;
   if(tra_ind_r != tra_ind_w)
   {
-    u0tb = tra_buf[tra_ind_r++];
+	  u0tb = tra_buf[tra_ind_r++];
   }
   else                             
   {
-    te_u0c1 = 0;
-    while(i--);										
-    RDSET = 0;	
+      te_u0c1 = 0;
+      while(i--);										
+      RDSET = 0;	
   }
 }
 
@@ -485,7 +485,7 @@ void uart_rec_int(void)
   	rec_buf[rec_ind_w++] = (UINT8)u0rb;
   else  
   {  
-     rec_ind_w =299; 
+     rec_ind_w = 0; 
      rec_buf[rec_ind_w] = (UINT8)u0rb;
   }
 }
@@ -2041,14 +2041,18 @@ void protocol(UINT8* command)
 				send_command[2] = VERSION_RET;
 
 				send_command[3] = Step1Version.MachineType;
-				send_command[4] = Step1Version.FatherVersion;
-				send_command[5] = Step1Version.ChildVersion;
+				//send_command[4] = Step1Version.FatherVersion;
+				//send_command[5] = Step1Version.ChildVersion;
+				send_command[4] = para.dsp1_step_crc>>8;
+				send_command[5] = para.dsp1_step_crc;
 				send_command[6] = stepversion1>>8;
 				send_command[7] = stepversion1;
 
 				send_command[8] = Step2Version.MachineType;
-				send_command[9] = Step2Version.FatherVersion;
-				send_command[10] = Step2Version.ChildVersion;
+				//send_command[9] = Step2Version.FatherVersion;
+				//send_command[10] = Step2Version.ChildVersion;
+				send_command[9] = para.dsp2_step_crc>>8;
+				send_command[10] = para.dsp2_step_crc;
 				send_command[11] = stepversion2>>8;
 				send_command[12] = stepversion2;
 
@@ -2071,8 +2075,10 @@ void protocol(UINT8* command)
 				send_command[23] = 0;//幅面信息
 				
 				send_command[24] = Step3Version.MachineType;//DSP3版本
-				send_command[25] = Step3Version.FatherVersion;
-				send_command[26] = Step3Version.ChildVersion;
+				//send_command[25] = Step3Version.FatherVersion;
+				//send_command[26] = Step3Version.ChildVersion;
+				send_command[25] = para.dsp3_step_crc>>8;
+				send_command[26] = para.dsp3_step_crc;
 				send_command[27] = stepversion3>>8;
 				send_command[28] = stepversion3;
 				

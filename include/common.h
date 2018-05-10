@@ -24,7 +24,7 @@
     
 #define MainFatherVersion		05
 #define MainChildVersion		07 
-#define MainSVNVersion			20528//20527//20526
+#define MainSVNVersion			2061//20527//20526
 
 
 
@@ -33,9 +33,9 @@
 #define MULTIPULE_IO_ENABLE         0 // 开放多功能IO编程功能
 #define MACHINE_SC0716_SERVO_SUPU   0 // 舒普
 #define ROTATE_CUTTER_ENABLE		0 // 旋转切刀功能
-#define BOBBIN_CHANGER_ENABLE       1 // 自动换梭
+#define BOBBIN_CHANGER_ENABLE       0 // 自动换梭
 #define BOBBIN_THREAD_DETECT        0 
-#define BOBBIN_CHANGER_POWERON      1 //自动供电
+#define BOBBIN_CHANGER_POWERON      0 //自动供电
 
 #define USE_SC013K_PALTFORM         1
 #define DEBUG_PARA_OUTPUT		 	0
@@ -449,11 +449,9 @@
 #endif
 
 #define LED_POWER     EXTEND  
-
 #define BLOW_AIR      T_CLK   
 
 #if BOBBIN_CHANGER_ENABLE
-
 	#define BOBBIN_CHANGE_START      T_CLK  //气阀6
 	#define BOBBIN_CHANGE_ERROR      ADTCSM //INPUT5
 	#define BOBBIN_CHANGE_WORKINGNOW CSENS  //INPUT3    

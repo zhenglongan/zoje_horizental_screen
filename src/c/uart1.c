@@ -6,14 +6,14 @@
 #include "..\..\include\delay.h"            // delay time definition    
 #include "..\..\include\stepmotor.h"        // stepmotor driver
 
-#define  BUF_MIN  300
-#define  BUF_MID  300
+#define  UART1_BUF_MIN  300
+#define  UART1_BUF_MID  300
 
 
 static UINT16 rec1_ind_r;             // receive  buffer reading index
 static UINT16 rec1_ind_w;             // receive  buffer writing index
 
-static UINT8 rec1_buf[BUF_MIN];       // receive  buffer
+static UINT8 rec1_buf[UART1_BUF_MIN];       // receive  buffer
 static UINT8 send1_command[60],comm1_status;
 static UINT16 data_length;
 
@@ -46,11 +46,11 @@ void initial_uart1_variable(void)
 	  rec1_ind_r = 0; 
 	  rec1_ind_w = 0;  
 
-	  for(i=0;i<BUF_MIN;i++)
+	  for(i=0;i<UART1_BUF_MIN;i++)
 	  {
 		  tra1_buf[i] = 0;   
 	  } 
-	  for(i=0;i<BUF_MIN;i++)
+	  for(i=0;i<UART1_BUF_MIN;i++)
 	  {      
 		  rec1_buf[i] = 0;  
 	  } 
@@ -124,7 +124,7 @@ void uart1_rec_int(void)
   	rec1_buf[rec1_ind_w++] = (UINT8)u1rb;
   else  
   {  
-     rec1_ind_w =299; 
+     rec1_ind_w = 0; 
      rec1_buf[rec1_ind_w] = (UINT8)u1rb;
   }
 }

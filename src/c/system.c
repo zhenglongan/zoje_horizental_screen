@@ -1586,13 +1586,13 @@ void trim_action(void)
 				rec_com();
 			}
 			action5_flag = 1;
-					 movestep_yj(-stepper_cutter_move_range ,stepper_cutter_move_time);//开始断线
-					 cutter_delay_counter = stepper_cutter_move_time;
-					 cutter_delay_flag = 1;
-					 
-					 HOLDING_BOBBIN_SOLENOID = 1;
-				 	 CutActionFlag = 1;
-				 	 CutActionCounter = 0;
+			movestep_yj(-stepper_cutter_move_range ,stepper_cutter_move_time);//开始断线
+			cutter_delay_counter = stepper_cutter_move_time;
+			cutter_delay_flag = 1;
+				 
+			HOLDING_BOBBIN_SOLENOID = 1;
+			CutActionFlag = 1;
+			CutActionCounter = 0;
 			/*
 			while( motor.stop_flag == 0)//等待停车到位
 			{
@@ -2151,6 +2151,7 @@ void run_status(void)
 		  	 }
 			if(pat_point == TempStart_point&&pat_buff_total_counter<TOTAL_STITCH_COUNTER)
              {
+				#if FIRST_STITCH_NOT_ACTION == 0
 				if( inpress_lower_stitchs != 0)
 				{
 					inpress_down( inpress_high_base - inpress_lower_steps);
@@ -2158,6 +2159,7 @@ void run_status(void)
 					flag1 = 1;	
 				}
 				else 
+				#endif
 				{
 	                inpress_down(inpress_high_base);		
 	                inpress_high = inpress_high_base;
@@ -2165,6 +2167,7 @@ void run_status(void)
              }
 			 else
 			 {	
+				#if FIRST_STITCH_NOT_ACTION == 0
 				if( inpress_lower_stitchs != 0)
 				{
 			
@@ -2173,6 +2176,7 @@ void run_status(void)
 					flag1 = 1;	
 				}
 				else
+				#endif
 					inpress_to(inpress_high);
 			 }			 	  			
 		}
@@ -2864,24 +2868,22 @@ void run_status(void)
 			
             if(inpress_high_flag == 1)
 			{				
-				//inpress_high_action_flag  = 1;			
-				//inpress_follow_delta = inpress_high -inpress_position;
-				//inpress_position = inpress_high;	
 				inpress_high_flag = 0;
 				inpress_to(inpress_high);
 			}
-			
-			if( inpress_lower_stitchs > 0)
-			{
-				if( (stitch_counter > inpress_lower_stitchs )&&(flag1 == 1) )
+				#if FIRST_STITCH_NOT_ACTION == 0
+				if( inpress_lower_stitchs > 0)
 				{
-					flag1 = 0;
-					inpress_high_action_flag  = 1;
-					inpress_high = inpress_position + inpress_lower_steps;
-					inpress_follow_delta = inpress_lower_steps;
-					inpress_position = inpress_high;	
+					if( (stitch_counter > inpress_lower_stitchs )&&(flag1 == 1) )
+					{
+						flag1 = 0;
+						inpress_high_action_flag  = 1;
+						inpress_high = inpress_position + inpress_lower_steps;
+						inpress_follow_delta = inpress_lower_steps;
+						inpress_position = inpress_high;	
+					}
 				}
-			}
+				#endif
 	
 			#endif
 			
@@ -2966,14 +2968,14 @@ void run_status(void)
 						action_flag2 = 1;
 						action_flag3 = 1;
 						action_flag4 = 1;				
-									
+						/*			
 		                if( (inpress_down_angle > inpress_up_angle )&&(last_stitch_down ==1) )
 						     action_flag0 = 0;	
 						else if( (inpress_down_angle > inpress_up_angle )&&(last_stitch_down ==0))
 						{
 							 inpress_down_angle = 5;
 						}
-					    
+					    */
 					
 						temp16 = motor.angle_adjusted;
 						
@@ -3018,7 +3020,7 @@ void run_status(void)
 							{
 								action_flag1 = 0;
 								#if FIRST_STITCH_NOT_ACTION 
-								  if( (inpress_follow_high_flag == FOLLOW_INPRESS_LOW )&&(stitch_counter > 1) )
+								  if( (inpress_follow_high_flag == FOLLOW_INPRESS_LOW )&&(stitch_counter > inpress_lower_stitchs) )
 								#else
 								  if( inpress_follow_high_flag == FOLLOW_INPRESS_LOW )
 								#endif
@@ -3045,6 +3047,7 @@ void run_status(void)
 									movezx_delay_flag =1;
 							
 									//========================================
+									/*
 									stitch_counter++;
 									pat_point++;
 									check_data(0);//看看下针转速，但不改变实际转速
@@ -3058,6 +3061,7 @@ void run_status(void)
 									}
 									else
 										last_stitch_down = 0;
+									*/
 									//========================================
 								}
 							}
@@ -5328,7 +5332,7 @@ void checki05_status(void)
 	        break;
 		case 6:
 			FA =1;
-            delay_ms(500);
+            delay_ms(200);
 			FA = 0;
 	        delay_ms(200);
 			output_com = 0;
