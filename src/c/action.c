@@ -7153,10 +7153,13 @@ void zpl_process(void)
     	}
     	stay_flag = 0;           			// no emergency break
     	brkdt_flag = 0;          			// no thread breakage detection  	    
-    	if(((TH_BRK == 1 ||test_brk_flag == 1))&&( making_pen_actoin_flag == 0))
+    	if((TH_BRK == 1)&&( making_pen_actoin_flag == 0))
     	{
   	  		thbrk_count =thbrk_count + 1;
     	}
+		else if(TH_BRK == 0)
+			thbrk_count = 0;
+			
 		zpl_pass = 0;
   	}
   	else
