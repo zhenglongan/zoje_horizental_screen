@@ -585,6 +585,21 @@ void ready_status(void)
 		delay_ms(100);
 		if(PAUSE == PAUSE_ON)
 		{				
+			if(sys.status != ERROR)
+			   status_now = sys.status;
+			else
+			   status_now = READY;
+				   
+			sys.status = ERROR;
+			StatusChangeLatch = ERROR;
+			if( sys.error == 0 )
+	    		sys.error = ERROR_19;	  			  	
+			single_flag=0; 			  	
+			predit_shift = 0;
+			pause_flag = 0;
+			manual_cut_flag = 0;
+	    	return;
+			/*
 			if(manual_cut_flag == 0) 
 			{
 				if(sys.status != ERROR)
@@ -606,7 +621,8 @@ void ready_status(void)
 				rec_com();
 				trim();				
 				pause_flag = 0;
-			}	
+			}
+			*/	
 			aging_com = 0;
 			aging_flag = 0;
 	  	}
@@ -1857,8 +1873,6 @@ void run_status(void)
 	
 	StitchStartFlag = 1;	  
 	pause_inpress_flag = 0;
-
-
   	//--------------------------------------------------------------------------------------
   	//parameter confirm
   	//--------------------------------------------------------------------------------------
@@ -1870,7 +1884,7 @@ void run_status(void)
   	while(1)
   	{	    
 		rec_com();
-   
+   		origin_com = 0;
 		if( scan_pause_func(&pause_flag,READY))
 			return;
 		
@@ -2541,7 +2555,7 @@ void run_status(void)
 	      	{
 				if( motor.spd_obj > 0)
 					pause_stop();
-				//sewing_stop();
+
 				delay_ms(50);
 		      	if( inpress_flag == 0)  
 				{
@@ -3204,6 +3218,7 @@ void error_status(void)
   	{
   		sound_count = 0;
   	}   
+	origin_com = 0; 
   	//-------------------------------------------------------------------------------------- 
   	// switch error number                                                                  
   	//--------------------------------------------------------------------------------------     	

@@ -243,8 +243,6 @@ UINT8 send_command[250];  			 // transmit buffer  100 byte
 #define DRV_DATA_END            	0x96
 #define DRV_DATA_END_RET        	0xF6
 
-
-
 #define CONTROL_PARA				0x99
 #define CONTROL_PARA_RET 			0xF9
 
@@ -481,8 +479,8 @@ void uart_tra_int(void)
 void uart_rec_int(void)
 {
 //	rec_buf[rec_ind_w++] = (UINT8)u0rb;    
-  if(rec_ind_w<299)
-  	rec_buf[rec_ind_w++] = (UINT8)u0rb;
+  if(rec_ind_w < 299)
+  	 rec_buf[rec_ind_w++] = (UINT8)u0rb;
   else  
   {  
      rec_ind_w = 0; 

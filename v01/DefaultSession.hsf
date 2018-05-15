@@ -34,7 +34,7 @@
 0 
 [WINDOW_POSITION_STATE_DATA_VD1]
 "Help" "TOOLBAR 0" 59419 1 4 "0.00" 0 0 0 0 0 17 0 "" "0.0" 
-"{WK_00000001_CmdLine}" "WINDOW" 59422 0 1 "0.11" 208 0 0 350 200 17 0 "32771|32772|32778|<<separator>>|32773|32774|<<separator>>|32820|<<separator>>|32801|32824" "0.0" 
+"{WK_00000001_CmdLine}" "WINDOW" 59422 0 1 "0.07" 208 0 0 350 200 17 0 "32771|32772|32778|<<separator>>|32773|32774|<<separator>>|32820|<<separator>>|32801|32824" "0.0" 
 "{WK_00000001_OUTPUT}" "WINDOW" 59422 0 0 "1.00" 208 0 0 350 200 18 0 "36756|36757|36758|36759|<<separator>>|36746|36747|<<separator>>|39531|<<separator>>|39500|39534|<<separator>>|36687" "0.0" 
 "{WK_00000002_WORKSPACE}" "WINDOW" 59420 0 0 "1.00" 265 0 0 350 200 18 0 "" "0.0" 
 "{WK_TB00000001_STANDARD}" "TOOLBAR 0" 59419 0 2 "0.00" 0 0 0 0 0 18 0 "" "0.0" 
@@ -56,20 +56,6 @@
 [WINDOW_POSITION_STATE_DATA_VD4]
 [WINDOW_Z_ORDER]
 "D:\git_svn\mobanji\mbj_test(JKMBJ)0919\src\c\action.c" 
-"D:\git_svn\mobanji\mbj_test(JKMBJ)0919\src\c\watch.c" 
-"D:\git_svn\mobanji\mbj_test(JKMBJ)0919\src\c\system.c" 
-"D:\git_svn\mobanji\mbj_test(JKMBJ)0919\include\motor_def.h" 
-"D:\git_svn\mobanji\mbj_test(JKMBJ)0919\src\c\motor.c" 
-"D:\git_svn\mobanji\mbj_test(JKMBJ)0919\include\common.h" 
-"D:\git_svn\mobanji\mbj_test(JKMBJ)0919\src\c\main.c" 
-"D:\git_svn\mobanji\mbj_test(JKMBJ)0919\src\c\communication.c" 
-"D:\git_svn\mobanji\mbj_test(JKMBJ)0919\src\c\step_motor_drv.c" 
-"D:\git_svn\mobanji\mbj_test(JKMBJ)0919\src\c\uart1.c" 
-"D:\git_svn\mobanji\mbj_test(JKMBJ)0919\src\c\variables.c" 
-"D:\git_svn\mobanji\mbj_test(JKMBJ)0919\src\c\initial.c" 
-"D:\git_svn\mobanji\mbj_test(JKMBJ)0919\include\variables.h" 
-"D:\git_svn\mobanji\mbj_test(JKMBJ)0919\src\asm\sect30.inc" 
-"D:\git_svn\mobanji\mbj_test(JKMBJ)0919\include\action.h" 
 [TARGET_NAME]
 "" "" 0 
 [STATUSBAR_STATEINFO_VD1]

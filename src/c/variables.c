@@ -772,6 +772,9 @@ UINT8  first_power_on_flag;
 UINT8 rotated_function_flag;
 INT16 rotated_position;
 INT16 rotated_abs_angle;
+
+UINT16 monitor_predit_shift_flag_conter;
+UINT8  monitor_predit_shift_flag_value;
 //--------------------------------------------------------------------------------------
 //         COPYRIGHT(C) 2006 Beijing xingdahao technology Co., Ltd.
 //                     ALL RIGHTS RESERVED 

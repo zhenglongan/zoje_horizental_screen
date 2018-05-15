@@ -31,9 +31,7 @@ extern PATTERN_DATA *TempStart_point;
 extern PATTERN_DATA *TempPat_point;
 extern PATTERN_DATA PatStart;
 extern PATTERN_DATA PatEnd;
-extern UINT8 EditCurrentCoorIndex;
-extern INT16 EditCurrentCoorLatch[255];
-extern INT16 ElementPointPositionLatch[255];
+
 
 extern STEPVERSION Step1Version;
 extern STEPVERSION Step2Version;
@@ -311,9 +309,7 @@ extern INT16 AdjustAngle;
 // self test
 //-------------------------------------------------------------------------------------- 
 extern UINT8 smotor_speed;
-
-extern UINT8 output_com; 
- 
+extern UINT8 output_com;  
 extern UINT8 stepmotor_comm; 
 extern UINT8 stepmotor_state;  
 //--------------------------------------------------------------------------------------
@@ -391,12 +387,12 @@ extern UINT8 FootNumber;
 extern UINT8 LastPatternHaveSOP;
 
 extern UINT8 PatternSpeedLimited;
-extern UINT16 SpeedRange[10];
+extern UINT16 SpeedRange[];
 
 extern UINT8 find_deadpoint_flag;//0 for do not find deadpoint or already found deadpoint,1 for finding
 extern UINT8  x_step_current_level;
 extern UINT8  y_step_current_level;
-extern UINT8  motor_para[10];
+extern UINT8  motor_para[];
 
 extern UINT8 already_in_origin,not_in_origin_flag;
 extern UINT16 stepstatus1;                              
@@ -779,6 +775,8 @@ extern UINT8  first_power_on_flag;
 extern UINT8 rotated_function_flag;
 extern INT16 rotated_position;
 extern INT16 rotated_abs_angle;
+extern UINT16 monitor_predit_shift_flag_conter;
+extern UINT8  monitor_predit_shift_flag_value;
 //--------------------------------------------------------------------------------------
 //         COPYRIGHT(C) 2006 Beijing xingdahao technology Co., Ltd.
 //                     ALL RIGHTS RESERVED 

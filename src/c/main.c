@@ -232,8 +232,40 @@ void ta0_int(void)
 	ms_scan_counter++;
 	aging_mode_counter_1++;
 	motor_control();
-	#if ENABLE_LED_ALARM_FUNCTION 
 	
+	if( predit_shift == 1)
+	{
+		monitor_predit_shift_flag_conter++;
+		if( monitor_predit_shift_flag_conter >= 1000)
+		{
+			monitor_predit_shift_flag_value ++;
+			monitor_predit_shift_flag_conter = 0;
+			if( (origin_com == 1)&&(monitor_predit_shift_flag_value>25) )
+			{
+				predit_shift = 0;
+				//rfid_alarm_flag = 1;
+				//rfid_alarm_counter = 2000;
+				//SUM = 1;
+				monitor_predit_shift_flag_value = 0;
+			}
+		    else if( (origin_com ==0)&&(monitor_predit_shift_flag_value>5) )
+			{
+			    predit_shift = 0;
+				monitor_predit_shift_flag_value = 0;
+			//	rfid_alarm_flag = 1;
+			//	rfid_alarm_counter = 2000;
+			//	SUM = 1;
+			}
+		}	
+			
+	}
+	else
+	{
+		monitor_predit_shift_flag_value = 0;
+		monitor_predit_shift_flag_conter = 0;
+	}
+	
+	#if ENABLE_LED_ALARM_FUNCTION 
 	if( led_turn_green_flag == 1 )
 	{
 		led_stay_1s_counter++;

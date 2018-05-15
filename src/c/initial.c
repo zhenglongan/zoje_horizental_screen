@@ -886,6 +886,8 @@ void init_var(void)
 	led_stay_1s_counter = 0;
 	
 	first_power_on_flag = 0;
+	monitor_predit_shift_flag_conter = 0;
+	monitor_predit_shift_flag_value = 0;
 }			
 //--------------------------------------------------------------------------------------
 //  Name:		initial 
