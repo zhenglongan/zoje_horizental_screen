@@ -159,8 +159,8 @@ enum { SPD_UP=1,SPD_CST,SPD_DWN };//SCX
 #define KIspd_CONSTANT1	 4//20//(30)//30	 //    7
 #define KDspd_CONSTANT1	 0//0	 	 //    7
 
-#define KPspd_CONSTANT2	 10//10//8//(14)//15	 //    7
-#define KIspd_CONSTANT2	 4//4//20//(30)//30	 //    7
+#define KPspd_CONSTANT2	 motor_para[8]//10//10//8//(14)//15	 //    7
+#define KIspd_CONSTANT2	 motor_para[9]//4//4//20//(30)//30	 //    7
 #define KDspd_CONSTANT2	 0//0	 	 //    7
 
 
@@ -308,7 +308,7 @@ typedef struct
 #define DIDT_SPEED_RANGE motor_para[7]	
 
 //select the porportion of didt when cutting thread,the range is 0-4,as default is 4
-#define DIDT_CUT_THREAD motor_para[8]
+#define DIDT_CUT_THREAD 2 //motor_para[8]
 //#define DIDT_CUT_THREAD3 motor_para[9]	
 //last step for motor.spd_obj == 0
 #define ANGLE_P 6*ENCODER/360//6*ENCODER/360

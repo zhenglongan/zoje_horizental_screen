@@ -632,6 +632,14 @@ void ready_status(void)
     if(cut_test_flag == 1)
 	{
  		cut_test_flag = 0;
+		if ( already_in_origin == 0)
+		{
+			sys.status = ERROR;
+			StatusChangeLatch = ERROR;
+	      	sys.error = ERROR_46; 
+			predit_shift = 0;  
+			return;
+		}
 		if( (nop_move_pause_flag ==0 )&&(finish_nopmove_pause_flag ==0) )
 		{
 			if( (foot_half_flag == 1) || (foot_flag == 1))
@@ -853,6 +861,13 @@ void ready_status(void)
 			}
 			if(inpress_first_flag == 1)
 			{
+				if(motorconfig_flag == 0)
+				   initial_mainmotor();	
+				temp8 = detect_position();
+	    		if(temp8 == OUT)
+	      		{
+					find_dead_center();
+	      		}
 				go_origin_zx();
 				inpress_first_flag = 0;
                 delay_ms(100);
@@ -2119,10 +2134,10 @@ void run_status(void)
 		
 		if( k03 == MECHANICAL )
 		{
-			da0 = 0;   
 			tension_open_counter = 0;
 			tension_open_switch = 0;
 			DAActionFlag=0;
+			da0 = 0; 
 		}
 		else
 		{

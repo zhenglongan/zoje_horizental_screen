@@ -3018,16 +3018,14 @@ void motor_control(void)
 									}							
 								}
 								else if( order_spd_state_1up_2cst_3dwn == SPD_DWN ) // 降速
-								{
-				 
+								{	 
 								 
 								 //避免由于降速期间出现的匀速与低速匀速时大穿透力PI参数干扰20161130	 
 									 if( abs(m_spd_n) < order_spd_0_p_9 ) 		 // 	< 原来+0.9差值!!!scx
 									 {
 									
 										constant_spd_cnt++;
-										//da1=120+2*constant_spd_cnt;
-									
+										//da1=120+2*constant_spd_cnt;									
 									
 										if( constant_spd_cnt >= COSTANT_SPD_VALUE ) //消抖
 										{
@@ -3043,16 +3041,12 @@ void motor_control(void)
 									 {
 											constant_spd_cnt = 0;
 									 }
-							 
-						   
-					
 								}
 								else	//匀速
 								{
 								
 									if(abs(order_spd_this)<PID_CST_SEG_1)
 									{
-
 										Run_SpdIq.Kp = (INT8)KPspd_CONSTANT1; 
 										Run_SpdIq.Ki = (INT8)KIspd_CONSTANT1; 
 										Run_SpdIq.Kd = (INT8)KDspd_CONSTANT1;
@@ -3061,8 +3055,7 @@ void motor_control(void)
 									{
 										Run_SpdIq.Kp = (INT8)KPspd_CONSTANT2; 
 										Run_SpdIq.Ki = (INT8)KIspd_CONSTANT2; 
-										Run_SpdIq.Kd = (INT8)KDspd_CONSTANT2;
-									
+										Run_SpdIq.Kd = (INT8)KDspd_CONSTANT2;									
 									}
 								
 								 	order_spd_state_1up_2cst_3dwn = SPD_CST;
