@@ -1757,14 +1757,14 @@ void protocol(UINT8* command)
 					inpress_follow_range = 10;
 				inpress_follow_range =  inpress_follow_range*7/10;
 				
-				follow_up_inpresser_time_adj = (INT8)rec_buf[100];				
+				follow_inpresser_time_adj = (INT8)rec_buf[100];		//随动时间微调		
 				temp = (UINT16)rec_buf[35]<<8;					
 				fw_start_angle = temp | (UINT16)rec_buf[36];
 				fw_start_angle = fw_start_angle << 2;	
 				
 				temp16 = (UINT16)rec_buf[37]<<8;
 				temp16 = temp16|(UINT16)rec_buf[38];
-				follow_up_inpresser_angle_adj = (INT16)temp16;
+				follow_inpresser_angle_adj = (INT16)temp16;			//随动角度微调
 	
 				 			
 				inpress_lower_stitchs = rec_buf[101];//起针降低针数

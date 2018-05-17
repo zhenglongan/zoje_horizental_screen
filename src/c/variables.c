@@ -716,8 +716,8 @@ UINT8 cutter_delay_counter,cutter_delay_flag;
 UINT8  yj_step_current_level;
 INT16  stepper_cutter_move_range;
 INT8   stepper_cutter_move_time;
-INT16   follow_up_inpresser_time_adj;
-INT16  follow_up_inpresser_angle_adj;
+INT16   follow_inpresser_time_adj;
+INT16  follow_inpresser_angle_adj;
 UINT16 fw_start_angle;
 UINT8  inpress_lower_stitchs,inpress_lower_steps;
 

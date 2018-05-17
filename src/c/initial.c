@@ -813,11 +813,11 @@ void init_var(void)
 	stepper_cutter_move_range = 100;
 	stepper_cutter_move_time = 45;
 	
-	follow_up_inpresser_time_adj = 0;
+	follow_inpresser_time_adj = 0;
 	fw_start_angle = 1000;
 	inpress_lower_stitchs = 0;
 	inpress_lower_steps = 0;
-	follow_up_inpresser_angle_adj = 0;
+	follow_inpresser_angle_adj = 0;
 	inpress_delta = 0;
 	holding_bobbin_start_angle = 0;
 	shift_low_flag = 0;
@@ -1153,6 +1153,7 @@ void restore_para_from_eeprom(void)
 	para.dsp3A_half_current = svpara_disp_buf[index++];
 	para.dsp3B_half_current = svpara_disp_buf[index++];
 	para.qd_org_direction = svpara_disp_buf[index++];
+	para.zx_curver = svpara_disp_buf[index++];
 }
 
 void cpy_para_buff(void)
@@ -1239,6 +1240,7 @@ void cpy_para_buff(void)
 	svpara_disp_buf[index++] = para.dsp3A_half_current;
 	svpara_disp_buf[index++] = para.dsp3B_half_current;
 	svpara_disp_buf[index++] = para.qd_org_direction;
+	svpara_disp_buf[index++] = para.zx_curver;
 	
 	svpara_disp_buf[index++] = 55;
 	svpara_disp_buf[index++] = 66;

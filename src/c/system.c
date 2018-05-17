@@ -2150,8 +2150,6 @@ void run_status(void)
     	if( thread_holding_switch == 0 )
 		{
 				AIR_OUT = 1;  //空移后吹气
-				//delay_ms(80 );   
-				//AIR_OUT = 0;
 		}
 
 		blow_air_counter = para.blow_air_counter;
@@ -2275,7 +2273,6 @@ void run_status(void)
 	    	   process_data();
 			   if(move_flag == 1)
 			   {
-				   //check_data_speed = motor.spd_obj;
 				   calculate_angle();
 			   	   zoom_in_one_stitch();
 				   
@@ -2352,9 +2349,7 @@ void run_status(void)
 					FW = 0;
 				}
 				
-				//while(motor.angle_adjusted > 1200) //1440+50-1318 = 172 = 43度，确保3000转以下时时间大于2.4毫秒能够完整的接收一包花样数据。
-				//   rec_com();    				
-			
+		
 				while((motor.angle_adjusted >= 400)  && (RotateFlag == 0) )
 	    		{
 				
@@ -2940,6 +2935,7 @@ void run_status(void)
 				if( making_pen_actoin_flag == 1)//车缝中的记号笔功能
 				{				
 					#if INSERPOINT_ENABLE
+					
 					if(inpress_flag == 0)
 						inpress_up();
 					PBP_Line(0);
@@ -2957,6 +2953,7 @@ void run_status(void)
   				   ally_step = ally_step + ystep_cou;
 
 					#else
+					
 					StitchStartFlag	=1;
 					x_temp = fabsm(xstep_cou);
 					y_temp = fabsm(ystep_cou);
@@ -2997,15 +2994,14 @@ void run_status(void)
 						action_flag2 = 1;
 						action_flag3 = 1;
 						action_flag4 = 1;				
-						/*			
+								
 		                if( (inpress_down_angle > inpress_up_angle )&&(last_stitch_down ==1) )
 						     action_flag0 = 0;	
 						else if( (inpress_down_angle > inpress_up_angle )&&(last_stitch_down ==0))
 						{
 							 inpress_down_angle = 5;
 						}
-					    */
-					
+					    				
 						temp16 = motor.angle_adjusted;
 						
 						while( temp16 < 1400 )//350d
@@ -3021,8 +3017,7 @@ void run_status(void)
 							{
 								action_flag0 = 0;
 								if( inpress_follow_high_flag == FOLLOW_INPRESS_HIGH )
-								{
-									
+								{									
 									if( movezx_delay_flag == 1)
 										while( movezx_delay_counter >0 );
 										
@@ -3075,8 +3070,7 @@ void run_status(void)
 									movezx_delay_counter = inpress_follow_up_speed ;
 									movezx_delay_flag =1;
 							
-									//========================================
-									/*
+									//========================================									
 									stitch_counter++;
 									pat_point++;
 									check_data(0);//看看下针转速，但不改变实际转速
@@ -3090,7 +3084,6 @@ void run_status(void)
 									}
 									else
 										last_stitch_down = 0;
-									*/
 									//========================================
 								}
 							}

@@ -24,7 +24,7 @@
     
 #define MainFatherVersion		05
 #define MainChildVersion		07 
-#define MainSVNVersion			2071//2063//2062//2061//20527//20526
+#define MainSVNVersion			2073//2072//2063//2062//2061//20527//20526
 
 
 

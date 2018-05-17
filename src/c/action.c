@@ -113,30 +113,48 @@ void process_making_pen_signal(UINT8 flag);
 void go_origin_yj(void);
 void go_origin_qd(void);
 
-
-const UINT16 inpress_follow_down_angle_tab[]=
+const UINT16 inpress_follow_down_angle_tab1[]=
 {
     // 0   1   2   3   4   5   6   7   8   9   10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32
 	   65, 65, 65, 65, 30, 28, 20, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 10, 10, 10, 10, 10,  9,  8,  8,  5,  5,  5,  5,  5
 };
-const UINT8 inpress_follow_down_speed_tab[]=
+const UINT8 inpress_follow_down_speed_tab1[]=
 {
 	// 0   1   2   3   4   5   6   7   8   9   10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32
-	//60, 60, 60, 60, 60, 47, 42, 37, 33, 29, 26, 24, 22, 20, 18, 17, 16, 15, 15, 13, 13, 13, 12, 12, 11, 11, 11, 10, 10, 10, 10, 9, 9
-	   60, 60, 60, 60, 60, 47, 42, 37, 33, 29, 26, 24, 22, 20, 18, 17, 16, 15, 15, 13, 13, 13, 12, 12, 11, 11, 10, 10, 10, 10, 10, 9, 9
+	   60, 60, 60, 60, 60, 47, 42, 37, 33, 29, 26, 24, 22, 20, 18, 17, 16, 15, 15, 13, 13, 13, 12, 12, 11, 11, 11, 10, 10, 10, 10, 9, 9
+};
+
+const UINT16 inpress_follow_up_angle_tab1[]= 
+{
+	// 0   1   2   3   4   5   6   7   8   9   10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32
+  	  250,250,250,230,230,220,210,210,210,210,210,210,210,210,210,210,210,210,200,200,200,200,200,200,200,200,190,190,185,185,185,185,185
+}; 
+const UINT8 inpress_follow_up_speed_tab1[]=
+{
+	// 0   1   2   3   4   5   6   7   8   9   10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32
+	  60,  60, 60, 60, 50, 47, 42, 37, 33, 29, 26, 23, 22, 20, 18, 17, 16, 15, 15, 13, 13, 13, 12, 12, 11, 11, 11, 10, 10, 9,  9, 9, 9
+};
+
+const UINT16 inpress_follow_down_angle_tab[]=
+{
+    // 0   1   2   3   4   5   6   7   8   9   10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32
+       65, 65, 65, 65, 30, 28, 20, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 340,340,340,340,340,340,330,330,330,330,330,330,330
+};
+const UINT8 inpress_follow_down_speed_tab[]=
+{
+	// 0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32
+	  60, 60, 60, 60, 60, 47, 42, 37, 33, 29, 26, 24, 22, 20, 18, 17, 15, 14, 14, 13, 13, 13, 12, 12, 11, 11, 10, 10, 10,  9,  9,  9,  8
  };
 
 const UINT16 inpress_follow_up_angle_tab[]= 
 {
 	// 0   1   2   3   4   5   6   7   8   9   10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32
-  	// 250,250,250,230,230,230,220,210,210,210,210,210,210,210,210,210,210,210,200,200,200,200,200,200,200,200,190,190,185,185,185,185,185
-	   250,250,250,230,230,230,220,210,210,210,210,210,210,210,210,210,210,210,200,200,200,200,200,200,200,200,170,190,185,185,185,185,185
+  	   250,250,250,230,220,220,220,210,210,200,200,200,190,180,180,180,180,180,180,180,170,160,150,150,150,150,150,150,150,140,140,140,140
 }; 
 const UINT8 inpress_follow_up_speed_tab[]=
 {
 	// 0   1   2   3   4   5   6   7   8   9   10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32
-	//60,  60, 60, 60, 60, 47, 42, 37, 33, 29, 26, 24, 22, 20, 18, 17, 16, 15, 15, 13, 13, 13, 12, 12, 11, 11, 11, 10, 10, 10, 10, 9, 9
-	  60,  60, 60, 60, 60, 47, 42, 37, 33, 29, 26, 24, 22, 20, 18, 17, 16, 15, 15, 13, 13, 13, 12, 12, 11, 11, 10, 10, 10, 10, 10, 9, 9
+	  60,  60, 60, 48, 45, 33, 30, 28, 24, 22, 20, 19, 18, 18, 17, 16, 15, 14, 13, 13, 13, 13, 12, 12, 11, 11, 10, 10, 9, 9, 9, 9, 8
 };
 //======================================================================================================================================	
 const UINT8 MoveTime_Speed_10080_ND80[] =
@@ -2864,26 +2882,41 @@ void check_data(UINT8 control_flag)
 
 #if FOLLOW_INPRESS_FUN_ENABLE
     if( motor.spd_obj> temp_speed)
-	    inpress_tmp_speed = (motor.spd_obj-temp_speed)/2+temp_speed;
+	    inpress_tmp_speed = (motor.spd_obj - temp_speed)/2+temp_speed;
 	else
 		inpress_tmp_speed = temp_speed;
     
 	temp_speed = inpress_tmp_speed / 100;
+	
 	if( temp_speed > 30)
 	    temp_speed = 30;
-
-    if((follow_up_inpresser_angle_adj<0)&&((-follow_up_inpresser_angle_adj)>inpress_follow_down_angle_tab[temp_speed]))
-		inpress_follow_down_angle = 0;
-    else 
-	    inpress_follow_down_angle = inpress_follow_down_angle_tab[temp_speed] + follow_up_inpresser_angle_adj;
-	if(inpress_follow_down_angle>340)
-		inpress_follow_down_angle=inpress_follow_down_angle-340;
 		
-	inpress_follow_down_speed = inpress_follow_down_speed_tab[temp_speed] + follow_up_inpresser_time_adj;
-	inpress_follow_up_angle   = inpress_follow_up_angle_tab[temp_speed]+ follow_up_inpresser_angle_adj;
-	if(inpress_follow_up_angle>340)
-	inpress_follow_up_angle=inpress_follow_up_angle-340;
-	inpress_follow_up_speed   = inpress_follow_up_speed_tab[temp_speed] + follow_up_inpresser_time_adj;		
+	if( para.zx_curver == 1)
+	{
+		inpress_follow_down_angle = inpress_follow_down_angle_tab[temp_speed];
+		inpress_follow_down_speed = inpress_follow_down_speed_tab[temp_speed];
+		inpress_follow_up_angle   = inpress_follow_up_angle_tab[temp_speed];
+		inpress_follow_up_speed   = inpress_follow_up_speed_tab[temp_speed];
+	}
+	else
+	{
+		inpress_follow_down_angle = inpress_follow_down_angle_tab1[temp_speed];
+		inpress_follow_down_speed = inpress_follow_down_speed_tab1[temp_speed];
+		inpress_follow_up_angle   = inpress_follow_up_angle_tab1[temp_speed];
+		inpress_follow_up_speed   = inpress_follow_up_speed_tab1[temp_speed];
+	}
+	
+	if( follow_inpresser_angle_adj != 0)//Ëæ¶¯½Ç¶ÈÎ¢µ÷
+	{
+		inpress_follow_down_angle += follow_inpresser_angle_adj;
+		if( inpress_follow_down_angle > 340 )
+			inpress_follow_down_angle -= 340;
+				
+		inpress_follow_up_angle += follow_inpresser_angle_adj;
+		
+		if( inpress_follow_up_angle > 340 )
+			inpress_follow_up_angle -= 340;
+	}
 
 #endif
 	
