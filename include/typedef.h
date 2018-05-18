@@ -189,7 +189,8 @@ typedef struct
 	UINT8  dsp3A_half_current;	//110
 	UINT8  dsp3B_half_current;	//111
 	UINT8  qd_org_direction;    //112
-	UINT8  zx_curver;//113
+	UINT8  zx_curver;			//113
+	UINT8  slow_start_mode;		//114 慢速启动模式
 
 }SYSTEM_PARA;
 

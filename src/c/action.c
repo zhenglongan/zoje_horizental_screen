@@ -112,7 +112,26 @@ UINT8 check_footer_status(void);
 void process_making_pen_signal(UINT8 flag);
 void go_origin_yj(void);
 void go_origin_qd(void);
-
+const UINT16 inpress_spdlimit_speed_tab[]=
+{
+	// 	0.1		0.2		0.3		0.4		0.5		0.6		0.7		0.8		0.9		1.0
+		3000,	3000,	3000,	3000,	3000,	3000,	3000,	3000,	3000,	3000,
+	// 	1.1		1.2		1.3		1.4		1.5		1.6		1.7		1.8		1.9		2.0
+		3000,	3000,	3000,	3000,	3000,	3000,	3000,	3000,	3000,	3000,
+	// 	2.1		2.2		2.3		2.4		2.5		2.6		2.7		2.8		2.9		3.0
+		3000,	3000,	3000,	3000,	3000,	3000,	2900,	2800,	2700,	2600,
+	// 	3.1		3.2		3.3		3.4		3.5		3.6		3.7		3.8		3.9		4.0  
+		2600,	2500,	2500,	2400,	2300,	2300,	2300,	2300,	2300,	2200,
+	// 	4.1		4.2		4.3		4.4		4.5		4.6		4.7		4.8		4.9		5.0
+		2200,	2200,	2100,	2100,	2100,	2000,	2000,	2000,	2000,	2000,
+	// 	5.1		5.2		5.3		5.4		5.5		5.6		5.7		5.8		5.9		6.0
+	    2000,	2000,	2000,	1900,	1900,	1900,	1800,	1800,	1800,	1800,
+	// 	6.1		6.2		6.3		6.4		6.5		6.6		6.7		6.8		6.9		7.0
+	    1800,	1700,	1700,	1700,	1600,	1600,	1600,	1500,	1500,	1500,
+	// 	7.1		7.2		7.3		7.4		7.5		7.6		7.7		7.8		7.9		8.0
+		1500,	1500,	1400,	1400,	1400,	1400,	1400,	1300,	1300,	1300
+};
+//=======================================================================================================================================
 const UINT16 inpress_follow_down_angle_tab1[]=
 {
     // 0   1   2   3   4   5   6   7   8   9   10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32
@@ -134,7 +153,7 @@ const UINT8 inpress_follow_up_speed_tab1[]=
 	// 0   1   2   3   4   5   6   7   8   9   10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32
 	  60,  60, 60, 60, 50, 47, 42, 37, 33, 29, 26, 23, 22, 20, 18, 17, 16, 15, 15, 13, 13, 13, 12, 12, 11, 11, 11, 10, 10, 9,  9, 9, 9
 };
-
+//=======================================================================================================================================
 const UINT16 inpress_follow_down_angle_tab[]=
 {
     // 0   1   2   3   4   5   6   7   8   9   10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32
@@ -2344,156 +2363,7 @@ void check_data(UINT8 control_flag)
   	if(slow_flag == 1)               
   	{
   		length = 13; 
-		
-		{
-			/*switch(Dec_Counter)
-			{
-					case 0:
-						if( sewingcontrol_tail_flag != 0)
-						{
-							if(motor.spd_obj >= 10*tail_sewing_speed)
-							{
-								temp_speed = 10*tail_sewing_speed;
-							}
-							else
-							{
-								temp_speed = last_speed;
-							}
-						}
-						else
-						{
-							if(motor.spd_obj >= 10*u211)
-							{
-								temp_speed = 10*u211;
-							}
-							else
-							{
-								temp_speed = last_speed;
-							}
-						}
-						break;
-					case 1:
-						if( sewingcontrol_tail_flag != 0)
-						{
-							if(motor.spd_obj >= 10*tail_sewing_speed)
-							{
-								temp_speed = 10*tail_sewing_speed;
-							}
-							else
-							{
-								temp_speed = last_speed;
-							}	
-						}
-						else
-						{
-							if(motor.spd_obj >= 400)
-							{
-								temp_speed = 400;
-							}
-							else
-							{
-								temp_speed = last_speed;
-							}
-						}
-						break;
-					case 2:
-						if( sewingcontrol_tail_flag != 0)
-						{
-							if(motor.spd_obj >= 10*tail_sewing_speed)
-							{
-								temp_speed = 10*tail_sewing_speed;
-							}
-							else
-							{
-								temp_speed = last_speed;
-							}
-						}
-						else
-						{
-							if(motor.spd_obj >= 600)
-							{
-								temp_speed = 600;
-							}
-							else
-							{
-								temp_speed = last_speed;
-							}
-						}
-						break;
-					case 3:
-						if(motor.spd_obj >= 800)
-						{
-							temp_speed = 800;
-						}
-						else
-						{
-							temp_speed = last_speed;
-						}
-						break;
-					case 4:
-					
-						if(motor.spd_obj >= 1000)
-						{
-							temp_speed = 1000;
-						}
-						else
-						{
-							temp_speed = last_speed;
-						}
-			
-						break;
-					case 5:
-						if(motor.spd_obj >= 1300)
-						{
-							temp_speed = 1300;
-						}
-						else
-						{
-							temp_speed = last_speed;
-						}
-						break;
-					case 6:
-						if(motor.spd_obj >= 1600)
-						{
-							temp_speed = 1600;
-						}
-						else
-						{
-							temp_speed = last_speed;
-						}
-						break;
-					case 7:
-						if(motor.spd_obj >= 1800)
-						{
-							temp_speed = 1800;
-						}
-						else
-						{
-							temp_speed = last_speed;
-						}
-						break;	
-					case 8:
-						if(motor.spd_obj >= 2200)
-						{
-							temp_speed = 2200;
-						}
-						else
-						{
-							temp_speed = last_speed;
-						}
-						break;
-					case 9:
-						if(motor.spd_obj >= 2400)
-						{
-							temp_speed = 2400;
-						}
-						else
-						{
-							temp_speed = last_speed;
-						}
-						break;
-		    	}*/	
-				switch(Dec_Counter)
+		switch(Dec_Counter)
 				{
 					#if OPEN_LAST_5_STITCH_SPEED
 					case 0:
@@ -2648,7 +2518,7 @@ void check_data(UINT8 control_flag)
 			
 						break;
 					#endif	
-		    	}
+		    	
 			}
   	}      
   	else
@@ -2660,6 +2530,8 @@ void check_data(UINT8 control_flag)
 			if( temp_speed > PatternSpeedLimited*100) 
 	  			temp_speed = PatternSpeedLimited*100;	
 			
+			if( ( inpress_type == FOLLOW_UP_INPRESSER )&&( temp_speed > inpress_follow_speed ) )//Ëæ¶¯ÖÐÑ¹½Å½µËÙ£»
+				temp_speed = inpress_follow_s
 			//-----------------------------------------------------------------------	
 		  	// speed increase or speed decrease
 		  	//-----------------------------------------------------------------------    
