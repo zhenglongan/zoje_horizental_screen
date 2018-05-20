@@ -144,6 +144,8 @@ extern void PBP_Line (UINT8 stitch_cnt);
 
 extern void take_frame_from_one_side(UINT8 side);
 extern void return_frame_back(UINT8 side);
+
+extern const UINT16 inpress_spdlimit_speed_tab[];
 #endif
 //--------------------------------------------------------------------------------------
 //         COPYRIGHT(C) 2006 Beijing xindahao technology Co., Ltd.

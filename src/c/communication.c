@@ -1411,6 +1411,7 @@ void protocol(UINT8* command)
 				temp16 = (INT16)rec_buf[73]<<8;
 				y_bios = temp16 | (INT16)rec_buf[74];
 				u235 = rec_buf[75];   								// inpresser current setting
+				if(u235>12)  u235=12;
 				u236 = rec_buf[76]; 								// stop angle setting 
 
 				temp16 = (INT16)rec_buf[77]<<8;
@@ -1447,12 +1448,13 @@ void protocol(UINT8* command)
 				else
 				    stretch_foot_enable =0;
 			
-			
-				
-				auto_function_skip_flag = rec_buf[86]; //模板解锁标致：1是模板识别 0是手动切换  
-				if( auto_function_skip_flag==0)
+				auto_lock_flag = rec_buf[86]; //模板解锁标致：1-锁定是模板识别 0-解锁是手动切换  
+				if( auto_lock_flag == 0)
 					last_pattern_number =0;
-								
+				
+				
+				temp = (UINT16)rec_buf[178]<<8;
+				now_pattern_number = temp | (UINT16)rec_buf[179];
 				u239 = 0;
 				temp16 = (INT16)rec_buf[88]<<8;					
 				u242 = temp16|(INT16)rec_buf[89];            
@@ -1753,9 +1755,13 @@ void protocol(UINT8* command)
 				holding_bobbin_start_angle = holding_bobbin_start_angle << 2;
 				
 				inpress_follow_range = rec_buf[99];
+				inpress_follow_speed = inpress_spdlimit_speed_tab[inpress_follow_range-1];
+				
 				if( inpress_follow_range < 10)
 					inpress_follow_range = 10;
-				inpress_follow_range =  inpress_follow_range*7/10;
+				inpress_follow_range =  inpress_follow_range*7/10;			
+				if( inpress_follow_range > 80)
+					inpress_follow_range = 80;
 				
 				follow_inpresser_time_adj = (INT8)rec_buf[100];		//随动时间微调		
 				temp = (UINT16)rec_buf[35]<<8;					

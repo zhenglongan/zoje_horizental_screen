@@ -191,6 +191,11 @@ typedef struct
 	UINT8  qd_org_direction;    //112
 	UINT8  zx_curver;			//113
 	UINT8  slow_start_mode;		//114 慢速启动模式
+	UINT8  Corner_deceleration_speed1; //115 拐点后第一针
+	UINT8  Corner_deceleration_speed2; //116 拐点后第二针
+	UINT8  Corner_deceleration_speed3; //117 拐点后第三针
+	UINT8  Corner_deceleration_speed4; //118 拐点后第四针
+
 
 }SYSTEM_PARA;
 

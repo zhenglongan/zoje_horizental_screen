@@ -620,7 +620,6 @@ UINT8  test_brk_flag;
 
 INT16 test_nop_x,test_nop_y,next_nop_x,next_nop_y;
 
-UINT8 auto_function_skip_flag;
 UINT8 flag_start_waitcom;
 UINT8 counter_wait_com;
 UINT8 flag_wait_com;
@@ -733,6 +732,7 @@ UINT16  Rfid_Nom;
 UINT8  rc522_write_falg;
 UINT8  rc522_write_ret_falg;
 UINT8  rc522_control_falg;
+UINT8  rc522_ok_flag;
 UINT8  making_pen_nopmove_flag;
 UINT16  dsp1_step_crc;
 UINT16  dsp2_step_crc;
@@ -775,6 +775,10 @@ INT16 rotated_abs_angle;
 
 UINT16 monitor_predit_shift_flag_conter;
 UINT8  monitor_predit_shift_flag_value;
+UINT16 inpress_follow_speed;
+
+UINT8 auto_lock_flag;
+UINT16 now_pattern_number; 
 //--------------------------------------------------------------------------------------
 //         COPYRIGHT(C) 2006 Beijing xingdahao technology Co., Ltd.
 //                     ALL RIGHTS RESERVED 

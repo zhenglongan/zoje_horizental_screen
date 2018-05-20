@@ -133,6 +133,7 @@ void main(void)
 		
 			if( u201 == 1 )         
 		   	    go_origin_allmotor();		
+				
 			if((auto_function_flag == 1)&&(formwork_identify_device ==2))
 			{
 			   RFID_initial();
@@ -211,7 +212,7 @@ void main(void)
 			&&(predit_shift == 0)
 			&&(already_in_origin ==1))
 		{
-			if( auto_function_skip_flag == 1 )
+			if( auto_lock_flag == 1 )
 				rec1_com();
 		}
 		
@@ -293,17 +294,7 @@ void ta0_int(void)
 	}
 	
 	#endif
-	/*
-	if( barcoder_time_between_same_code == 1)
-	{
-		  pattern_change_counter++;
-	      if(pattern_change_counter >= 1000)
-	      {	     
-			  barcoder_time_between_same_code = 0;
-			  last_pattern_number =0;
-		  }  
-	}
-	*/
+
 	if( motor.spd_obj > 0)
 	{
 		if( cool_air_action_flag == 0)

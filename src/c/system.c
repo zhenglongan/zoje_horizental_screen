@@ -108,6 +108,7 @@ void pattern_process(void)
 			tmp_pattern2 = identify_pattern();  
 			if(  (tmp_pattern2 !=0)&&(tmp_pattern == tmp_pattern2) )
 			{
+				//if((last_pattern_number != tmp_pattern2)||(now_pattern_number != tmp_pattern2))//主控新扫描到模板号同主控上一次或者面板当前不一致就请求更新
 				if( last_pattern_number != tmp_pattern2)
 				{
 				     if( already_in_origin == 0)                            
@@ -128,7 +129,6 @@ void pattern_process(void)
 				   last_pattern_number = tmp_pattern2;
 				   barcoder_time_between_same_code = 1;
 				   pattern_change_counter = 0;
-				   //return_from_setout = 0;
 				   SUM =1;
 				   rfid_alarm_counter = 800;
 				   rfid_alarm_flag = 1;
@@ -564,10 +564,7 @@ void ready_status(void)
 		}
 	}
 	
-	//if( auto_function_skip_flag == 1)
-	//	SUM =1;	
-	//else
-	//	SUM = 0;				 
+		 
 	
 	#if DA0_OUTPUT_IMMEDIATELY
 			if( temp_tension != tension_release_value)
@@ -1235,7 +1232,7 @@ void ready_status(void)
 				//  start sensor
 				//--------------------------------------------------------------------------------------  
 				//if( (DVA == para.dvab_open_level)&&(DVB != para.dvab_open_level)&&(single_flag ==0)) 
-				if((pedal_state ==1)&&(single_flag ==0))
+				if((pedal_state ==1)&&(single_flag ==0)&&(pattern_change_flag == 0) )
 				{				
 					pedal_state = 0;
 					//SUM = 1;
@@ -1259,7 +1256,7 @@ void ready_status(void)
 		    					process_nop_move_pause(1);
 							if( nop_move_pause_flag ==0)
 							{	
-								if((formwork_identify_device ==2)&&(auto_function_flag == 1)&&( return_from_setout ==1)&&( auto_function_skip_flag == 1 ))
+								if((formwork_identify_device ==2)&&(auto_function_flag == 1)&&( return_from_setout ==1)&&( auto_lock_flag == 1 ))
 								{
 									if( serail_number != 0 )
 										pre_running();
@@ -2880,6 +2877,9 @@ void run_status(void)
 				
 					tb4s = 0;
 					laser_cutter_aciton_flag = 0; 
+					tra1_ind_w = 0;
+					tra1_ind_r = 0;
+					LASER_SIGNAL = 0;
 				}
 				laststitch_flag = 0;
 				nopmove_flag = 0;
@@ -4809,7 +4809,7 @@ void slack_status(void)
 		   		init_uart1_RC522(); 	
 		   		rfid_config_flag = 1;
 			}	
-			RFID_SCAN();
+			rc522_ok_flag = RFID_SCAN();
 	        rfid_wr_ret();
 		}
 	}

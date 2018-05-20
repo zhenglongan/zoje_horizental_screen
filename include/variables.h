@@ -755,7 +755,7 @@ extern UINT16  dsp2_step_crc;
 extern UINT8 blow_air_action_flag;
 extern UINT16 blow_air_counter;
 extern UINT8 waitting_for_point_command;
-extern UINT8 auto_function_skip_flag;
+
 extern UINT8 main_control_lock_setup;
 extern UINT8 already_up_flag;
 
@@ -777,6 +777,11 @@ extern INT16 rotated_position;
 extern INT16 rotated_abs_angle;
 extern UINT16 monitor_predit_shift_flag_conter;
 extern UINT8  monitor_predit_shift_flag_value;
+extern UINT16 inpress_follow_speed;
+
+extern UINT8 auto_lock_flag;
+extern UINT16 now_pattern_number; 
+extern UINT8  rc522_ok_flag;
 //--------------------------------------------------------------------------------------
 //         COPYRIGHT(C) 2006 Beijing xingdahao technology Co., Ltd.
 //                     ALL RIGHTS RESERVED 

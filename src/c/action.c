@@ -157,7 +157,7 @@ const UINT8 inpress_follow_up_speed_tab1[]=
 const UINT16 inpress_follow_down_angle_tab[]=
 {
     // 0   1   2   3   4   5   6   7   8   9   10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32
-       65, 65, 65, 65, 30, 28, 20, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 340,340,340,340,340,340,330,330,330,330,330,330,330
+       65, 65, 15, 65, 30, 28, 20, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 340,340,340,340,340,340,330,330,330,330,330,330,330
 };
 const UINT8 inpress_follow_down_speed_tab[]=
 {
@@ -1114,9 +1114,10 @@ void go_origin_allmotor(void)
 		}
 		marking_finish_flag = 1;
 		making_pen_actoin_flag = 0;
+		laser_cutter_aciton_flag = 0;
 	}
 	last_pattern_number = 0;
-	serail_number = 0;
+	serail_number =0;
 	opl_flag = opl_origin_flag ;
 	go_origin_xy();
 	if( pause_flag == 1 )
@@ -1629,8 +1630,9 @@ void inpress_down(UINT8 pos)
 	if(pos > 80)
        pos = 80;
     R_AIR = 1;
-	delay_ms(100);
+	delay_ms(inpress_down_delay);
 	inpress_to(pos);  
+	delay_ms(80);//200
 	inpress_flag = 0; 
 	inpress_com = 0;   
 
@@ -2166,11 +2168,64 @@ void check_data(UINT8 control_flag)
 						if( start_to_speed_down == 0 )//先看是否已经启动了拐角降速
 						{
 						   if( Temp_point->xstep == 0 )//针数设置错误
-							    break;
+							   break;
+								
 						   if( i == 4 )
 						   {
-							   //1针--1800  2针--  3针-- 4针-- 5针--800
-							  if(  Temp_point->xstep >=3 )
+							   start_to_speed_down = 1;
+							   speed_down_counter = 0;
+							   speed_down_stitchs = 9;							   
+							   //0 1 2 3 4 5 6 7 8 
+							   //0 0 0 0 1 0 0 0 0  1针降速
+							   //0 0 0 1 2 1 0 0 0  2针降速
+							   //0 0 1 2 3 2 1 0 0  3针降速
+							   //0 1 2 3 4 3 2 1 0  4针降速
+							   //1 2 3 4 5 4 3 2 1  5针降速
+							   for( k=0; k<10; k++)
+							        ratio_array [k] = motor.spd_obj;	//默认维持原速	
+							   		 
+							  ratio_array[4] = (UINT16)para.Corner_deceleration_speed*100;//默认中间一针降到设定转速						  
+						  	  
+							  switch(Temp_point->xstep)//看拐点要降几针
+							  {
+								  case 1:							  		
+								  break;
+								  case 2://2针降速
+										ratio_array[3] = (UINT16)para.Corner_deceleration_speed1*100;//升速第一针
+										ratio_array[5] = (UINT16)para.Corner_deceleration_speed1*100;
+								  break;
+								  case 3://3针降速
+										ratio_array[2] = (UINT16)para.Corner_deceleration_speed2*100; 
+										ratio_array[3] = (UINT16)para.Corner_deceleration_speed1*100;
+										
+										ratio_array[5] = (UINT16)para.Corner_deceleration_speed1*100;
+										ratio_array[6] = (UINT16)para.Corner_deceleration_speed2*100;							
+								  break;
+								  case 4://4针降速
+						
+								  		ratio_array[1] = (UINT16)para.Corner_deceleration_speed3*100;
+								     	ratio_array[2] = (UINT16)para.Corner_deceleration_speed2*100;
+										ratio_array[3] = (UINT16)para.Corner_deceleration_speed1*100;
+																	
+										ratio_array[5] = (UINT16)para.Corner_deceleration_speed1*100;
+										ratio_array[6] = (UINT16)para.Corner_deceleration_speed2*100;
+										ratio_array[7] = (UINT16)para.Corner_deceleration_speed3*100;
+								  break;
+								  case 5://5针降速
+									
+								  		ratio_array[0] = (UINT16)para.Corner_deceleration_speed4*100;
+										ratio_array[1] = (UINT16)para.Corner_deceleration_speed3*100;
+								     	ratio_array[2] = (UINT16)para.Corner_deceleration_speed2*100;
+										ratio_array[3] = (UINT16)para.Corner_deceleration_speed1*100;
+																		
+										ratio_array[5] = (UINT16)para.Corner_deceleration_speed1*100;
+										ratio_array[6] = (UINT16)para.Corner_deceleration_speed2*100;
+										ratio_array[7] = (UINT16)para.Corner_deceleration_speed3*100;
+										ratio_array[8] = (UINT16)para.Corner_deceleration_speed4*100;
+								  break;
+							  }//end switch
+							  /*
+							   if(  Temp_point->xstep >=3 )
 							        Corner_deceleration_speed = para.Corner_deceleration_speed;
 							   else if( Temp_point->xstep == 2 )
 							   	    Corner_deceleration_speed = 14;
@@ -2183,13 +2238,9 @@ void check_data(UINT8 control_flag)
 							   start_to_speed_down = 1;
 							   speed_down_counter = 0;
 							   speed_margin =  motor.spd_obj - setup_speed;//转速差
-							   speed_down_stitchs = 9;
-						   
-							   //目前是提前8针扫描花样,所以最早找到降速码时一定是第5针(i=4)
-							   //要看一下拐点降速的针数 和 当前的位置 来决定后面的共计9针的速度变化
-							   //用0表示转速不变,1表示低一档,2表示降两档,类推.
-						  
-							   //0 1 2 3 4 5 6 7 8
+							   speed_down_stitchs = 9;						   
+			  
+							   //0 1 2 3 4 5 6 7 8 
 							   //0 0 0 0 1 0 0 0 0  1针降速
 							   //0 0 0 1 2 1 0 0 0  2针降速
 							   //0 0 1 2 3 2 1 0 0  3针降速
@@ -2243,14 +2294,13 @@ void check_data(UINT8 control_flag)
 										ratio_array[8] = setup_speed + 4*speed_margin ;
 								  break;
 							  }//end switch
+							  */
 						  }
 					  }//end if
-					 break;
-					 
+					 break;					 
 					 
 				  }//case 1d
-				 break; 
-				 
+				 break; 				 
 				 
 			case 0x02://02 00 00 00
 					if( slow_flag == 0 ) 
@@ -2525,13 +2575,13 @@ void check_data(UINT8 control_flag)
   	{
             temp_speed = spdlimit_10080_345_tab[max16-1] ;
 				
+			if( ( inpress_type == FOLLOW_UP_INPRESSER )&&( temp_speed > inpress_follow_speed ) )//随动中压脚降速；
+				  temp_speed = inpress_follow_speed;
 			if( sew_speed >  PatternSpeedLimited*100) 
 	  			sew_speed =  PatternSpeedLimited*100;
 			if( temp_speed > PatternSpeedLimited*100) 
 	  			temp_speed = PatternSpeedLimited*100;	
 			
-			if( ( inpress_type == FOLLOW_UP_INPRESSER )&&( temp_speed > inpress_follow_speed ) )//随动中压脚降速；
-				temp_speed = inpress_follow_s
 			//-----------------------------------------------------------------------	
 		  	// speed increase or speed decrease
 		  	//-----------------------------------------------------------------------    
@@ -2592,9 +2642,13 @@ void check_data(UINT8 control_flag)
 		{
 			if( control_flag == 1)
 				speed_down_stitchs--;
-			temp_speed = (ratio_array[speed_down_counter]+50)/100*100;		
-			if( temp_speed < 200)
-		   		temp_speed = 200;
+			setup_speed = ratio_array[speed_down_counter];//(ratio_array[speed_down_counter]+50)/100*100;	
+			if( setup_speed < 200)
+		   		setup_speed = 200;
+			if(temp_speed > setup_speed)
+	    	{
+	      	   temp_speed = setup_speed;	
+	    	} 			
 			if( control_flag == 1)
 				speed_down_counter++;
 		}
@@ -2604,7 +2658,72 @@ void check_data(UINT8 control_flag)
 		}
 	}
 		
-	
+	if( para.slow_start_mode == 1)
+	{
+			if(stitch_counter < 18)
+	  		{
+				switch(stitch_counter)
+	  	  		{
+			  	  	case 1:
+						temp16 = 200;
+						break;  
+					case 2:
+						temp16 = 200;
+						break;		  	      
+			      	case 3: 
+						temp16 = 400;
+						break;  	  	      
+			      	case 4: 
+						temp16 = 600;
+						break;      		      
+			      	case 5: 
+						temp16 = 800;
+						break;	      	      	            	
+			      	case 6: 
+						temp16 = 1000;
+						break;    
+					case 7: 
+						temp16 = 1200; 
+						break;
+					case 8: 
+						temp16 = 1400;   
+						break;
+					case 9: 
+						temp16 = 1500; 
+						break;
+					case 10: 
+						temp16 = 1700;   
+						break;
+					case 11: 
+						temp16 = 2000;  
+						break;
+					case 12: 
+						temp16 = 2100;   
+						break;	
+					case 13: 
+						temp16 = 2200;   
+						break;
+					case 14: 
+						temp16 = 2300;  
+						break;	 		  	 		  		 		  		      
+					case 15: 
+						temp16 = 2400;   
+						break;
+					case 16: 
+						temp16 = 2500;   
+						break;
+					case 17: 
+						temp16 = 2600;
+  						break;
+	  	  		}
+			if(temp_speed > temp16)
+	    	{
+	      		temp_speed = temp16;	
+	    	} 	
+		}
+	}
+	else
+	{
 			if(stitch_counter < 6)//23
 	  		{
 				switch(stitch_counter)
@@ -2634,76 +2753,11 @@ void check_data(UINT8 control_flag)
 						if( temp16 > 3000)
 						    temp16 = 3000;
 						break;    
-					/*case 6: 
-						temp16 = 1300;//1100;//1400; 
-						break;
-					case 7: 
-						temp16 = 1400;//1200;//1500;   
-						break;
-					case 8: 
-						temp16 = 1500;//1300; 
-						break;
-					case 9: 
-						temp16 = 1600;//1400;   
-						break;    
-					case 10: 
-						temp16 = 1700;//1500;   
-						break;
-					case 11: 
-						temp16 = 1800;//1600;  
-						break;
-					case 12: 
-						temp16 = 1900;//1700;   
-						break;	
-					case 13: 
-						temp16 = 2000;//1800;   
-						break;
-					case 14: 
-						temp16 = 2100;//1900;   
-						break;	 		  	 		  		 		  		      
-					case 15: 
-						temp16 = 2200;//2000;   
-						break;
-					case 16: 
-						temp16 = 2300;//2100;   
-						break;
-					case 17: 
-						temp16 = 2400;//2200;   
-						break;
-					case 18: 
-						temp16 = 2500;//2300;   
-						break;				
-					case 19: 
-						temp16 = 2600;//2400;   
-						break;
-					case 20: 
-						temp16 = 2700;//2500;   
-						break;
-					case 21: 
-						temp16 = 2800;//2700;   
-						break;
-					case 22: 
-						temp16 = 2900;   
-						break;*/
+					
 			      	default:                      
 						break;        			
 	  	  		}
-				#if 0
-				if( sewingcontrol_flag ==2 )
-				{
-					if( stitch_counter< (sewingcontrol_stitchs<<1))
-					{
-						if( temp16 > 800)
-					    	temp16 = 800;
-						speed_up_value = 800;
-					}
-					else
-					{
-						speed_up_value += 100;
-						temp16 = speed_up_value;
-					}
-				}
-				#endif
+
 			if(RotateFlag == 1)
 			   temp_speed = temp16;	
 	     	else if(temp_speed > temp16)
@@ -2711,13 +2765,12 @@ void check_data(UINT8 control_flag)
 	      		temp_speed = temp16;	
 	    	} 	
 		}
-  	
+	}	
   	//-----------------------------------------------------------------------	
   	// set object speed
   	//-----------------------------------------------------------------------
 
-	//if( (length!=13)&&(stitch_counter>22)&&( start_to_speed_down == 0) )
-	if( (length!=13)&&(stitch_counter>5)&&( start_to_speed_down == 0) )
+	if( (length!=13)&&( ((para.slow_start_mode == 0)&&(stitch_counter>5))||((para.slow_start_mode == 1)&&(stitch_counter>17)) )&&( start_to_speed_down == 0) )
 	{
 		 if(max16 <= HighSpeedStitchLength )
 		 {
@@ -3801,7 +3854,7 @@ void go_beginpoint(UINT8 FirstNopmoveFlag)
 	INT16 tempx_step,tempy_step,add_x,add_y; 
 	UINT16 quick_time ,j,tmpx,tmpy;	
 	PATTERN_DATA *TempPatpoint;
-	UINT8 fast_flag;
+	UINT8 fast_flag,temp8;
 	
 	fast_flag =0;
 	move_flag = 0;
@@ -3825,6 +3878,19 @@ void go_beginpoint(UINT8 FirstNopmoveFlag)
 		else if( making_pen_status == 4 )
 			LASER_SIGNAL = 0;
 	}
+	temp8 = detect_position();	
+	if(temp8 == OUT)     
+	{	
+		find_dead_center();		
+	}
+	
+	go_origin_zx();
+	if( (sys.error != 0)&&(stay_flag==0) )
+	{
+		sys.status = ERROR;
+		StatusChangeLatch = ERROR;
+		return;
+	} 
 	//--------------------------------------------------------------------------------------
   	//  process pattern data
   	//--------------------------------------------------------------------------------------
@@ -6344,6 +6410,13 @@ void pause_stop(void)
 		{
 			rec_com();
 		}
+		//delay_ms(100);
+		//temp16 = detect_position();	
+		//if(temp16 == OUT)     
+		//{
+			//find_dead_center();
+		//}
+	   //	delay_ms(20);
 		delay_ms(50); 
 		manual_cut_flag = 1;
 		if( ((u97 == 0)&&(stay_flag == 1))||( (LTR_trim_option == 0)&&(stay_flag == 0) ))
@@ -6373,8 +6446,16 @@ void pause_stop(void)
 		} 
 	}
 	if(making_pen_actoin_flag == 1 )
-	while(rec1_total_counter>0)
-	      delay_ms(20);
+	{
+			while(rec1_total_counter>0)
+				delay_ms(20);
+			tb4s = 0;
+			laser_cutter_aciton_flag = 0;
+			tra1_ind_w = 0;
+			tra1_ind_r = 0;
+			LASER_SIGNAL = 0;
+	}
+	inpress_high = inpress_position;
 	//--------------------------------------------------------------------------------------
 	//  switch system status 
 	//--------------------------------------------------------------------------------------  	     
@@ -6646,7 +6727,7 @@ void go_commandpoint(INT16 commandpointcoorx,INT16 commandpointcoory)
 	UINT32 i;
 	INT16 temp16_xo,temp16_yo;
 
-	UINT8  quick_move_flag;		
+	UINT8  quick_move_flag,temp8;		
 	INT16 allx_temp_step,ally_temp_step;	
 	INT16 tempx_step,tempy_step,add_x,add_y; 
 	UINT16 quick_time ,j,tmpx,tmpy;	
@@ -6685,6 +6766,12 @@ void go_commandpoint(INT16 commandpointcoorx,INT16 commandpointcoory)
 		quick_time = Calculate_QuickMove_Time(temp16_x,temp16_y);
 		quick_move_flag = 1;
 	}	
+	
+	temp8 = detect_position();	
+	if(temp8 == OUT)     
+	{
+		find_dead_center();
+	}
   	//--------------------------------------------------------------------------------------
   	// y go start point
   	//--------------------------------------------------------------------------------------
@@ -7108,13 +7195,14 @@ void go_origin_zx(void)
 		}
     	while(get_IORG_statu() != 0)   
     	{
-    		movestep_zx(-1,1);
+    		delay_us(500);
+			movestep_zx(-1,1);
 			if(j < 2)
 			    delay_ms(2);	
 			else if(j <4 )
-				delay_us(1500);
-		    else
 				delay_us(1000);
+		    else
+				delay_us(500);
 			if( j < 4 )
 				j++;
 			temp16 = temp16 + 1;			
@@ -7146,13 +7234,14 @@ void go_origin_zx(void)
 		}
   		while(get_IORG_statu() == 0)    
     	{
+			delay_us(500);
     		movestep_zx(1,1);
 		    if(j < 2)
 			    delay_ms(2);	
 			else if(j <4 )
-				delay_us(1500);
-		    else
 				delay_us(1000);
+		    else
+				delay_us(500);
 			if( j < 4 )
 				j++;
 			
@@ -7182,8 +7271,10 @@ void go_origin_zx(void)
 		j = 0;
 		while(get_IORG_statu() == 1)                   
    		{
-      		movestep_zx(-1,1);
-			delay_ms(2);			
+      		delay_us(500);
+			movestep_zx(-1,1);
+			delay_us(500);
+			delay_ms(1);			
 	  		temp16 = temp16 + 1;			
 			if( sys.status == ERROR)
 			{
@@ -7213,7 +7304,7 @@ void go_origin_zx(void)
     inpress_position = inpress_origin;
 	steper_footer_position = 0;
 	inpress_mod_remain = 0;
-	delay_ms(100);
+	delay_ms(10);
 	R_AIR = 0;
 }
 
@@ -7334,8 +7425,7 @@ void inpress_to(INT16 a)
 	
 	if(inpress_type == AIR_INPRESSER)   
 	  return ;
- 	//if(a > 71)     
-	//   a = 71; 
+
 	//--------------------------------------------------------------------------------------
     //  inpresser up or down 
     //--------------------------------------------------------------------------------------  
@@ -7343,8 +7433,8 @@ void inpress_to(INT16 a)
 	obj_position = a;
 	if(obj_position != now_position)
 	{	
-		//step = inpress_tab[now_position] - inpress_tab[obj_position];
 		step = (obj_position - now_position)*7/10;
+		//step = (obj_position - now_position);
 		temp = fabsm(step);	
 		if( temp == 0)
 		{
@@ -7405,6 +7495,7 @@ void inpress_to_forsingle(INT16 a)
 	if(obj_position != now_position)
 	{		
 		step = (obj_position - now_position)*7/10;
+		//step = (obj_position - now_position);
 		temp = fabsm(step);
 		if( temp == 0)
 		{
@@ -8116,6 +8207,8 @@ void process_making_pen_signal(UINT8 flag)
 				
 				tb4s = 0;
 				laser_cutter_aciton_flag = 0; 
+				tra1_ind_w = 0;
+				tra1_ind_r = 0;
 				#endif	
 				
 				if( para.laser_function_enable == 1)

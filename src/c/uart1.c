@@ -46,7 +46,7 @@ void initial_uart1_variable(void)
 	  rec1_ind_r = 0; 
 	  rec1_ind_w = 0;  
 
-	  for(i=0;i<UART1_BUF_MIN;i++)
+	  for(i=0;i<255;i++)
 	  {
 		  tra1_buf[i] = 0;   
 	  } 
@@ -208,32 +208,36 @@ void rec1_com(void)
 	    }
   		if ( formwork_identify_device == 1 )
 		{
-			if((rec1_buf[rec1_ind_w-1]==0xA)&&(rec1_buf[rec1_ind_w-2]==0xD) && rec1_ind_w>2)
-			{			
-				if (((rec1_buf[0]=='D')&&(rec1_buf[1]=='H')))
-				{
-					  i= (rec1_buf[rec1_ind_r +2]-0x30)*100+(rec1_buf[rec1_ind_r +3]-0x30)*10+(rec1_buf[rec1_ind_r +4]-0x30);
-					  while(i>999)
-					  {
-						  i-=999;
-					  }
-					  serail_number = i;				
-				}
-				else if(rec1_buf[0] == 'A' && rec1_buf[rec1_ind_w-3] == 'A')
-				{
-					 i= (rec1_buf[1]-0x30)*100+(rec1_buf[2]-0x30)*10+(rec1_buf[3]-0x30);
-					 while(i>999)
-					 {
-						i-=999;
-					  }
-					 serail_number = i;	
-				}		
-				rec1_ind_w = 0;	
-				rec1_ind_r = 0;	
-				rec1_buf[0] = 0;
-			}
+		//	if( ms_scan_counter > 2 )	
+			{
+				if((rec1_buf[rec1_ind_w-1]==0xA)&&(rec1_buf[rec1_ind_w-2]==0xD) && (rec1_ind_w>=7))
+				{			
+					if (((rec1_buf[rec1_ind_w-7]=='D')&&(rec1_buf[rec1_ind_w-6]=='H'))||((rec1_buf[rec1_ind_w-7]==0x39)&&(rec1_buf[rec1_ind_w-6]==0x37)))
+					{
+						i= (rec1_buf[rec1_ind_w-5]-0x30)*100+(rec1_buf[rec1_ind_w-4]-0x30)*10+(rec1_buf[rec1_ind_w-3]-0x30);
+						  while(i>999)
+						  {
+							  i-=999;
+						  }
+						  serail_number = i;				
+					}
+					rec1_ind_w = 0;	
+					rec1_ind_r = 0;	
+					rec1_buf[0] = 0;
+
+					//if(serail_number!=0)
+					//{
+					//	SUM =1;
+					//	pattern_alarm_flag =1;
+	    			//	pattern_alarm_counter =0;
+					//}
+				}			
 		    else
 			    serail_number = 0;
+				
+	    	
+				ms_scan_counter = 0;
+			}
 		}
 		else if( formwork_identify_device == 2)
 		{
@@ -245,7 +249,7 @@ void rec1_com(void)
 		}
 		if( (formwork_identify_device == 0)||(auto_function_flag == 0))
 		    serail_number = 0;
-			//
+			
 		if( (formwork_identify_device != 0)&&(auto_function_flag == 1) && (return_from_setout==1) )
 		    pattern_process();
 
@@ -505,7 +509,6 @@ void show_para_infoformation(void)
 	printf_uart("DSP2_para_21=0x%x \n",para.DSP2_para_21);
 	printf_uart("DSP2_para_22=0x%x \n",para.DSP2_para_22);
 	printf_uart("DSP2_para_23=0x%x \n",para.DSP2_para_23);
-	printf_uart("DSP2_para_26=0x%x \n",para.DSP2_para_26);
 	printf_uart("DSP2_para_27=0x%x \n",para.DSP2_para_27);
 	printf_uart("DSP2_para_28H=0x%x \n",para.DSP2_para_28H);
 	printf_uart("DSP2_para_28M1=0x%x \n",para.DSP2_para_28M1);
@@ -570,7 +573,6 @@ UINT8 ReadRawRC(UINT8 Address)
 			break; 	
 		}
 	 }	
-	 //T_HALF = 0; //OUT4
      return rec1_buf[0];
 }
 
@@ -610,7 +612,7 @@ void WriteRawRC(UINT8 Address, UINT8 value)
 			if( sys.error == 0)
 	      	    sys.error = ERROR_97;
 			break; 	
-		}		
+		}
    }
    //FK_OFF =0; //OUT3	 	
    tra1_ind_r = 0; 

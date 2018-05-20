@@ -865,7 +865,7 @@ void init_var(void)
 	blow_air_counter = 0;
 #endif
 	waitting_for_point_command = 0;
-	auto_function_skip_flag = 1;
+	auto_lock_flag = 1;
 	main_control_lock_setup = 0;
 	
 	already_up_flag = 0;
@@ -888,6 +888,9 @@ void init_var(void)
 	first_power_on_flag = 0;
 	monitor_predit_shift_flag_conter = 0;
 	monitor_predit_shift_flag_value = 0;
+	inpress_follow_speed = 3000;
+	now_pattern_number = 0;
+
 }			
 //--------------------------------------------------------------------------------------
 //  Name:		initial 
@@ -1154,6 +1157,14 @@ void restore_para_from_eeprom(void)
 	para.dsp3B_half_current = svpara_disp_buf[index++];
 	para.qd_org_direction = svpara_disp_buf[index++];
 	para.zx_curver = svpara_disp_buf[index++];
+	para.slow_start_mode = svpara_disp_buf[index++];
+	
+	para.Corner_deceleration_speed1 = svpara_disp_buf[index++];
+	para.Corner_deceleration_speed2 = svpara_disp_buf[index++];
+	para.Corner_deceleration_speed3 = svpara_disp_buf[index++];
+	para.Corner_deceleration_speed4 = svpara_disp_buf[index++];
+
+	
 }
 
 void cpy_para_buff(void)
@@ -1241,6 +1252,12 @@ void cpy_para_buff(void)
 	svpara_disp_buf[index++] = para.dsp3B_half_current;
 	svpara_disp_buf[index++] = para.qd_org_direction;
 	svpara_disp_buf[index++] = para.zx_curver;
+	svpara_disp_buf[index++] = para.slow_start_mode;	
+	
+	svpara_disp_buf[index++] = para.Corner_deceleration_speed1;
+	svpara_disp_buf[index++] = para.Corner_deceleration_speed2;
+	svpara_disp_buf[index++] = para.Corner_deceleration_speed3;
+	svpara_disp_buf[index++] = para.Corner_deceleration_speed4;
 	
 	svpara_disp_buf[index++] = 55;
 	svpara_disp_buf[index++] = 66;
