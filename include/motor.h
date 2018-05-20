@@ -15,7 +15,7 @@
 
 #define MotorFatherVersion		01
 #define MotorChildVersion	    1
-#define MotorSVNVersion			54  
+#define MotorSVNVersion			55  
 
 extern void init_motor(void);
 extern void motor_control(void);

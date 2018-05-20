@@ -1643,16 +1643,17 @@ void trim_action(void)
 			rec_com();
 		}
 
+		temp16 = motor.angle_adjusted;
+		while( temp16 > 1000 )//等待新的一圈
+		{
 			temp16 = motor.angle_adjusted;
-			while( temp16 > 1000 )//等待新的一圈
-			{
-				temp16 = motor.angle_adjusted;
-				if( motor.stop_flag == 1)
-					    break;
-			}	
-			flag = 1;
-			while( motor.stop_flag == 0)//等待停车到位
-			{	
+			if( motor.stop_flag == 1)
+			    break;
+		}	
+		flag = 1;
+		
+		while( motor.stop_flag == 0)//等待停车到位
+		{	
 				temp16 = motor.angle_adjusted;
 				
 				if( (temp16 >= 40 )&&(flag == 1) )//160=>40
@@ -1674,13 +1675,17 @@ void trim_action(void)
 				{
 					action5_flag = 1;
 					 #if MACHINE_14090_MASC_PLUS
+					 
 					 movestep_yj(-stepper_cutter_move_range ,stepper_cutter_move_time);//开始断线
 					 cutter_delay_counter = stepper_cutter_move_time;
 					 cutter_delay_flag = 1;
+					 
 					 #else
+					 
 				 	 movestep_yj(90-stepper_cutter_move_range ,20);//断线位置
 					 cutter_delay_counter = 40;
 					 cutter_delay_flag = 1;
+					 
 					 #endif
 				}
 				
@@ -1912,34 +1917,35 @@ void run_status(void)
 				while(nopmove_flag == 1 )
 				{
 					do_pat_point_sub_one();
-					if( k03 == MECHANICAL )
+					if( para.nopmove_tension_open_switch == 1)
 					{
-						/*if(tension_release_time >0 )
-					    {
-							if(tension_open_switch == 0)
-							{
-								tension_open_counter = 0;	
-						        tension_open_switch = 1;
-								thread_switch =1;
-					         	DAActionFlag=1;
-						        da0 = 255; 
-							}
-					    }*/
-					}
-					else
-					{
-						if( tension_release_time >0 )
+						if( k03 == MECHANICAL )
 						{
-							/*if(tension_open_switch == 0)
+							if(tension_release_time >0 )
+						    {
+								if(tension_open_switch == 0)
+								{
+									tension_open_counter = 0;	
+							        tension_open_switch = 1;
+									thread_switch =1;
+						         	DAActionFlag=1;
+							        da0 = 255; 
+								}
+						    }
+						}
+						else
+						{
+							if( tension_release_time >0 )
 							{
-								tension_open_counter = 0;
-								tension_open_switch = 1;
-								DAActionFlag=0;
-								temp_tension = 70;
-								da0 = 0;
-								//delay_ms(50);//2017-1-13
-							}*/
-							da0 = 0;
+								if(tension_open_switch == 0)
+								{
+									tension_open_counter = 0;
+									tension_open_switch = 1;
+									DAActionFlag=0;
+									temp_tension = 70;
+									da0 = 0;
+								}
+							}
 						}
 					}
 					go_beginpoint(0); 

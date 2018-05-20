@@ -474,9 +474,9 @@ void MotorPreInit(void)
 		PI_Pre.kpp_stop32 = STOP_KPp_2 ;
 		PI_Pre.kps_stop32 = STOP_KPs_2 ;
 		
-		dectable[0] = 2;
-		dectable[1] = 4;
-		dectable[2] = 6;
+		dectable[0] = 1;//2;
+		dectable[1] = 2;//4;
+		dectable[2] = 3;//6;
 		dectable[3] = 8;
 		dectable[4] = 15;
 		dectable[5] = 16;
@@ -485,8 +485,8 @@ void MotorPreInit(void)
 		dectable[8] = 10;
 		dectable[9] = 10;
 		
-		acctable[0] = 3;//4
-		acctable[1] = 3;//6
+		acctable[0] = 1;//dhd3;//4
+		acctable[1] = 2;//dhd3;//6
 		acctable[2] = 2;//7
 		acctable[3] = 3;//10
 	}

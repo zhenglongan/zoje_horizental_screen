@@ -195,6 +195,8 @@ typedef struct
 	UINT8  Corner_deceleration_speed2; //116 拐点后第二针
 	UINT8  Corner_deceleration_speed3; //117 拐点后第三针
 	UINT8  Corner_deceleration_speed4; //118 拐点后第四针
+	
+	UINT8  nopmove_tension_open_switch;//119空送时是否打开松线
 
 
 }SYSTEM_PARA;

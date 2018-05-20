@@ -2772,7 +2772,7 @@ void check_data(UINT8 control_flag)
 
 	if( (length!=13)&&( ((para.slow_start_mode == 0)&&(stitch_counter>5))||((para.slow_start_mode == 1)&&(stitch_counter>17)) )&&( start_to_speed_down == 0) )
 	{
-		 if(max16 <= HighSpeedStitchLength )
+		 if( (max16 <= HighSpeedStitchLength )&&(inpress_type != FOLLOW_UP_INPRESSER) )
 		 {
 			 temp_speed = sew_speed;
 		 }
@@ -3882,8 +3882,7 @@ void go_beginpoint(UINT8 FirstNopmoveFlag)
 	if(temp8 == OUT)     
 	{	
 		find_dead_center();		
-	}
-	
+	}	
 	go_origin_zx();
 	if( (sys.error != 0)&&(stay_flag==0) )
 	{
