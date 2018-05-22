@@ -1165,6 +1165,7 @@ void restore_para_from_eeprom(void)
 	para.Corner_deceleration_speed4 = svpara_disp_buf[index++];
 
 	para.nopmove_tension_open_switch = svpara_disp_buf[index++];
+	para.rfid_gain = svpara_disp_buf[index++];
 }
 
 void cpy_para_buff(void)
@@ -1259,6 +1260,7 @@ void cpy_para_buff(void)
 	svpara_disp_buf[index++] = para.Corner_deceleration_speed3;
 	svpara_disp_buf[index++] = para.Corner_deceleration_speed4;
 	svpara_disp_buf[index++] = para.nopmove_tension_open_switch;
+	svpara_disp_buf[index++] = para.rfid_gain;
 	
 	svpara_disp_buf[index++] = 55;
 	svpara_disp_buf[index++] = 66;

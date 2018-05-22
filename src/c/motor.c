@@ -434,8 +434,8 @@ void MotorPreInit(void)
 		}
 		PI_Pre.kp_m = 10;//3
 		PI_Pre.ki_m = 20;//11
-		PI_Pre.kp_h = 7;//5
-		PI_Pre.ki_h = 40 ;//40
+		PI_Pre.kp_h = 3;//motor_para[8];//7;//5
+		PI_Pre.ki_h = 20;//motor_para[9];//40 ;//40
 
 
 		PI_Pre.kp_up_m = 20;//9

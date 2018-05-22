@@ -1682,8 +1682,8 @@ void trim_action(void)
 					 
 					 #else
 					 
-				 	 movestep_yj(90-stepper_cutter_move_range ,20);//断线位置
-					 cutter_delay_counter = 40;
+				 	 movestep_yj(90-stepper_cutter_move_range ,60);//断线位置
+					 cutter_delay_counter = 60;
 					 cutter_delay_flag = 1;
 					 
 					 #endif
@@ -1699,8 +1699,8 @@ void trim_action(void)
 		   cutter_delay_counter = stepper_cutter_move_time;
 		   cutter_delay_flag = 1;
 		   #else
-		   movestep_yj(90-stepper_cutter_move_range ,20);//断线位置
-		   cutter_delay_counter = 40;
+		   movestep_yj(90-stepper_cutter_move_range ,60);//断线位置
+		   cutter_delay_counter = 60;
 		   cutter_delay_flag = 1;
 		   #endif
 		}
@@ -1724,8 +1724,8 @@ void trim_action(void)
 			{
 				 rec_com();
 			}
-			movestep_yj(stepper_cutter_move_range ,stepper_cutter_move_time);
-			cutter_delay_counter = stepper_cutter_move_time<<1;
+			movestep_yj(stepper_cutter_move_range ,60);
+			cutter_delay_counter = 60;//stepper_cutter_move_time<<1;
 			cutter_delay_flag = 1;
 			#endif
 		}
@@ -5996,6 +5996,7 @@ void checki11_status(void)
 				cutter_delay_flag = 1;
 				stepmotor_state = 1;  
 				stepmotor_comm = 0xff;  
+				delay_ms(200);
 				predit_shift = 0;
 				break;   	            							
   	  	case 0x02: 
@@ -6007,11 +6008,13 @@ void checki11_status(void)
 				cutter_delay_counter = stepper_cutter_move_time;
 				cutter_delay_flag = 1;
 				stepmotor_state = 2;  
-				stepmotor_comm = 0xff;  
+				stepmotor_comm = 0xff; 
+				delay_ms(200); 
 				predit_shift = 0;
 				break;     
   	  	case 0x03: 				
 				movestep_yj(stepper_cutter_move_range ,stepper_cutter_move_time);
+				delay_ms(200);
 				cutter_delay_counter = stepper_cutter_move_time;
 				cutter_delay_flag = 1;
 				stepmotor_state = 3;  
@@ -6019,7 +6022,7 @@ void checki11_status(void)
 				predit_shift = 0;
 				break;                        		            							   
   	  	case 0x04: 
-			    go_origin_yj();
+			    //go_origin_yj();
 				stepmotor_state = 4;  
 				stepmotor_comm = 0xff;  
 				predit_shift = 0;

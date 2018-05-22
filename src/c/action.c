@@ -157,7 +157,7 @@ const UINT8 inpress_follow_up_speed_tab1[]=
 const UINT16 inpress_follow_down_angle_tab[]=
 {
     // 0   1   2   3   4   5   6   7   8   9   10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32
-       65, 65, 15, 65, 30, 28, 20, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 340,340,340,340,340,340,330,330,330,330,330,330,330
+       65, 65, 40, 65, 30, 28, 20, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 340,340,340,340,340,340,330,330,330,330,330,330,330
 };
 const UINT8 inpress_follow_down_speed_tab[]=
 {
@@ -168,7 +168,7 @@ const UINT8 inpress_follow_down_speed_tab[]=
 const UINT16 inpress_follow_up_angle_tab[]= 
 {
 	// 0   1   2   3   4   5   6   7   8   9   10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32
-  	   250,250,250,230,220,220,220,210,210,200,200,200,190,180,180,180,180,180,180,180,170,160,150,150,150,150,150,150,150,140,140,140,140
+  	   250,250,320,230,220,220,220,210,210,200,200,200,190,180,180,180,180,180,180,180,170,160,150,150,150,150,150,150,150,140,140,140,140
 }; 
 const UINT8 inpress_follow_up_speed_tab[]=
 {
@@ -1630,7 +1630,7 @@ void inpress_down(UINT8 pos)
 	if(pos > 80)
        pos = 80;
     R_AIR = 1;
-	delay_ms(inpress_down_delay);
+	delay_ms(inpress_down_delay + 100);
 	inpress_to(pos);  
 	delay_ms(80);//200
 	inpress_flag = 0; 
@@ -7318,13 +7318,14 @@ void go_origin_yj(void)
 		temp16 = 0;
     	while(get_CORG_statu() != 0)   
     	{
-    		movestep_yj(-1,1);
+    		delay_us(1000);
+			movestep_yj(-1,1);
 			if(j < 2)
-			    delay_ms(3);//	
+			    delay_ms(2);//	
 			else if(j <4 )
-				delay_us(2000);
+				delay_us(1000);
 		    else
-				delay_us(1500);//1500
+				delay_us(500);//1500
 			if( j < 4 )
 				j++;
 			temp16 = temp16 + 1;			
@@ -7343,21 +7344,26 @@ void go_origin_yj(void)
   		  	}	
 			rec_com();	
     	}
-  	}
-  	else                    // sensor is covered
+		for(i=3;i>0;i--)     			
+		{
+			movestep_yj(-1,1);
+  	  		delay_ms(2);
+		}
+  	}    
+	//else // sensor is covered
   	{
   		temp16 = 0;
 		j = 0;
   		while(get_CORG_statu() == 0)    //0--对应Z高电平
     	{
-    		movestep_yj(1,1);
-			//SUM = 1;
+    		delay_us(1000);
+			movestep_yj(1,1);
 		    if(j < 2)
-			    delay_ms(3);	
+			    delay_ms(2);	
 			else if(j <4 )
-				delay_us(2000);
+				delay_us(1000);
 		    else
-				delay_us(1500);
+				delay_us(500);
 			if( j < 4 )
 				j++;
 			
@@ -7385,11 +7391,12 @@ void go_origin_yj(void)
 		delay_ms(2);
 		temp16 = 0;
 		j = 0;
-		//SUM = 0;
-		while(get_CORG_statu() == 1)                   
+
+		while(get_CORG_statu() == 1)   //等低电平到高电平                
    		{
-      		movestep_yj(-1,1);
-			delay_ms(2);			
+      		delay_us(1000);
+			movestep_yj(-1,1);
+			delay_ms(3);			
 	  		temp16 = temp16 + 1;			
 			if( sys.status == ERROR)
 			{

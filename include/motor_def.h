@@ -308,8 +308,8 @@ typedef struct
 #define DIDT_SPEED_RANGE motor_para[7]	
 
 //select the porportion of didt when cutting thread,the range is 0-4,as default is 4
-#define DIDT_CUT_THREAD motor_para[8]
-//#define DIDT_CUT_THREAD3 motor_para[9]	
+#define DIDT_CUT_THREAD 2//motor_para[8]
+
 //last step for motor.spd_obj == 0
 #define ANGLE_P 6*ENCODER/360//6*ENCODER/360
 #define ANGLE_N -(6*ENCODER/360)

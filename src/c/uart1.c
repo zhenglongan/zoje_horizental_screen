@@ -81,6 +81,7 @@ void init_uart1_RC522(void)
   	//u1brg = BAUD_RATE ;//57600
 	//u1brg = BAUD_RATE_38400;
 	u1brg = BAUD_RATE_19200;
+	//u1brg = BAUD_RATE_9600;
   	re_u1c1 = 1;
   	s1tic = UART1_TRANSMIT_IPL;   
   	s1ric = UART1_RECEIVE_IPL_7; 

@@ -573,10 +573,10 @@ void RFID_initial(void)
 	delay_ms(20);
     PcdAntennaOn();
 	delay_ms(20);
-	//WriteRawRC(SerialSpeedReg,0x9A);//57600
-	//WriteRawRC(SerialSpeedReg,0xAB);//38400
-	WriteRawRC(RxThresholdReg,0x44);
+	if( para.rfid_gain == 1)
+		WriteRawRC(RxThresholdReg,0x44);
 	delay_ms(20);
+	//WriteRawRC(SerialSpeedReg,0xEB);//9600
 	WriteRawRC(SerialSpeedReg,0xCB);//19200
 	delay_ms(20);
 }
@@ -672,5 +672,5 @@ UINT8 RFID_SCAN(void)
 	}
 	
     PcdHalt();	
-	return 0;
+	return 1;
 }

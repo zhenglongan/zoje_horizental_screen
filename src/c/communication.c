@@ -1448,9 +1448,15 @@ void protocol(UINT8* command)
 				else
 				    stretch_foot_enable =0;
 			
-				auto_lock_flag = rec_buf[86]; //模板解锁标致：1-锁定是模板识别 0-解锁是手动切换  
-				if( auto_lock_flag == 0)
+				if( (auto_lock_flag == 0)&&(rec_buf[86] == 1) )//切换回来
+				{					
 					last_pattern_number =0;
+					serail_number =0;
+					pattern_change_flag = 0;
+				    pattern_number = 0;
+					initial_uart1_variable();
+				}
+				auto_lock_flag = rec_buf[86]; //模板解锁标致：1：锁定  0：解锁 
 				
 				
 				temp = (UINT16)rec_buf[178]<<8;
@@ -3603,7 +3609,10 @@ void rfid_wr_ret(void)
 		send_command[0] = DATA_START;
 		send_command[1] = 0x04;
 		send_command[2] = RFID_WRITE_RET; 
-		send_command[3] = 0;//rc522_write_ret_falg;//rc522_write_falg_ret;				          				           				          
+		if(rc522_ok_flag == 0)
+			send_command[3] = 1;//rc522_write_ret_falg;//rc522_write_falg_ret;	
+		else 
+			send_command[3] = 0;//rc522_write_ret_falg;//rc522_write_falg_ret;				          				           				          
 		send_command[4] = verify_code(4);
 		send_command[5] = DATA_END;                  
 		tra_com(send_command,6);    

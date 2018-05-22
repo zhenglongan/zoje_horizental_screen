@@ -197,7 +197,7 @@ typedef struct
 	UINT8  Corner_deceleration_speed4; //118 拐点后第四针
 	
 	UINT8  nopmove_tension_open_switch;//119空送时是否打开松线
-
+	UINT8  rfid_gain;	//120 切换RFID的增益控制
 
 }SYSTEM_PARA;
 
