@@ -1761,13 +1761,13 @@ void protocol(UINT8* command)
 				holding_bobbin_start_angle = holding_bobbin_start_angle << 2;
 				
 				inpress_follow_range = rec_buf[99];
-				inpress_follow_speed = inpress_spdlimit_speed_tab[inpress_follow_range-1];
-				
-				if( inpress_follow_range < 10)
-					inpress_follow_range = 10;
-				inpress_follow_range =  inpress_follow_range*7/10;			
+				//if( inpress_follow_range < 10)
+				//	inpress_follow_range = 10;		
 				if( inpress_follow_range > 80)
 					inpress_follow_range = 80;
+				inpress_follow_speed = inpress_spdlimit_speed_tab[inpress_follow_range-1];
+				
+				
 				
 				follow_inpresser_time_adj = (INT8)rec_buf[100];		//随动时间微调		
 				temp = (UINT16)rec_buf[35]<<8;					
@@ -1785,7 +1785,7 @@ void protocol(UINT8* command)
 				{
 					inpress_lower_steps = inpress_high_base;
 				}
-//				inpress_lower_steps =  inpress_lower_steps*7/10;				
+				
 				if(connect_flag == 0)  
 				{
 				 	connect_flag = 1;

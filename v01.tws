@@ -9,11 +9,14 @@
 [BREAKPOINTS]
 [OPEN_WORKSPACE_FILES]
 "D:\git_svn\mobanji\mbj_test(JKMBJ)0919\include\common.h" 
+"D:\git_svn\mobanji\mbj_test(JKMBJ)0919\include\motor.h" 
+"D:\git_svn\mobanji\mbj_test(JKMBJ)0919\include\motor_def.h" 
 "D:\git_svn\mobanji\mbj_test(JKMBJ)0919\include\typedef.h" 
 "D:\git_svn\mobanji\mbj_test(JKMBJ)0919\src\c\action.c" 
 "D:\git_svn\mobanji\mbj_test(JKMBJ)0919\src\c\communication.c" 
 "D:\git_svn\mobanji\mbj_test(JKMBJ)0919\src\c\initial.c" 
 "D:\git_svn\mobanji\mbj_test(JKMBJ)0919\src\c\main.c" 
+"D:\git_svn\mobanji\mbj_test(JKMBJ)0919\src\c\motor.c" 
 "D:\git_svn\mobanji\mbj_test(JKMBJ)0919\src\c\RC522.C" 
 "D:\git_svn\mobanji\mbj_test(JKMBJ)0919\src\c\step_motor_drv.c" 
 "D:\git_svn\mobanji\mbj_test(JKMBJ)0919\src\c\system.c" 
@@ -21,14 +24,17 @@
 "D:\git_svn\mobanji\mbj_test(JKMBJ)0919\src\c\variables.c" 
 [WORKSPACE_FILE_STATES]
 "D:\git_svn\mobanji\mbj_test(JKMBJ)0919\include\common.h" 0 0 969 200 0 5 
+"D:\git_svn\mobanji\mbj_test(JKMBJ)0919\include\motor.h" 0 0 944 260 0 12 
+"D:\git_svn\mobanji\mbj_test(JKMBJ)0919\include\motor_def.h" 25 25 944 260 0 13 
 "D:\git_svn\mobanji\mbj_test(JKMBJ)0919\include\typedef.h" 50 50 969 248 0 7 
 "D:\git_svn\mobanji\mbj_test(JKMBJ)0919\src\c\RC522.C" 75 75 944 260 0 9 
-"D:\git_svn\mobanji\mbj_test(JKMBJ)0919\src\c\action.c" -8 -30 1085 423 1 1 
+"D:\git_svn\mobanji\mbj_test(JKMBJ)0919\src\c\action.c" 0 0 1085 423 0 1 
 "D:\git_svn\mobanji\mbj_test(JKMBJ)0919\src\c\communication.c" 0 0 1085 386 0 6 
 "D:\git_svn\mobanji\mbj_test(JKMBJ)0919\src\c\initial.c" 75 75 969 248 0 8 
 "D:\git_svn\mobanji\mbj_test(JKMBJ)0919\src\c\main.c" 50 50 969 228 0 2 
-"D:\git_svn\mobanji\mbj_test(JKMBJ)0919\src\c\step_motor_drv.c" 100 100 944 315 0 4 
-"D:\git_svn\mobanji\mbj_test(JKMBJ)0919\src\c\system.c" 75 75 969 228 0 3 
+"D:\git_svn\mobanji\mbj_test(JKMBJ)0919\src\c\motor.c" 125 125 944 260 0 11 
+"D:\git_svn\mobanji\mbj_test(JKMBJ)0919\src\c\step_motor_drv.c" 0 0 1085 390 0 4 
+"D:\git_svn\mobanji\mbj_test(JKMBJ)0919\src\c\system.c" -8 -30 1085 390 1 3 
 "D:\git_svn\mobanji\mbj_test(JKMBJ)0919\src\c\uart1.c" 0 0 965 224 0 0 
 "D:\git_svn\mobanji\mbj_test(JKMBJ)0919\src\c\variables.c" 100 100 944 260 0 10 
 [LOADED_PROJECTS]

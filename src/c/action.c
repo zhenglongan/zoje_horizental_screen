@@ -7312,7 +7312,8 @@ void go_origin_yj(void)
 	UINT8 i;
 	UINT16 temp16,j ;
     j = 0;
-
+	if( cut_mode != STEPPER_MOTER_CUTTER )
+		return;
 	if(get_CORG_statu() != 0)           // sensor is not covered   
 	{	
 		temp16 = 0;
@@ -7439,8 +7440,8 @@ void inpress_to(INT16 a)
 	obj_position = a;
 	if(obj_position != now_position)
 	{	
-		step = (obj_position - now_position)*7/10;
-		//step = (obj_position - now_position);
+		//step = (obj_position - now_position)*7/10;
+		step = (obj_position - now_position);
 		temp = fabsm(step);	
 		if( temp == 0)
 		{
@@ -7500,8 +7501,8 @@ void inpress_to_forsingle(INT16 a)
 	inpress_real_delta_runing = now_position - obj_position;
 	if(obj_position != now_position)
 	{		
-		step = (obj_position - now_position)*7/10;
-		//step = (obj_position - now_position);
+		//step = (obj_position - now_position)*7/10;
+		step = (obj_position - now_position);
 		temp = fabsm(step);
 		if( temp == 0)
 		{

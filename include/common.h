@@ -24,9 +24,7 @@
     
 #define MainFatherVersion		05
 #define MainChildVersion		07 
-#define MainSVNVersion			2082//208//2078//2077//2076//2075//2074//2073//2072//2063//2062//2061//20527//20526
-
-
+#define MainSVNVersion			2084//2083//2082//208//2078//2077//2076//2075//2074//2073//2072//2063//2062//2061//20527//20526
 
 #define ENABLE_LED_ALARM_FUNCTION   0 // led±¨¾¯¹¦ÄÜ
 #define MACHINE_14090_MASC_PLUS     0 // 14090

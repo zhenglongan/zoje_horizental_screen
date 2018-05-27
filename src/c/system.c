@@ -563,8 +563,7 @@ void ready_status(void)
 			rec_com();
 		}
 	}
-	
-		 
+	 
 	
 	#if DA0_OUTPUT_IMMEDIATELY
 			if( temp_tension != tension_release_value)
@@ -2200,9 +2199,8 @@ void run_status(void)
 				#if FIRST_STITCH_NOT_ACTION == 0
 				if( inpress_lower_stitchs != 0)
 				{
-			
 					inpress_down( inpress_high - inpress_lower_steps);
-					inpress_high = inpress_high_base - inpress_lower_steps;
+					inpress_high = inpress_high - inpress_lower_steps;
 					flag1 = 1;	
 				}
 				else
@@ -3852,6 +3850,8 @@ void setout_status(void)
 	//6 回原点
 	delay_ms(50);
 	go_origin_allmotor();
+	
+	
 	#else
 	
 
@@ -5077,6 +5077,11 @@ void checki04_status(void)
 		    }
 			if( (motor.stop_flag == 1)&&( smotor_speed != 0) )
 			{
+				if(inpress_first_flag == 1)
+				{
+				   go_origin_zx();
+				   inpress_first_flag = 0;
+				}
 				inpress_down(inpress_high_base);
 				if( smotor_speed > MAXSPEED0)
 				    smotor_speed = MAXSPEED0;
@@ -5166,6 +5171,11 @@ void checki04_status(void)
 		{
 			if(motor.stop_flag == 1)
 			{
+				if(inpress_first_flag == 1)
+				{
+				   go_origin_zx();
+				   inpress_first_flag = 0;
+				}
 				inpress_down(inpress_high_base);
 				if( smotor_speed > MAXSPEED0)
 				    smotor_speed = MAXSPEED0;
@@ -5617,7 +5627,7 @@ void checki08_status(void)
 	    go_origin_zx();
 		inpress_first_flag = 0;
 	}
-	if( inpress_flag == 1)//2013-3-19
+	if( inpress_flag == 1)
 	{
 		if(u224 == 2)
 		{
@@ -6003,7 +6013,7 @@ void checki11_status(void)
 				#if MACHINE_14090_MASC_PLUS
 				movestep_yj(-stepper_cutter_move_range ,stepper_cutter_move_time);
 				#else
-				movestep_yj(90 - stepper_cutter_move_range ,20);//断线位置
+				movestep_yj(90 - stepper_cutter_move_range ,60);//断线位置
 				#endif
 				cutter_delay_counter = stepper_cutter_move_time;
 				cutter_delay_flag = 1;

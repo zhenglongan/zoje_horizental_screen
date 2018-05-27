@@ -512,7 +512,7 @@ void init_var(void)
 	cut_move_flag = 0; 
 	stepmotor_comm = 0xff ;
 	stepmotor_single = 0xff;
-	inpress_first_flag = 1;    
+  
 	last_inpress_position = inpress_high_base;
 	fun_default_flag = 0;
 	speed_display_mode = 0;	    
