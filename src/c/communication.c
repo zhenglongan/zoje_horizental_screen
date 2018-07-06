@@ -783,6 +783,7 @@ void protocol(UINT8* command)
 								case 17:
 								case 2:
 								case 19:
+								case 82:
 									sys.error = OK;
 									StatusChangeLatch = READY;
 									predit_shift = 1;
@@ -999,7 +1000,6 @@ void protocol(UINT8* command)
 									FW = 0;
 									L_AIR = 0;
 									da0 = 0;
-									FA = 0;
 									
 									break;
 								case CHECKI08:
@@ -1009,7 +1009,6 @@ void protocol(UINT8* command)
 									FW = 0;
 									L_AIR = 0;
 									da0 = 0;
-									FA = 0;
 								break;
 								default:
 									break;
@@ -1348,12 +1347,12 @@ void protocol(UINT8* command)
 				  
 				temp = (UINT16)rec_buf[45]<<8;            			// cut start angle
 				cut_start_angle = temp | (UINT16)rec_buf[46];
-				cut_start_angle = cut_start_angle<<2;
-				cut_start_angle = cut_start_angle%CODE_SCALE;
+				cut_start_angle = angle_tab[cut_start_angle];
+				
 				temp = (UINT16)rec_buf[47]<<8;						// cut end angle
 				cut_end_angle = temp | (UINT16)rec_buf[48];
-				cut_end_angle = cut_end_angle <<2;
-				cut_end_angle = cut_end_angle%CODE_SCALE;
+				cut_end_angle = angle_tab[cut_end_angle];
+				
 				u223 = rec_buf[49];									// tension start delay
 				if( u223 == 0)
 				  u223 = 50;
@@ -1362,13 +1361,13 @@ void protocol(UINT8* command)
 				
 				temp = (UINT16)rec_buf[50]<<8;						// tension start angle
 				tension_start_angle = temp | (UINT16)rec_buf[51];   // 
-				tension_start_angle = tension_start_angle*4;
-				tension_start_angle = tension_start_angle%CODE_SCALE;
+				tension_start_angle = angle_tab[tension_start_angle];
+
 				
 				temp = (UINT16)rec_buf[52]<<8;						// tension end angle
 				tension_end_angle = temp | (UINT16)rec_buf[53];
-				tension_end_angle = tension_end_angle%CODE_SCALE;
-				tension_end_angle = tension_end_angle <<2;
+				tension_end_angle = angle_tab[tension_end_angle];
+
 				temp = (UINT16)rec_buf[54]<<8;						// wiper start time
 				wiper_start_time = temp | (UINT16)rec_buf[55];
 				temp = (UINT16)rec_buf[56]<<8;						// wiper hold time
@@ -1411,7 +1410,8 @@ void protocol(UINT8* command)
 				temp16 = (INT16)rec_buf[73]<<8;
 				y_bios = temp16 | (INT16)rec_buf[74];
 				u235 = rec_buf[75];   								// inpresser current setting
-				if(u235>12)  u235=12;
+				if( u235 > 12 )  
+				    u235 = 12;
 				u236 = rec_buf[76]; 								// stop angle setting 
 
 				temp16 = (INT16)rec_buf[77]<<8;
@@ -1503,7 +1503,7 @@ void protocol(UINT8* command)
 				MAIN_MOTOR_TYPE = rec_buf[125];
 			    MAIN_MOTOR_TYPE = 2;
 				
-				MotorPreInit();
+		
 				StitchSpeedCurve = rec_buf[126];				
 				MoveStartAngle = rec_buf[127];				
 				temp = (UINT16)rec_buf[128]<<8;            			
@@ -1565,12 +1565,12 @@ void protocol(UINT8* command)
 				   if(temp == 0)
 					{  
 					    da1 = 0;
-						LED_POWER = 0;
+						LASER_INDICATIOR_LED = 0;
 					}
 				   if( temp >0 && temp <= 100)//default :50  140~180
 					{
 					    da1 = 140 + temp*10/33;
-						LED_POWER = 1;
+						LASER_INDICATIOR_LED = 1;
 					} 
 				   #endif	
 				}
@@ -1712,15 +1712,15 @@ void protocol(UINT8* command)
 					
 					temp = (UINT16)rec_buf[160]<<8;	//237,238					
 				    thread_holding_start_angle = temp | (UINT16)rec_buf[161];
-				    thread_holding_start_angle = thread_holding_start_angle <<2;
+				    thread_holding_start_angle = angle_tab[thread_holding_start_angle]; 
 					
 					temp = (UINT16)rec_buf[162]<<8;//239,240						
 				    thread_holding_end_angle = temp | (UINT16)rec_buf[163];
-				    thread_holding_end_angle = thread_holding_end_angle <<2;
+				    thread_holding_end_angle = angle_tab[thread_holding_end_angle];
 					
 					temp = (UINT16)rec_buf[164]<<8;//241,242						
 				    thread_holding_cut_angle = temp | (UINT16)rec_buf[165];
-				    thread_holding_cut_angle = thread_holding_cut_angle <<2;
+				    thread_holding_cut_angle = angle_tab[thread_holding_cut_angle];
 					
 				}
 				if( data_length >=244)
@@ -1758,7 +1758,7 @@ void protocol(UINT8* command)
 					
 				temp = (UINT16)rec_buf[61]<<8;					
 				holding_bobbin_start_angle = temp | (UINT16)rec_buf[62];
-				holding_bobbin_start_angle = holding_bobbin_start_angle << 2;
+				holding_bobbin_start_angle = angle_tab[holding_bobbin_start_angle];
 				
 				inpress_follow_range = rec_buf[99];
 				//if( inpress_follow_range < 10)
@@ -1772,7 +1772,7 @@ void protocol(UINT8* command)
 				follow_inpresser_time_adj = (INT8)rec_buf[100];		//随动时间微调		
 				temp = (UINT16)rec_buf[35]<<8;					
 				fw_start_angle = temp | (UINT16)rec_buf[36];
-				fw_start_angle = fw_start_angle << 2;	
+				fw_start_angle = angle_tab[fw_start_angle];	
 				
 				temp16 = (UINT16)rec_buf[37]<<8;
 				temp16 = temp16|(UINT16)rec_buf[38];

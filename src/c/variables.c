@@ -737,20 +737,6 @@ UINT8  making_pen_nopmove_flag;
 UINT16  dsp1_step_crc;
 UINT16  dsp2_step_crc;
 
-#if AUTO_CHANGE_FRAMEWORK 
-	UINT8  left_footer_action_flag,left_start_action_flag,left_footer_counter,left_start_counter,left_footer_lock_flag,left_start_lock_flag;
-	UINT8  right_footer_action_flag,right_start_action_flag,right_footer_counter,right_start_counter,right_footer_lock_flag,right_start_lock_flag;
-	UINT8  left_footer_status,left_second_footer_status,left_quest_running;
-	UINT8  right_footer_status,right_second_footer_status,right_quest_running;
-	UINT8  waitting_for_pattern_done;
-	
-	UINT8 left_footer_delay_flag,left_footer_delay_counter,right_footer_delay_flag,right_footer_delay_counter;
-	UINT8 power_on_allow_keypress;
-	
-	UINT8 testpin;
-
-#endif 
-
 UINT8  blow_air_action_flag;
 UINT16 blow_air_counter;
 	

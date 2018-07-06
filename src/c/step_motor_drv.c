@@ -100,46 +100,8 @@ void SPI_init(void)
 //--------------------------------------------------------------------------------------
 void check_dsp_error(UINT16 error_code)
 {
-	#if MACHINE_14090_MASC_PLUS
-	switch(error_code)
-	{
-		//dsp1:x + y   dsp2:cutter + inpresser
-		case OVC_DSP1:					
-			if( dsp1 == 1)
-				sys.error = ERROR_50;//X电机过流				
-			else if( dsp2 == 1)
-				sys.error = ERROR_94;//剪线电机过流
-		break;
-
-		case OVD_DSP1:
-		    if( dsp1 == 1)
-				sys.error = ERROR_54;//X电机超差
-			else if( dsp2 == 1)				
-				sys.error = ERROR_96;//剪线电机超差	
-		break;					
-		case OVC_DSP2:
-		    if( dsp1 == 1)
-				sys.error = ERROR_51;//Y电机过流	
-			else if( dsp2 == 1)
-				sys.error = ERROR_93;//中压脚电机过流
-		break;
-		case OVD_DSP2:
-		    if( dsp1 == 1)
-				sys.error = ERROR_55;//Y电机超差				
-			else if( dsp2 == 1)
-				sys.error = ERROR_95;//中压脚电机超差
-		break;
-		case SPI_RX_ERR_CHK:
-		case SPI_RX_ERR_ILLG:
-			if( dsp1 == 1)
-				sys.error = ERROR_59;//伺服通讯错误1
-			else if( dsp2 == 1)
-				sys.error = ERROR_60;//伺服通讯错误2
-			else if( dsp3 == 1)
-				sys.error = ERROR_61;//伺服通讯错误3
-		break;
-	}
-	#elif ROTATE_CUTTER_ENABLE
+	
+	#if ROTATE_CUTTER_ENABLE
 	case OVC_DSP1:
 			if( dsp1 == 1)
 				sys.error = ERROR_50;//X电机过流	
@@ -1173,7 +1135,7 @@ UINT8 write_stepmotor_curve(UINT8 port,UINT8 *pdata)
 	 
 	 printf_uart("read=%x",val);
 	 
-	 if(  val== crc)
+	 if(  val == crc)
 	 {
 		if(1 == write_stepmotor_curve_flag)
 			para.dsp1_step_crc = crc;
@@ -1230,19 +1192,12 @@ void x_quickmove(UINT16 quick_time,INT32 tempx_step)
 		else
 			high16 = (UINT16)0x0000 + ((tmp32>>16)&0xff);
 	}
-	#if  MACHINE_14090_MASC_PLUS || MACHINE_SC0716_SERVO_SUPU
-	if(fabsm(tempx_step)<(quick_time))
-	{
-		high16 |= (1<<13);
-		//quick_time =((UINT16)u230)*10;
-	}
-	#else
+
 	if(fabsm(tempx_step)<(quick_time>>3))
 	{
 		high16 |= (1<<13);
-		//quick_time =((UINT16)u230)*10;
 	}
-	#endif
+
 	send_dsp_command(1,high16);	
 	delay_ms(1);
 	if( low16 == 0x5555)
@@ -1416,9 +1371,15 @@ void qd_quickmove(UINT16 quick_time,INT32 tempx_step)
 }
 UINT16 get_IORG_statu(void)
 {
+	/*
 	send_dsp2_command(0x0029,0xa000);
 	send_dsp_command(2,0x5555);
 	return recieve_x.word;
+	*/ 
+	if( IORG ==1 )
+		return 1;
+	else
+		return 0;
 }
 
 UINT16 get_CORG_statu(void)

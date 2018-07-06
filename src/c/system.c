@@ -224,7 +224,6 @@ void pre_running(void)
 					predit_shift = 0;
 					delay_ms(10);
 					DVALastState = DVA;
-					AIR_OUT = 0;
 					return; 
 				}
 			}
@@ -564,6 +563,20 @@ void ready_status(void)
 		}
 	}
 	 
+	 if( para.oil_empty_alarm_enable == 1)
+	 {
+		if( OIL_EMPTY_DETECT == 1)
+		{
+			delay_ms(50);
+			if( OIL_EMPTY_DETECT == 1)
+			{
+				status_now = READY;
+				sys.status = ERROR;
+				StatusChangeLatch = ERROR;
+			   	sys.error = ERROR_82;
+			}
+		}
+	 }
 	
 	#if DA0_OUTPUT_IMMEDIATELY
 			if( temp_tension != tension_release_value)
@@ -675,50 +688,7 @@ void ready_status(void)
 		shift_func(shift_flag);
 	}
 	
-	#if AUTO_CHANGE_FRAMEWORK
 	
-	
-	if( waitting_for_pattern_done == 0)//扫描到新条码，并且已经下载了
-	{
-		//if( power_on_allow_keypress == 1 )
-		{
-			if( left_quest_running == 1)//先左后右
-			{			
-				waitting_for_pattern_done = 1;
-				delay_ms(100);
-				take_frame_from_one_side(1);//从左边拿模板过来				
-			}
-			else if(right_quest_running == 1)
-			{				
-				waitting_for_pattern_done = 2;
-				delay_ms(100);
-				take_frame_from_one_side(2);//从右边拿模板过来					
-			}	
-		}
-	}
-	else
-	{
-	
-		if( new_pattern_done == 1 )
-		{
-			new_pattern_done = 0;
-			pattern_change_flag = 0;			
-			pattern_change_counter = 0;				
-			pattern_number = 0;			
-			return_from_setout = 1;
-			ready_go_setout_com = 0;
-			foot_flag = 0;							
-			//temp16 = (UINT16)delay_start_time * 100;	
-			//delay_ms(temp16);
-			if( nop_move_pause_flag ==1)
-		    	process_nop_move_pause(1);
-			if(nop_move_pause_flag ==0)
-				pre_running();
-			return;	
-			
-		}	
-	}
-	#else
 	if( new_pattern_done == 1 )
 	{
 		if( request_rfid_number == last_pattern_number)
@@ -731,7 +701,7 @@ void ready_status(void)
 		return_from_setout = 1;
 		ready_go_setout_com = 0;
 	}	
-	#endif
+
 	/*
 	Last sew cycle the footer keep down,press pedal release footer.
 	*/
@@ -1071,23 +1041,7 @@ void ready_status(void)
 				process_nop_move_pause(1);
 			} 	  
 			go_origin_allmotor();
-			#if AUTO_CHANGE_FRAMEWORK   //定位柱升起来
-			//if( power_on_allow_keypress == 0)
-			{
-			  AUTO_LEFT_HOLDING_POSITION = 1;
-			  AUTO_RIGHT_HOLDING_POSITION = 1;
-			  AUTO_LEFT_FRAME_HOLDER = 0;
-			  left_footer_status = 0;
-			  AUTO_RIGHT_FRAME_HOLDER = 0;
-			  right_footer_status = 0;
-			  right_quest_running = 0;
-			  left_quest_running = 0;
-			  waitting_for_pattern_done = 0;
-			}
-			power_on_allow_keypress = 1;
-			#endif
-			
-			
+						
 			if(sys.status == ERROR)
 				return;
 
@@ -1110,35 +1064,7 @@ void ready_status(void)
 			}
 			unaging_flag = 0;
 		}
-	#if AUTO_CHANGE_FRAMEWORK
-		if((aging_com == 1)&&(aging_selection ==0 ) )
-		{
-			if( (foot_flag==0)||((foot_flag==1)&&(u202 ==1)) )
-			{
-				delay_ms(500);
-				temp8 = detect_position();	
-	    		if(temp8 == OUT)     
-	      		{
-					find_dead_center();
-	      		}	
-				tension_open_switch =0;
-				tension_open_counter =0;
-				da0 =0;
-				if ( finish_nopmove_pause_flag == 1 )
-				{
-					   origin_com =1;
-					   //special_go_allmotor_flag = 1;
-				}
-				else
-				{
-					  if( nop_move_pause_flag ==1)
-			    			  process_nop_move_pause(1);
-					  if( nop_move_pause_flag ==0 )
-	                      	 pre_running();//
-				}
-	    	}
-		}
-	#else	
+	
 	  	if((aging_com == 1)&&(aging_selection ==0 ) )
 		{
 			if( (foot_flag==0)||((foot_flag==1)&&(u202 ==1)) )
@@ -1173,7 +1099,6 @@ void ready_status(void)
 				}
 	    	}
 		}
-	#endif	
 		else
 		{	
 			//--------------------------------------------------------------------------------------
@@ -1328,7 +1253,7 @@ void ready_status(void)
 		    				process_nop_move_pause(1);
 						if( nop_move_pause_flag ==0)
 						{	
-							#if ( AUTO_CHANGE_FRAMEWORK ==0 )
+				
 							if( (formwork_identify_device ==2)&&(auto_function_flag == 1)&&( pat_point == sta_point) )
 							{
 								if( serail_number != 0 )
@@ -1337,10 +1262,6 @@ void ready_status(void)
 									return;
 								}
 							}
-							#else
-							pre_running();
-							return;
-							#endif
 						}
 						
                     }
@@ -1487,7 +1408,7 @@ void trim_action(void)
 
 #endif
 	temp16 = motor.angle_adjusted;
-	if( (temp16 > cut_start_angle)||(temp16 > 1200) )//
+	if( temp16 > cut_start_angle )//
 	{
 		while(temp16 >16 )
 		{
@@ -1497,7 +1418,7 @@ void trim_action(void)
 	}
 		
 	temp16 = motor.angle_adjusted;
-	while( temp16 < 1400 )//350
+	while( temp16 < 994 )//350
 	{
 		 flag_start_waitcom = 1;
 	     if(flag_wait_com == 1) 
@@ -1521,16 +1442,9 @@ void trim_action(void)
 				 }
 				 else
 				 {
-					 #if MACHINE_14090_MASC_PLUS
-					 movestep_yj(stepper_cutter_move_range ,stepper_cutter_move_time);//平刀的分线过程
-					 cutter_delay_counter = u222;//stepper_cutter_move_time<<1;
-					 cutter_delay_flag = 1;
-					 #else
 					 movestep_yj(-90 ,stepper_cutter_move_time);
 					 cutter_delay_counter = u222;//stepper_cutter_move_time<<1;
 					 cutter_delay_flag = 1;
-					 #endif
-					 
 				 }
 			 }
 		 }
@@ -1594,49 +1508,7 @@ void trim_action(void)
 	
 	if( cut_mode == STEPPER_MOTER_CUTTER )
 	{
-		#if MACHINE_14090_MASC_PLUS
-			flag = 1;
-			if( (u206 == 1)&&(u210 ==1) )
-			{
-				flag = 0;
-				if( para.wipper_type == AIR_WIPPER)
-					AIR_FW = 1;
-				else
-				{
-					SNT_H = 1; 
-					FW = 1;
-				}
-			}	
-			
-			while( cutter_delay_flag == 1)
-			{
-				rec_com();
-			}
-			action5_flag = 1;
-			movestep_yj(-stepper_cutter_move_range ,stepper_cutter_move_time);//开始断线
-			cutter_delay_counter = stepper_cutter_move_time;
-			cutter_delay_flag = 1;
-				 
-			HOLDING_BOBBIN_SOLENOID = 1;
-			CutActionFlag = 1;
-			CutActionCounter = 0;
-			/*
-			while( motor.stop_flag == 0)//等待停车到位
-			{
-				if( cutter_delay_flag == 0)	
-				{
-					 action5_flag = 1;
-					 movestep_yj(-stepper_cutter_move_range ,stepper_cutter_move_time);//开始断线
-					 cutter_delay_counter = stepper_cutter_move_time;
-					 cutter_delay_flag = 1;
-					 
-					 HOLDING_BOBBIN_SOLENOID = 1;
-				 	 CutActionFlag = 1;
-				 	 CutActionCounter = 0;
-				}	
-			}
-			*/
-		#else
+		
 		while( cutter_delay_flag == 1)
 		{
 			rec_com();
@@ -1673,35 +1545,25 @@ void trim_action(void)
 				if( (cutter_delay_flag == 0) &&(action5_flag ==0 ) )
 				{
 					action5_flag = 1;
-					 #if MACHINE_14090_MASC_PLUS
-					 
-					 movestep_yj(-stepper_cutter_move_range ,stepper_cutter_move_time);//开始断线
-					 cutter_delay_counter = stepper_cutter_move_time;
-					 cutter_delay_flag = 1;
-					 
-					 #else
+					
 					 
 				 	 movestep_yj(90-stepper_cutter_move_range ,60);//断线位置
 					 cutter_delay_counter = 60;
 					 cutter_delay_flag = 1;
 					 
-					 #endif
+			
 				}
 				
 			}
-		#endif	
+	
 	    if(action5_flag ==0 )
 		{
 		   action5_flag = 1;
-		   #if MACHINE_14090_MASC_PLUS
-		   movestep_yj(-stepper_cutter_move_range ,stepper_cutter_move_time);//开始断线
-		   cutter_delay_counter = stepper_cutter_move_time;
-		   cutter_delay_flag = 1;
-		   #else
+		   
 		   movestep_yj(90-stepper_cutter_move_range ,60);//断线位置
 		   cutter_delay_counter = 60;
 		   cutter_delay_flag = 1;
-		   #endif
+		  
 		}
 	}
 	if( (u206 == 0 )&&(cut_mode == STEPPER_MOTER_CUTTER ) )
@@ -1717,16 +1579,14 @@ void trim_action(void)
 	{
 		if( u210 == 1)
 		{
-			#if MACHINE_14090_MASC_PLUS
-			#else
-			while( cutter_delay_flag == 1)
+		while( cutter_delay_flag == 1)
 			{
 				 rec_com();
 			}
 			movestep_yj(stepper_cutter_move_range ,60);
 			cutter_delay_counter = 60;//stepper_cutter_move_time<<1;
 			cutter_delay_flag = 1;
-			#endif
+
 		}
 	}
 	else
@@ -1780,7 +1640,7 @@ void trim_action(void)
 		}	
 	}	
 	delay_ms(wiper_end_time);
-	HOLDING_BOBBIN_SOLENOID = 0;
+
 	if( para.wipper_type == AIR_WIPPER)
 		AIR_FW = 0;
 	else
@@ -1800,7 +1660,7 @@ void trim_action(void)
 		delay_ms(100);
 	}
 	trim_io_control(OFF);
-	HOLDING_BOBBIN_SOLENOID = 0;
+
 	if( cut_mode == STEPPER_MOTER_CUTTER )
 	{
 		while( cutter_delay_flag == 1)
@@ -2088,7 +1948,7 @@ void run_status(void)
 			{
 				if(inpress_flag == 1 )      
 				{
-				   R_AIR = 1;
+				   FA = 1;
 				   inpress_flag = 0;
 				}
 				delay_ms(200);  
@@ -2120,17 +1980,17 @@ void run_status(void)
 		}
 		
 		
-		if( (second_start_switch == 1)&&(aging_com == 0) )//二次启动开关
+		if( (para.second_start_switch == 1)&&(aging_com == 0) )//二次启动开关
 		{
 		   if( second_start_counter > 0)
 		   {
-			 second_start_counter --;
-			 status_now = READY;
-			 sys.status = READY;
-			 StatusChangeLatch = READY;
-			 inpress_down(inpress_high_base);		
-			 delay_ms(20);
-			 return;
+			   second_start_counter --;
+			   status_now = READY;
+			   sys.status = READY;
+			   StatusChangeLatch = READY;
+			   inpress_down(inpress_high_base);		
+			   delay_ms(20);
+			   return;
 		   }
 		}
 		
@@ -2149,12 +2009,7 @@ void run_status(void)
 		}
      if( making_pen_actoin_flag == 0)
 	 {
-    	if( thread_holding_switch == 0 )
-		{
-				AIR_OUT = 1;  //空移后吹气
-		}
-
-		blow_air_counter = para.blow_air_counter;
+ 		blow_air_counter = para.blow_air_counter;
 		if( blow_air_counter > 0)
 		{
 			blow_air_action_flag = 1;
@@ -2174,7 +2029,7 @@ void run_status(void)
 			flag1 = 0;				
 			if(inpress_flag == 1 )      
 			 {
-				R_AIR = 1;
+				FA = 1;
 				inpress_flag = 0;
 				delay_ms(50);//100
 		  	 }
@@ -2208,9 +2063,7 @@ void run_status(void)
 					inpress_to(inpress_high);
 			 }			 	  			
 		}
-		delay_ms(60);
-		AIR_OUT = 0;
-		delay_ms(30);   //200	
+		delay_ms(90);   //200	
 		temp8 = 0;
 		if(( sewingcontrol_flag == 2 )&&( making_pen_actoin_flag == 0))
 		{
@@ -2507,7 +2360,7 @@ void run_status(void)
 				{	
 					motor.spd_obj = u211*10;		
 					temp16 = motor.angle_adjusted;
-		      		while( temp16 <= 600 )
+		      		while( temp16 <= 426 )
 					{
 						flag_start_waitcom = 1; 
 						if(flag_wait_com == 1)  
@@ -2536,7 +2389,7 @@ void run_status(void)
 						nopmove_flag = 0;
 					}
 					temp16 = motor.angle_adjusted;
-		      		while( temp16 <= 1000 ) 
+		      		while( temp16 <= 710 ) 
 		        	{
 						flag_start_waitcom = 1;  
 						if(flag_wait_com = 1)   
@@ -2836,7 +2689,7 @@ void run_status(void)
 							}
 								temp16 = motor.angle_adjusted;
 
-					      		while((temp16 <= tension_start_angle) || (temp16 >= MAGIN_AREA))
+					      		while(temp16 <= tension_start_angle)
 					        	{
 									flag_start_waitcom = 1;         
 									if(flag_wait_com == 1)          
@@ -2990,8 +2843,8 @@ void run_status(void)
 				#if FOLLOW_INPRESS_FUN_ENABLE		
 					if(inpress_type == FOLLOW_UP_INPRESSER) 
 					{		
-						inpress_up_angle   = inpress_follow_up_angle   << 2;
-						inpress_down_angle = inpress_follow_down_angle << 2;
+						inpress_up_angle   = angle_tab[inpress_follow_up_angle ];
+						inpress_down_angle = angle_tab[inpress_follow_down_angle];
 				
 						action_flag0 = 1;
 						action_flag1 = 1;
@@ -3008,7 +2861,7 @@ void run_status(void)
 					    				
 						temp16 = motor.angle_adjusted;
 						
-						while( temp16 < 1400 )//350d
+						while( temp16 < 994 )//350d
 						{
 							temp16 = motor.angle_adjusted;
 							if( motor.spd_obj < 400)
@@ -3025,7 +2878,6 @@ void run_status(void)
 									if( movezx_delay_flag == 1)
 										while( movezx_delay_counter >0 );
 										
-									//if( (inpress_delta >0 ) &&(inpress_high_flag == 1) )
 									if( (inpress_high_action_flag == 1) &&(inpress_follow_delta>0))
 									{		
 										inpress_high_action_flag = 0;
@@ -3056,11 +2908,10 @@ void run_status(void)
 									if( movezx_delay_flag == 1)
 										while( movezx_delay_counter >0 );
 
-									//if( (inpress_delta < 0 ) &&(inpress_high_flag == 1) )
 									if( (inpress_high_action_flag == 1) &&(inpress_follow_delta<0))
 									{									
 										inpress_high_action_flag = 0;
-										inpress_follow_delta =  inpress_follow_delta*7/10;
+										
 										movestep_zx(inpress_follow_range + inpress_follow_delta,inpress_follow_up_speed);
 									}
 									else
@@ -3078,7 +2929,7 @@ void run_status(void)
 									stitch_counter++;
 									pat_point++;
 									check_data(0);//看看下针转速，但不改变实际转速
-									inpress_down_angle = inpress_follow_down_angle<<2;
+									inpress_down_angle = angle_tab[inpress_follow_down_angle];
 									pat_point--;
 									stitch_counter--;
 									if( inpress_down_angle > inpress_up_angle)//默认情况下是下降小于起始的
@@ -3128,7 +2979,7 @@ void run_status(void)
 					if(inpress_type == STEPPER_INPRESSER)     
 					{    					
 			        	temp16 = motor.angle_adjusted;
-						if(movestep_angle <1360 )//340d=>1360
+						if(movestep_angle <967 )//340d=>1360
 						{
 						    while(temp16 <= movestep_angle + 80)
 		        	     	{
@@ -3397,8 +3248,7 @@ void error_status(void)
 			 flash_buz();
              flash_led();   							// flash alarm led                                                   
     		 pause_flag = 0;
-    		 AIR_OUT = 0;
-			 da0 = 0;  
+    			 da0 = 0;  
      	     break;    
         case 3:
 			if( sfsw_flag == 0 )
@@ -3805,55 +3655,6 @@ void setout_status(void)
 	COOL_AIR = 0;
 	
 	
- 	#if AUTO_CHANGE_FRAMEWORK
-	if ( PointShiftFlag == 1 )
-		PointShiftFlag = 0;
-	 if(coor_com  == 1)
-  	  	coor_com = 0;
-	if( aging_com == 1)
-	{
-		  if( waitting_for_pattern_done == 1)//左边运行着
-		   {
-			   return_frame_back(1);//左边送回模板
-			   left_quest_running = 0;
-			   //启动另一边
-			   AUTO_RIGHT_FRAME_STANDBY = 1;
-			   right_second_footer_status = 1;
-			   right_footer_delay_flag = 1;
-			   right_footer_delay_counter = 0;
-		   }
-		   else if( waitting_for_pattern_done == 2)
-		   {
-			   return_frame_back(2);//右边送回模板
-			   right_quest_running = 0;
-			   //启动另一边
-			   AUTO_LEFT_FRAME_STANDBY = 1;					
-			   left_second_footer_status = 1;
-			   left_footer_delay_flag = 1;//
-			   left_footer_delay_counter = 0;
-		   }
-	}	
-	else
-	{
-		   if( waitting_for_pattern_done == 1)//左边运行着
-		   {
-			   return_frame_back(1);//左边送回模板
-			   left_quest_running = 0;
-		   }
-		   else if( waitting_for_pattern_done == 2)
-		   {
-			   return_frame_back(2);//右边送回模板
-			   right_quest_running = 0;
-		   }
-	}
-   waitting_for_pattern_done = 0;
-	//6 回原点
-	delay_ms(50);
-	go_origin_allmotor();
-	
-	
-	#else
-	
 
 	if( super_pattern_flag != 1 )
 	{
@@ -4086,7 +3887,7 @@ void setout_status(void)
 					PointShiftFlag = 0;
 				}
 	  }
-	#endif
+
 	nop_move_k = 1; 
 	move_flag = 0;
 	lastmove_flag = 0;
@@ -4111,7 +3912,7 @@ void setout_status(void)
     {
 		FOOTHALF_UP;
 	}
-	if( second_start_switch == 1)
+	if( para.second_start_switch == 1)
 	{
 		second_start_counter = 1;
 	}
@@ -4240,12 +4041,7 @@ void preedit_status(void)
 	UINT8 temp8;
 	INT16 tempx_step,tempy_step;
 	PATTERN_DATA *TempStart_pointTemp;
-#if AUTO_CHANGE_FRAMEWORK
-	AUTO_LEFT_HOLDING_POSITION = 0;
-	AUTO_RIGHT_HOLDING_POSITION = 0;
-	left_footer_status = 0;
-	right_footer_status = 0;
-#endif
+
 	if(para.x_origin_mode == AUTO_FIND_START_POINT)
 	{
 		if (already_auto_find_start_point == 0)
@@ -4304,7 +4100,7 @@ void preedit_status(void)
 
 			else if(inpress_high == 81)
 			{
-				if( (motor.angle_adjusted>=440) &&(motor.angle_adjusted <=1000) )
+				if( (motor.angle_adjusted  >= angle_tab[110]) &&(motor.angle_adjusted <= angle_tab[250]) )//110-250
 					 find_dead_center();
 				//if(inpress_flag ==0)
 				{
@@ -4314,7 +4110,7 @@ void preedit_status(void)
 			}
 			else
 			{
-			  R_AIR = 1;
+			  FA = 1;
 			  delay_ms(200);
 			  last_inpress_position =inpress_high;
 			  inpress_to(inpress_high);
@@ -4575,10 +4371,7 @@ void finish_status(void)
 
 	if(u39 != 0)
 	  pat_buff_total_counter = 0; 
-   
-   #if AUTO_CHANGE_FRAMEWORK
- 
-   #else	
+	
 	
    if(super_pattern_flag == 1)
    {
@@ -4742,8 +4535,6 @@ void finish_status(void)
 	  }
 			
     }
-	#endif
-	
 	
 	predit_shift = 0;
 	origin_com = 0;
@@ -4798,8 +4589,6 @@ void slack_status(void)
 			SUM = 1;
 			delay_ms(100);
 			SUM = 0;
-	
-			
 			write_stepmotor_curve_flag = 0;
 			predit_shift =0;
 		}	
@@ -5688,7 +5477,7 @@ void checki10_status(void)
 			 }
 			 else
 			 {
-				R_AIR = 1;
+				FA = 1;
 				delay_ms(200);
 			 	inpress_to(inpress_high);
 			 }
@@ -5726,7 +5515,7 @@ void checki10_status(void)
 			delay_ms(10);
 			if(DVB == para.dvab_open_level)
 			{
-				R_AIR ^= 1;
+				FA ^= 1;
 			}	
 		}
 		//--------------------------------------------------------------------------------------
@@ -5776,7 +5565,7 @@ void checki10_status(void)
 				predit_shift = 0;
 				break;   // 7.0mm   		            							
   	  	case 0x02: 
-	      	  	R_AIR = 1;
+	      	  	FA = 1;
 				delay_ms(100);
 				inpress_to(35);  
 				delay_ms(230);
@@ -5786,7 +5575,7 @@ void checki10_status(void)
 				predit_shift = 0;
 				break;   // 3.5mm     
   	  	case 0x03: 
-		        R_AIR = 1;
+		        FA = 1;
 				delay_ms(100);
 				inpress_to(0);   
 				delay_ms(230);
@@ -5997,11 +5786,9 @@ void checki11_status(void)
 				predit_shift = 0;
 				break;   
   		case 0x01: 
-				#if MACHINE_14090_MASC_PLUS
-				movestep_yj(stepper_cutter_move_range ,stepper_cutter_move_time);
-				#else
+				
 				movestep_yj(-90 ,stepper_cutter_move_time);
-				#endif
+				
 				cutter_delay_counter = stepper_cutter_move_time;
 				cutter_delay_flag = 1;
 				stepmotor_state = 1;  
@@ -6010,11 +5797,9 @@ void checki11_status(void)
 				predit_shift = 0;
 				break;   	            							
   	  	case 0x02: 
-				#if MACHINE_14090_MASC_PLUS
-				movestep_yj(-stepper_cutter_move_range ,stepper_cutter_move_time);
-				#else
+			
 				movestep_yj(90 - stepper_cutter_move_range ,60);//断线位置
-				#endif
+				
 				cutter_delay_counter = stepper_cutter_move_time;
 				cutter_delay_flag = 1;
 				stepmotor_state = 2;  
@@ -6115,7 +5900,7 @@ void single_move_func(void)
 			sys.error = ERROR_45;
 			return;
 		}
-	   if( second_start_switch == 1)//试缝以后，二次启动的功能仍然有效
+	   if( para.second_start_switch == 1)//试缝以后，二次启动的功能无效
 		   second_start_counter = 0;
 		   
 	   if( FootRotateFlag == 1)
@@ -6190,7 +5975,7 @@ void single_move_func(void)
 								}
 							}
 							
-							if( (motor.angle_adjusted>=440) &&(motor.angle_adjusted <=1000) )//110-250
+							if( (motor.angle_adjusted  >= angle_tab[110]) &&(motor.angle_adjusted <= angle_tab[250]) )//110-250
 							  	 find_dead_center();
 							if( nop_move_pause_flag ==1)
 							{
@@ -6248,7 +6033,7 @@ void single_move_func(void)
 						return_from_setout = 0;
 						not_in_origin_flag = 1;
 						SewTestStitchCounter--;
-						if( (motor.angle_adjusted>=440) &&(motor.angle_adjusted <=1000) )//110-250
+						if( (motor.angle_adjusted  >= angle_tab[110]) &&(motor.angle_adjusted <= angle_tab[250]) )//110-250
 							 find_dead_center();
 						if( inpress_follow_flag == 1)
 						{

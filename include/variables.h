@@ -23,7 +23,7 @@ extern UINT8 MAIN_MOTOR_TYPE;
 extern INT16 Ud_i,Uq_i,d_iq_last;//scx
 extern SYS_STRU sys;
 extern MOTOR_STRU motor;
-extern PI_SPD_IQ Run_SpdIq;//scx
+
 extern PATTERN_DATA *pat_point;
 extern PATTERN_DATA *sta_point,*origin2_point;
 extern PATTERN_DATA *TempEnd_point;
@@ -740,17 +740,6 @@ extern UINT8  making_pen_nopmove_flag;
 extern UINT16  dsp1_step_crc;
 extern UINT16  dsp2_step_crc;
 
-#if AUTO_CHANGE_FRAMEWORK 
-	extern UINT8  left_footer_action_flag,left_start_action_flag,left_footer_counter,left_start_counter,left_footer_lock_flag,left_start_lock_flag;
-	extern UINT8  right_footer_action_flag,right_start_action_flag,right_footer_counter,right_start_counter,right_footer_lock_flag,right_start_lock_flag;
-	extern UINT8  left_footer_status,left_second_footer_status,left_quest_running;
-	extern UINT8  right_footer_status,right_second_footer_status,right_quest_running;
-	extern UINT8  waitting_for_pattern_done;
-	extern UINT8 left_footer_delay_flag,left_footer_delay_counter,right_footer_delay_flag,right_footer_delay_counter;
-	extern UINT8 power_on_allow_keypress;
-	extern UINT8 testpin;
-
-#endif
 	
 extern UINT8 blow_air_action_flag;
 extern UINT16 blow_air_counter;

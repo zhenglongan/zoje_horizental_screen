@@ -202,7 +202,7 @@ INT16 sys_watch(void)
 			m_status = 3;
 			OUTPUT_ON = 1;
 			motor.iq = 0;
-			Run_SpdIq.Sum_Iq = 0;	//scx
+
 			motor.iq_last = 0;		//scx
 			motor.spd_obj = 0;
 			motor.spd_ref = 0;
@@ -298,7 +298,7 @@ INT16 sys_watch(void)
 			  	  		disable_24V_output();         // disable 24V
 						da0 = 0;
 						L_AIR = 0;			
-						FA =0;			
+	
 			      		return ERROR_08;    // 24V is overvoltage
 					}
 				}
@@ -779,7 +779,7 @@ void int2_int(void)      // power-off
 	m_status = 3;
 	OUTPUT_ON = 1;
 	motor.iq = 0;
-	Run_SpdIq.Sum_Iq = 0;	//scx
+
 	motor.iq_last = 0;		//scx
 	motor.spd_obj = 0;
 	motor.spd_ref = 0;

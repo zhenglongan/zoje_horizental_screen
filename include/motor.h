@@ -1,4 +1,4 @@
- //--------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------
 //         COPYRIGHT(C) 2006 Beijing xingdahao technology Co., Ltd.
 //                     ALL RIGHTS RESERVED 
 //  Project Number: sewing_machine_controller 
@@ -16,11 +16,10 @@
 #define MotorFatherVersion		01
 #define MotorChildVersion	    1
 #define MotorSVNVersion			56 
-
 extern void init_motor(void);
 extern void motor_control(void);
 extern void motor_start(void);
-extern void MotorPreInit(void);
+
 #endif
 //--------------------------------------------------------------------------------------
 //         COPYRIGHT(C) 2006 Beijing xindahao technology Co., Ltd.

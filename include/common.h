@@ -24,12 +24,12 @@
     
 #define MainFatherVersion		05
 #define MainChildVersion		07 
-#define MainSVNVersion			2084//2083//2082//208//2078//2077//2076//2075//2074//2073//2072//2063//2062//2061//20527//20526
+#define MainSVNVersion			400//2083//2082//208//2078//2077//2076//2075//2074//2073//2072//2063//2062//2061//20527//20526
 
 #define ENABLE_LED_ALARM_FUNCTION   0 // led报警功能
-#define MACHINE_14090_MASC_PLUS     0 // 14090
+
 #define MULTIPULE_IO_ENABLE         0 // 开放多功能IO编程功能
-#define MACHINE_SC0716_SERVO_SUPU   0 // 舒普
+
 #define ROTATE_CUTTER_ENABLE		0 // 旋转切刀功能
 #define BOBBIN_CHANGER_ENABLE       0 // 自动换梭
 #define BOBBIN_THREAD_DETECT        0 
@@ -46,27 +46,21 @@
 #define BOTE_AGING_MAINMOTOR    	1
 #define NOPMOVE_STOP_ENABLE     	1 //空送急停
 #define UART1_DEBUG_OUT         	0
-#define SUPPORT_0_5MM_FORMAT    	0
+
 #define NEED_TAKE_UP_ORIGIN_PHASE   1 //
 #define OPEN_LAST_5_STITCH_SPEED    1 //
 
 
 #define FIRST_STITCH_NOT_ACTION     1 //第一针不抬起功能
+#define RESOLUTION 				10
+#define QUICKMOVE_JUDGEMENT     127
 
-#if SUPPORT_0_5MM_FORMAT
-	#define RESOLUTION 				20
-	#define QUICKMOVE_JUDGEMENT     255
-#else
-	#define RESOLUTION 				10
-	#define QUICKMOVE_JUDGEMENT     127
-#endif
 
 #define COM_MONITOR_FUN         	0
 #define FOLLOW_INPRESS_FUN_ENABLE   1
 
-
 #define ONE_STITCH_STOP         	1	 //一针停车
-#define DEBUG_DLG               	1
+#define DEBUG_DLG               	0
 #define DA0_OUTPUT_IMMEDIATELY  	0    //主界面张力值变化立即输出
 #define DA0_TEST_FUN_ENABLE     	0    //测试电子线张力
 #define DEBUG_MAIN_MOTOR        	0    //借用参数调主轴
@@ -77,7 +71,7 @@
 #define DA1_OUTPUT_SPEED        	0    //调试速度输出
 
 
-#define STEPPER_WAITTING_PROTOCOL   1  //延时等待新协议
+#define STEPPER_WAITTING_PROTOCOL   1    //延时等待新协议
 #define DEBUG_TEST_NOPMOVE      	0    //测试空送效果
 #define FUZHUYAJIAO          		1    //小压脚及大压脚极性 0:常闭，全伺服工作方式；1：常开，10080方式
 #define JITOUBAN                	1    //0:无机头板  1：SC0413
@@ -91,8 +85,6 @@
 #define SERVO_MOTOR             	0
 #define STEPPER_MOTOR           	1
 #define TIME_PARAMETER_1        	1
-
-#define AUTO_CHANGE_FRAMEWORK       0
 
 
 //--------------------------------------------------------------------------------------
@@ -300,15 +292,8 @@
 
 #define XORG        p2_0         //
 #define YORG        p2_1         // 
-#if AUTO_CHANGE_FRAMEWORK
-#define PORG_2        p2_2         //INPUT1 
-#define PSENS_2       p2_3		 //INPUT2
-#define PORG        testpin         //INPUT1 
-#define PSENS       testpin		 //INPUT2
-#else
 #define PORG        p2_2         //INPUT1 
 #define PSENS       p2_3		 //INPUT2
-#endif
 #define CORG        p2_4		 //INPUT4
 #define CSENS       p2_5		 //INPUT3
 #define IORG        p2_6         //YORG 
@@ -320,33 +305,16 @@
 #define T_OC        p3_2
 #define L_AIR       p3_3 
 #define R_AIR       p3_4
-#if AUTO_CHANGE_FRAMEWORK
-	#define LM_AIR      testpin //p3_5	
-	#define LM_AIR_2     p3_5	
-#else
-	#define LM_AIR      p3_5
-#endif 	
-//#define FL_ON   	p3_6
+#define LM_AIR      p3_5
 #define FW   		p3_7		
 
 #define OUTPUT_ON   p4_0
-#if AUTO_CHANGE_FRAMEWORK
-	#define FL		   	testpin
-	#define FL_2	   	p4_1
-#else
 #define FL		   	p4_1
-#endif
 #define FA          p4_2  
 #define T_CLK       p4_3        //OUTPUT6
-#if AUTO_CHANGE_FRAMEWORK
-#define T_DIR_2       p4_4		//OUTPUT5
-#define T_DIR       testpin		//OUTPUT5
-#define T_HALF_2      p4_5		//OUTPUT4
-#define T_HALF      testpin		//OUTPUT4
-#else
 #define T_DIR       p4_4		//OUTPUT5
 #define T_HALF      p4_5		//OUTPUT4
-#endif
+
 
 #define T_OC1    	p4_6
 #define FR_ON  	    p4_7      	//OUTPUT2
@@ -355,12 +323,8 @@
 #define ALARM_LED   p5_1
 #define PWR_LED     p5_2
 #define SUM         p5_3
-#if AUTO_CHANGE_FRAMEWORK
-#define FK_OFF_2      p5_4   		//OUTPUT3 
-#define FK_OFF      testpin   		//OUTPUT3 
-#else
 #define FK_OFF      p5_4   			//OUTPUT3 
-#endif
+
 
 #define EPM         p5_5
 #define ONE_WIRE    p5_6
@@ -415,39 +379,29 @@
 #define SENSOR7     p10_5      //INPUT 7---SC0419
 #define TSENS       p10_6
 #define T_HALF_EXTEND  p10_5
-
-#if AUTO_CHANGE_FRAMEWORK
-#define T_DIR_EXTEND_2   p10_6
-#define T_DIR_EXTEND   testpin
-#else
 #define T_DIR_EXTEND   p10_6
-#endif
-
-
-#if AUTO_CHANGE_FRAMEWORK
-	#define AIR_OUT      T_HALF_EXTEND   //气阀4
-	#define PEN_SIGNAL   testpin
-	#define COOL_AIR     testpin//L_AIR    //
-#else
-	#define COOL_AIR     L_AIR    //
-	#define AIR_OUT      T_HALF   //气阀4	
-    #define PEN_SIGNAL     T_DIR  //画笔 气阀5
-    #define LASER_SIGNAL   T_CLK  //激光 气阀6
-#endif	
-
 #define DV2          p10_7
-#define AIR_FW	     FK_OFF   //气阀3
 
-#define HOLDING_BOBBIN_SOLENOID     FA
 
-#if AUTO_CHANGE_FRAMEWORK
-#define LASER_POWER_ON 			T_HALF_EXTEND
-#else
-#define LASER_POWER_ON 			T_DIR  //气阀5 
-#endif
+//zoje
+#define COOL_AIR       				R_AIR   //ZOJE
+#define PEN_SIGNAL     				T_HALF  //ZOJE 气阀4
 
-#define LED_POWER     EXTEND  
-#define BLOW_AIR      T_CLK   
+#define LASER_SIGNAL   				FL	  	//ZOJE 气阀6	
+
+#define FILL_OIL  		  			FR_ON   //气阀2
+#define OIL_EMPTY_DETECT  			CSENS   //输入3
+#define BLOW_AIR      	  			R_AIR   
+#define AIR_FW	       	  			FK_OFF  //气阀3
+
+#define LASER_POWER_PIN             FL      //辅助
+#define LASER_POWER_ON          	T_DIR   //气阀5
+#define LASET_MIRROR_COVER          T_CLK   //气阀6
+#define LASER_FUN_PIN               FK_OFF  //气阀3     
+#define LASER_HEADER_PROTECT        PORG    //输入1
+#define LASER_INDICATIOR_LED        p1_6    //EXTEND
+#define LASER_LED_ON                1
+
 
 #if BOBBIN_CHANGER_ENABLE
 	#define BOBBIN_CHANGE_START      T_CLK  //气阀6
@@ -460,27 +414,6 @@
 	#define BOBBIN_EMPTY_DETECTOR2   PSENS  //INPUT2
 	#define BOBBIN_EMPTY_SOLENOID    T_DIR  //气阀5     
 #endif	
-
-#if AUTO_CHANGE_FRAMEWORK
-
-	#define AUTO_LEFT_FRAME_HOLDER      LM_AIR_2 //左夹扣
-	#define AUTO_RIGHT_FRAME_HOLDER     FL_2     //右夹扣
-	
-	#define AUTO_LEFT_HOLDING_POSITION  T_DIR_EXTEND_2 //左定位销 气阀1
-	#define AUTO_LEFT_FRAME_STANDBY     FK_OFF_2 //左准备销 气阀3
-	
-	#define AUTO_RIGHT_HOLDING_POSITION  T_HALF_2 //右定位销 气阀4
-	#define AUTO_RIGHT_FRAME_STANDBY     T_DIR_2  //右准备销 气阀5
-	
-	#define AUTO_LEFT_FOOTER_SWITCH     DVB
-	#define AUTO_LEFT_RUNNING_SWITCH    DVA
-	
-	#define AUTO_RIGHT_FOOTER_SWITCH     PORG_2	//输入1
-	#define AUTO_RIGHT_RUNNING_SWITCH    PSENS_2	//输入2
-	
-#endif
-
-#define FILL_OIL  			  FK_OFF   //气阀3 
 
 #define YELLOW_LED			  T_HALF   //气阀4	
 #define GREEN_LED			  T_DIR    //气阀5 
@@ -568,25 +501,10 @@
 #define FOOTHALF_OUT  			FL=1
 
 
-
-		#define DSTP_ANGLE 				720
-		#define CODE_SCALE 				1440
-		#define MAGIN_AREA 				1434
-		#define CUT_START_ANGLE   		759  // 190 DEGREE
-		#define CUT_END_ANGLE	  		160  // 40 degree
-		#define DEGREE_0    			0
-		#define DEGREE_43   			172
-		#define DEGREE_53   			211
-		#define DEGREE_63   			252
-		#define DEGREE_180  			720
-		#define DEGREE_250  			1000
-		#define DEGREE_360  			1439
-		#define TENSION_START_ANGLE		1350
-		#define TENSION_END_ANGLE		160
-		#define STOPANGLE				239
-		#define DEADPOINT				14
-		#define ROTATE_ANGLE			323
-
+#define CODE_SCALE 				1024
+#define DEGREE_0    			0
+#define DEGREE_53   			151
+#define DEGREE_180  			512
 
 #define OVC_DSP1           				0xD1A1  // dsp1's motor overcurrent
 #define OVC_DSP2           				0xD2A2  // dsp2's motor overcurrent

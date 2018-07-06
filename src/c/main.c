@@ -117,20 +117,11 @@ void main(void)
 		if(PAUSE == PAUSE_OFF)
 		{
 			setup_stepper_moter();	
-			//if(( para.dsp1_step_crc != read_stepmotor_curve_crc(1))||(para.dsp2_step_crc != read_stepmotor_curve_crc(2)))
-			if( para.dsp1_step_crc != read_stepmotor_curve_crc(1))
-			{
-				sys.status = ERROR;
-				StatusChangeLatch = ERROR;
-		      	sys.error = ERROR_92; 				
-			}
-			if (para.dsp2_step_crc != read_stepmotor_curve_crc(2))
-			{
-				sys.status = ERROR;
-				StatusChangeLatch = ERROR;
-		      	sys.error = ERROR_92;//要修改
-			}
-		
+			delay_ms(10);
+			para.dsp1_step_crc = read_stepmotor_curve_crc(1);
+			delay_ms(10);
+			para.dsp2_step_crc = read_stepmotor_curve_crc(2);
+			
 			if( u201 == 1 )         
 		   	    go_origin_allmotor();		
 				
@@ -142,12 +133,7 @@ void main(void)
 			}
 		}
 	}
-	#if AUTO_CHANGE_FRAMEWORK   //自动换模板
-		AUTO_LEFT_HOLDING_POSITION = 0;
-		AUTO_LEFT_FRAME_STANDBY = 0;
-		AUTO_RIGHT_HOLDING_POSITION = 0;
-		AUTO_RIGHT_FRAME_STANDBY = 0;
-	#endif	
+	
   	//--------------------------------------------------------------------------------------
   	// system status switch
   	//--------------------------------------------------------------------------------------
@@ -160,9 +146,7 @@ void main(void)
 			led_turn_green_flag = 1;
 		}
 	#endif
-	#if BOBBIN_CHANGER_POWERON
-		FA = 1;
-	#endif
+
 	while(1)
   	{
 		rec_com();   
@@ -196,7 +180,7 @@ void main(void)
 							download_drv_status(); break;
 					break;
 			case DOWNLOAD_SPFL:
-					download_multipul_program_status();
+							download_multipul_program_status();
 					break;
 	      	default:  
 			       sys.status = READY; 
@@ -341,7 +325,6 @@ void ta0_int(void)
 			CutActionFlag = 0;
 			//trim_io_control(OFF);
 			L_AIR = 0;
-		    FA = 0;
 			CutActionCounter = 0;
 			
 		}
@@ -448,32 +431,32 @@ void ta0_int(void)
 			software_key_bobbin = 0;
 			if( cover_position_flag == 0)
 			{
-				FR_ON =1;
+				//FR_ON =1;
 				cover_position_flag = 1;
 			}
 			else
 			{
-			    if( sys.status != CHECKI05)
-					FR_ON =0;
+			    //if( sys.status != CHECKI05)
+				//	FR_ON =0;
 				cover_position_flag = 0;
 			}
 		}
 		if( (SFSW == ON)&&(pause_inpress_flag ==0) )         
 	    {	
 	      	sfsw_count++;
-	      	if(sfsw_count >= 5)  
+	      	if(sfsw_count >= 50)  
 			{	
 	      		  pause_inpress_flag = 1;
 				  sfsw_count = 0;
 				  if( cover_position_flag == 0)
 				  {
-					 FR_ON =1;
+					 //FR_ON =1;
 					 cover_position_flag = 1;
 				  }
 				  else
 				  {
-					  if( sys.status != CHECKI05)
-						FR_ON =0;
+					  //if( sys.status != CHECKI05)
+					//	FR_ON =0;
 					   cover_position_flag = 0;
 				  }
 			}
@@ -501,7 +484,6 @@ void ta0_int(void)
 			FW = 0;
 			trim_io_control(OFF);
 			da0 = 0;
-			FA = 0;
 			test_action_flag = 0;
 		}
 	}
@@ -565,215 +547,9 @@ void ta0_int(void)
 		{
 			fk_action_counter = 0;
 			fk_action_flag = 0;
-			AIR_OUT = 0;    			//辅助气阀3  关闭吹气功能
 		}
 	}
-	#if AUTO_CHANGE_FRAMEWORK   //自动换模板
-	
-	//if( power_on_allow_keypress == 1 )	
-	{	
-		/*
-		左右定位销和左右准备确认销在运行过程中，只有没运行的一侧可以产生动作。
-		*/
-		if( AUTO_LEFT_FOOTER_SWITCH == para.dvab_open_level )//左侧的夹扣开关
-		{
-			if( ((sys.status == READY)&&(left_footer_lock_flag == 0) )|| ( (left_footer_lock_flag == 0)&&( waitting_for_pattern_done != 1))  )
-			{
-				
-				left_footer_counter++;
-				if( left_footer_counter >= 100 ) //100ms
-				{
-					left_footer_lock_flag = 1;
-				    left_footer_counter = 0;		
-					if( left_footer_status == 0)
-						{
-							AUTO_LEFT_FRAME_HOLDER = 1;//夹紧
-							left_footer_status = 1;
-							foot_flag = 0;
-						}	
-						else
-						{
-							AUTO_LEFT_FRAME_HOLDER = 0;//松开
-							left_footer_status = 0;
-							foot_flag = 1;
-						}					
-						   
-				}
-			}
-		} 
-		else 
-		{
-			left_footer_lock_flag = 0;
-			left_footer_counter = 0;
-		}
-	
-		if( AUTO_LEFT_RUNNING_SWITCH == para.dvab_open_level )//启动开关
-		{
-			
-			if( (left_start_lock_flag == 0)&&( waitting_for_pattern_done != 1) )
-			{
-				//SUM =1;
-				left_start_counter++;
-				if( left_start_counter>=100 ) //100ms
-				{
-					left_start_lock_flag = 1;
-				    left_start_counter = 0;		
-					if( left_second_footer_status == 0)
-					{
-						AUTO_LEFT_FRAME_STANDBY = 1;					
-						left_second_footer_status = 1;
-						left_footer_delay_flag = 1;//
-						left_footer_delay_counter = 0;
-					}	
-					else
-					{
-						AUTO_LEFT_FRAME_STANDBY = 0;				
-						left_second_footer_status = 0;
-						left_quest_running = 0;
-						left_footer_delay_flag = 1;//
-						left_footer_delay_counter = 0;
-					}	   
-				}
-			}
-			else if (waitting_for_pattern_done == 1)//再启动
-			{
-				left_start_counter++;
-				if( left_start_counter>=100 ) //100ms
-				{
-					left_start_counter = 0;
-					pedal_state = 1;
-				}
-			}
-		} 
-		else 
-		{
-			left_start_lock_flag = 0;
-			left_start_counter = 0;
-		}
-	
-		if( left_footer_delay_flag == 1)
-		{
-			left_footer_delay_counter++;
-			if( left_footer_delay_counter >=200 )//200ms
-			{
-				left_footer_delay_flag = 0;
-				if( left_second_footer_status == 1)
-				{
-					AUTO_LEFT_HOLDING_POSITION = 0; //定位柱下去，准备开缝
-				    left_quest_running = 1;
-					//SUM = 1;
-				}
-				else
-				{
-					AUTO_LEFT_HOLDING_POSITION = 1; //定位柱上来，待机位置
-					left_quest_running = 0;	
-				}
-			}
-		}
-		//===================================================================
-		if( AUTO_RIGHT_FOOTER_SWITCH == 1 )
-		{
-			if( ((sys.status == READY)&&(right_footer_lock_flag == 0) )|| ((right_footer_lock_flag == 0)&&( waitting_for_pattern_done != 2)) )
-			{
-				right_footer_counter++;
-				if( right_footer_counter >= 100 ) //100ms
-				{
-				
-					right_footer_lock_flag = 1;
-				    right_footer_counter = 0;
-			
-						if( right_footer_status == 0)
-						{
-							AUTO_RIGHT_FRAME_HOLDER = 1;
-							right_footer_status = 1;
-							foot_flag = 0;
-						}	
-						else
-						{
-							AUTO_RIGHT_FRAME_HOLDER = 0;
-							right_footer_status = 0;
-							foot_flag = 1;
-						}	
-					   
-				}
-			}
-		} 
-		else 
-		{
-			right_footer_lock_flag = 0;
-			right_footer_counter = 0;
-		}
-	
-		if( AUTO_RIGHT_RUNNING_SWITCH == 1 )
-		{
-			if( (right_start_lock_flag == 0)&&( waitting_for_pattern_done != 2) )
-			{
-				right_start_counter++;
-				if( right_start_counter>=100 ) //100ms
-				{
-					//SUM = 1;
-					right_start_lock_flag = 1;
-					right_start_counter = 0;
-					if( right_second_footer_status == 0)
-					{
-						AUTO_RIGHT_FRAME_STANDBY = 1;
-						right_second_footer_status = 1;
-						right_footer_delay_flag = 1;
-						right_footer_delay_counter = 0;
-					}	
-					else
-					{
-						AUTO_RIGHT_FRAME_STANDBY = 0;
-						right_second_footer_status = 0;
-						right_footer_delay_flag = 1;
-						right_footer_delay_counter = 0;
-					}				   
-				}
-			}
-			else if (waitting_for_pattern_done == 2)//再启动
-			{
-				right_start_counter++;
-				if( right_start_counter>=100 ) //100ms
-				{
-					right_start_counter = 0;
-					pedal_state = 1;
-				}
-			}
-		} 
-		else 
-		{
-			right_start_lock_flag = 0;
-			right_start_counter = 0;
-		}
-	
-		if( right_footer_delay_flag == 1)
-		{
-			right_footer_delay_counter++;
-			if( right_footer_delay_counter >=200 )//200ms
-			{
-				right_footer_delay_flag = 0;
-				if( right_second_footer_status == 1)
-				{
-					AUTO_RIGHT_HOLDING_POSITION = 0; //定位柱下去，准备开缝
-				    right_quest_running = 1;
-					//SUM = 1;
-				}
-				else
-				{
-					AUTO_RIGHT_HOLDING_POSITION = 1; //定位柱上来，待机位置
-					right_quest_running = 0;	
-				}
-			}
-		}
-		
-	
-	}
-	
-	#endif
-	
-	
-	
-	#if AUTO_CHANGE_FRAMEWORK ==0
+
 	if(sys.status == READY)
 	{	
 		if(DVA == para.dvab_open_level)           					// foot sensor is pushed,
@@ -818,7 +594,7 @@ void ta0_int(void)
 	{
 		pedal_state = 0;
 	}
-	#endif
+
 }
 //--------------------------------------------------------------------------------------
 //  Name:	tb3_int

@@ -306,7 +306,7 @@ void init_var(void)
   	//--------------------------------------------------------------------------------------  
 	motor.iq = 0;
 	motor.iq_last = 0;		//scx
-	Run_SpdIq.Sum_Iq = 0;	//scx
+
 	motor.max_spd = 2500;     // max speed limit
 	motor.min_spd = 30;       // min speed limit
 	motor.acc = 30;           // 30 rpm/ms
@@ -707,10 +707,7 @@ void init_var(void)
 	thread_holding_start_angle = 0;
 	thread_holding_end_angle = 0;
 	thread_holding_cut_angle = 0;
-	//if( u227 == 55)
-	//    second_start_switch = 1;
-	//else
-	    second_start_switch = 0;
+    second_start_switch = 0;
 	second_start_counter = 1;
 	
 	erase_falg = 0;
@@ -724,7 +721,7 @@ void init_var(void)
 	MAIN_MOTOR_TYPE = 1;
 	motor_para[0] = 8;
 	motor_para[1] = 10;
-	MotorPreInit();
+	
 	
 	#if BOBBIN_CHANGER_ENABLE
 	bobbin_change_switch = 0;
@@ -834,36 +831,7 @@ void init_var(void)
 	foot_ready_counter_dvb = 0;
 	making_pen_nopmove_flag = 0;
 	
-#if AUTO_CHANGE_FRAMEWORK 
-	left_footer_action_flag = 0;
-	left_start_action_flag = 0;
-	left_footer_counter = 0;
-	left_start_counter = 0;
-	right_footer_action_flag = 0;
-	right_start_action_flag = 0;
-	right_footer_counter = 0;
-	right_start_counter = 0;
-	left_footer_lock_flag = 0;
-	left_start_lock_flag = 0;
-	right_footer_lock_flag = 0;
-	right_start_lock_flag = 0;
-	left_footer_status = 0;
-	left_second_footer_status = 0;
-	left_quest_running = 0;
-	right_footer_status = 0;
-	right_second_footer_status = 0;
-	right_quest_running = 0;
-	waitting_for_pattern_done = 0;
-	
-	left_footer_delay_flag = 0;
-	left_footer_delay_counter = 0;
-	right_footer_delay_flag = 0;
-	right_footer_delay_counter = 0;
-	power_on_allow_keypress = 0;
-	
-	blow_air_action_flag = 0;
-	blow_air_counter = 0;
-#endif
+
 	waitting_for_point_command = 0;
 	auto_lock_flag = 1;
 	main_control_lock_setup = 0;
@@ -1166,6 +1134,8 @@ void restore_para_from_eeprom(void)
 
 	para.nopmove_tension_open_switch = svpara_disp_buf[index++];
 	para.rfid_gain = svpara_disp_buf[index++];
+	para.oil_empty_alarm_enable = svpara_disp_buf[index++];
+	para.second_start_switch = svpara_disp_buf[index++];
 }
 
 void cpy_para_buff(void)
@@ -1261,6 +1231,8 @@ void cpy_para_buff(void)
 	svpara_disp_buf[index++] = para.Corner_deceleration_speed4;
 	svpara_disp_buf[index++] = para.nopmove_tension_open_switch;
 	svpara_disp_buf[index++] = para.rfid_gain;
+	svpara_disp_buf[index++] = para.oil_empty_alarm_enable;
+	svpara_disp_buf[index++] = para.second_start_switch;
 	
 	svpara_disp_buf[index++] = 55;
 	svpara_disp_buf[index++] = 66;

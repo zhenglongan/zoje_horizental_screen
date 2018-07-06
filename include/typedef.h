@@ -196,8 +196,10 @@ typedef struct
 	UINT8  Corner_deceleration_speed3; //117 拐点后第三针
 	UINT8  Corner_deceleration_speed4; //118 拐点后第四针
 	
-	UINT8  nopmove_tension_open_switch;//119空送时是否打开松线
-	UINT8  rfid_gain;	//120 切换RFID的增益控制
+	UINT8  nopmove_tension_open_switch;//119 空送时是否打开松线
+	UINT8  rfid_gain;				   //120 切换RFID的增益控制	
+	UINT8  oil_empty_alarm_enable;     //121 油量报警使能开关
+	UINT8  second_start_switch;		   //122 二次启动开关
 
 }SYSTEM_PARA;
 
