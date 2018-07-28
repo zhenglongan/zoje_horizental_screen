@@ -19,7 +19,7 @@
 extern void init_comm(void);
 extern void rec_com(void);
 extern void sew_ok(void);
-extern void process_uart1_download(void);
+
 extern void printf_uart(const unsigned char* p,...);
 #endif
 //--------------------------------------------------------------------------------------

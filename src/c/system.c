@@ -172,10 +172,13 @@ void pre_running(void)
 			{
 				find_dead_center();
 			}
-			if(inpress_flag == 0)
+			if( ((para.second_start_switch == 1)&&(second_start_counter >0))||(para.second_start_switch == 0) )	 
 			{
-				inpress_up();
-				delay_ms(150);
+				if(inpress_flag == 0)
+				{
+					inpress_up();
+					delay_ms(150);
+				}
 			}
 		}
 		
@@ -1374,7 +1377,7 @@ void trim_io_control(UINT8 a)
 			 L_AIR = a;	
 		break;
 		case SOLENOID_CUTTER:
-			 FA = a;	
+			 //FA = a;	
 		break;
 		case STEPPER_MOTER_CUTTER:
 			 L_AIR = a;
@@ -1405,8 +1408,8 @@ void trim_action(void)
 		movestep_zx(-inpress_follow_range,inpress_follow_down_speed);
 		inpress_follow_high_flag = FOLLOW_INPRESS_LOW;
 	}
-
 #endif
+
 	temp16 = motor.angle_adjusted;
 	if( temp16 > cut_start_angle )//
 	{
@@ -1447,6 +1450,7 @@ void trim_action(void)
 					 cutter_delay_flag = 1;
 				 }
 			 }
+			 //motor.spd_obj = 100;
 		 }
 		 //2 松线
 		 temp16 = motor.angle_adjusted;
@@ -1486,6 +1490,7 @@ void trim_action(void)
 		 }
 		#endif
 		 //4 夹线
+		 #if 0
 		 temp16 = motor.angle_adjusted;
 		 if( (thread_holding_switch ==1 )&&(temp16 >= fw_start_angle) &&( action4_flag == 0) )
 		 {
@@ -1494,7 +1499,7 @@ void trim_action(void)
 			 fw_action_flag = 1;
 			 fw_action_counter = 0;				
 		 }
-		 
+		 #endif
 		 //退出
 		 temp16 = motor.angle_adjusted;
 		 if( (temp16 >= 1200) &&( action3_flag == 0) )
@@ -1572,8 +1577,7 @@ void trim_action(void)
 		already_up_flag = 1;	
 		
 	}
-	//while( motor.stop_flag == 0)
-	// 	   rec_com();
+	
 	
 	if( cut_mode == STEPPER_MOTER_CUTTER )
 	{
@@ -1591,6 +1595,28 @@ void trim_action(void)
 	}
 	else
 	{
+		
+		 temp16 = motor.angle_adjusted;
+		 while( temp16 > 40)			//等过零点
+		 {
+			 rec_com();
+			 temp16 = motor.angle_adjusted;
+		 }
+		 
+	
+		while( motor.stop_flag == 0)
+		{
+			temp16 = motor.angle_adjusted;
+			if( (thread_holding_switch ==1 )&&(temp16 >= fw_start_angle) &&( action4_flag == 0) )
+			{
+				 action4_flag = 1;
+				 FW = 1; 
+				 fw_action_flag = 1;
+				 fw_action_counter = 0;				
+			}	
+	 	   rec_com();
+		}
+		   
 		if(u210 == 1)
 		{
 			CutActionCounter = 0;
@@ -1616,7 +1642,7 @@ void trim_action(void)
 	{
 		find_dead_point();
 	}
-	
+	/*
 	if( u42 == 0 && after_trim_stop_angle_adjust != 0)
 	{
 	    delay_ms(500);
@@ -1626,6 +1652,18 @@ void trim_action(void)
 		delay_ms(100);
 		dead_point_degree = temp8;			
 	}
+	*/
+	blow_air_counter = para.cut_air_counter;
+	if( blow_air_counter != 0)
+	{
+		blow_air_action_flag = 1;
+		BLOW_AIR = 1;
+	}
+	if(inpress_flag == 0)  
+	 {
+		inpress_up();
+		delay_ms(100);
+	 }	
 	
 	if( (u206 == 1)&&(u210 ==1) )		
 	{
@@ -1639,8 +1677,8 @@ void trim_action(void)
 				FW = 1;	
 		}	
 	}	
-	delay_ms(wiper_end_time);
-
+	//delay_ms(wiper_end_time);
+		
 	if( para.wipper_type == AIR_WIPPER)
 		AIR_FW = 0;
 	else
@@ -1649,7 +1687,7 @@ void trim_action(void)
 	delay_ms( 20 + delay_of_wipper_down );
 		
 	SNT_H = 0; 
-				
+	/*			
 	if(u42 == 0 && after_trim_stop_angle_adjust != 0)
 	{
 		temp8 = detect_position();	
@@ -1659,6 +1697,7 @@ void trim_action(void)
 		}
 		delay_ms(100);
 	}
+	*/
 	trim_io_control(OFF);
 
 	if( cut_mode == STEPPER_MOTER_CUTTER )
@@ -1964,7 +2003,7 @@ void run_status(void)
     	
     	if(scan_pause_func(&pause_flag,READY))
     		return;
-		 
+
 		
 		if( baseline_alarm_flag == 1)
 		{
@@ -1979,20 +2018,6 @@ void run_status(void)
 			 }
 		}
 		
-		
-		if( (para.second_start_switch == 1)&&(aging_com == 0) )//二次启动开关
-		{
-		   if( second_start_counter > 0)
-		   {
-			   second_start_counter --;
-			   status_now = READY;
-			   sys.status = READY;
-			   StatusChangeLatch = READY;
-			   inpress_down(inpress_high_base);		
-			   delay_ms(20);
-			   return;
-		   }
-		}
 		
 		if( k03 == MECHANICAL )
 		{
@@ -2009,62 +2034,77 @@ void run_status(void)
 		}
      if( making_pen_actoin_flag == 0)
 	 {
- 		blow_air_counter = para.blow_air_counter;
-		if( blow_air_counter > 0)
-		{
-			blow_air_action_flag = 1;
-			BLOW_AIR = 1;
-		}
 
-		//--------------------------------------------------------------------------------------
-    	//  motor run
-    	//--------------------------------------------------------------------------------------			
-	  	if(inpress_action_flag == 1 || cut_move_flag == 1)
-		{
-			inpress_action_flag = 0;
-			cut_move_flag = 0;
-		}
-		else
-		{	
-			flag1 = 0;				
-			if(inpress_flag == 1 )      
-			 {
-				FA = 1;
-				inpress_flag = 0;
-				delay_ms(50);//100
-		  	 }
-			if(pat_point == TempStart_point&&pat_buff_total_counter<TOTAL_STITCH_COUNTER)
-             {
-				#if FIRST_STITCH_NOT_ACTION == 0
-				if( inpress_lower_stitchs != 0)
-				{
-					inpress_down( inpress_high_base - inpress_lower_steps);
-					inpress_high = inpress_high_base - inpress_lower_steps;
-					flag1 = 1;	
-				}
-				else 
-				#endif
-				{
-	                inpress_down(inpress_high_base);		
-	                inpress_high = inpress_high_base;
-				}
-             }
-			 else
-			 {	
-				#if FIRST_STITCH_NOT_ACTION == 0
-				if( inpress_lower_stitchs != 0)
-				{
-					inpress_down( inpress_high - inpress_lower_steps);
-					inpress_high = inpress_high - inpress_lower_steps;
-					flag1 = 1;	
-				}
-				else
-				#endif
-					inpress_to(inpress_high);
-			 }			 	  			
-		}
+	   if( (para.second_start_switch == 1)&&(second_start_counter >0) )	 
+	   {
+	 		blow_air_counter = para.blow_air_counter;
+			if( blow_air_counter > 0)
+			{
+				blow_air_action_flag = 1;
+				BLOW_AIR = 1;
+			}
+	   }
+			//--------------------------------------------------------------------------------------
+	    	//  motor run
+	    	//--------------------------------------------------------------------------------------			
+		  	if(inpress_action_flag == 1 || cut_move_flag == 1)
+			{
+				inpress_action_flag = 0;
+				cut_move_flag = 0;
+			}
+			else
+			{	
+				flag1 = 0;				
+				if(inpress_flag == 1 )      
+				 {
+					FA = 1;
+				//	inpress_flag = 0;
+					delay_ms(50);//100
+			  	 }
+				if( pat_point == TempStart_point && pat_buff_total_counter < TOTAL_STITCH_COUNTER)
+	             {
+					#if FIRST_STITCH_NOT_ACTION == 0
+					if( inpress_lower_stitchs != 0)
+					{
+						inpress_down( inpress_high_base - inpress_lower_steps);
+						inpress_high = inpress_high_base - inpress_lower_steps;
+						flag1 = 1;	
+					}
+					else 
+					#endif
+					{
+		                inpress_down(inpress_high_base);		
+		                inpress_high = inpress_high_base;
+					}
+	             }
+				 else
+				 {	
+					#if FIRST_STITCH_NOT_ACTION == 0
+					if( inpress_lower_stitchs != 0)
+					{
+						inpress_down( inpress_high - inpress_lower_steps);
+						inpress_high = inpress_high - inpress_lower_steps;
+						flag1 = 1;	
+					}
+					else
+					#endif
+						inpress_to( inpress_high );
+				 }			 	  			
+			}
 		delay_ms(90);   //200	
-		temp8 = 0;
+	  	temp8 = 0;
+		if( (para.second_start_switch == 1)&&(aging_com == 0) )//二次启动开关
+		{
+		   if( second_start_counter > 0)
+		   {
+			   second_start_counter --;
+			   status_now = READY;
+			   sys.status = READY;
+			   StatusChangeLatch = READY;			   	
+			   delay_ms(20);
+			   return;
+		   }
+		}
 		if(( sewingcontrol_flag == 2 )&&( making_pen_actoin_flag == 0))
 		{
 			if( need_action_once == 1)
@@ -2128,8 +2168,7 @@ void run_status(void)
 			   if(move_flag == 1)
 			   {
 				   calculate_angle();
-			   	   zoom_in_one_stitch();
-				   
+			   	   zoom_in_one_stitch();				   
 		       	   need_action_two =0;
 				   StitchStartFlag = 0;
 			   }
@@ -2206,7 +2245,6 @@ void run_status(void)
 		
 				while((motor.angle_adjusted >= 400)  && (RotateFlag == 0) )
 	    		{
-				
 					flag_start_waitcom = 1; 
 					if(flag_wait_com == 1)  
 					{
@@ -2494,13 +2532,6 @@ void run_status(void)
 						}
 						end_flag = 0;
 						stop_flag = 0;
-				}
-
-				blow_air_counter = para.cut_air_counter;
-				if( blow_air_counter != 0)
-				{
-					blow_air_action_flag = 1;
-					BLOW_AIR = 1;
 				}
 	
 				do_pat_point_sub_one();
@@ -4608,8 +4639,7 @@ void slack_status(void)
 	        rfid_wr_ret();
 		}
 	}
-	else
-        process_uart1_download();
+
 #if INSTALLMENT	
 	if( main_control_lock_setup == 1)
 	{

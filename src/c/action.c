@@ -370,23 +370,27 @@ const UINT8 MoveTime_Speed_10080_ND80[] =
 const UINT16 MoveStartAngle_10080_y[] =
 {
 //	0	1	2	3	4	5	6	7	8	9   10	11	12	13	14	15	16	17	18	19	20	21	22	23	24	25  26  27  28  29  30  31  32
-   300,300,250,230,210,210,210,210,190,180,179,160,160,155,140,140,130,130,130,130,100, 95, 90, 57, 57, 50, 20, 20, 20, 67, 57, 57, 57 
+// 300,300,250,230,210,210,210,210,190,180,179,160,160,155,140,140,130,130,130,130,100, 95, 90, 57, 57, 50, 20, 20, 20, 67, 57, 57, 57 
+   300,300,280,260,240,190,170,170,150,140,139,130,130,125,110,110,100,100,170,170,140,135,130, 97, 77, 70, 80, 120,120,167,157,157,157
 };
  const UINT8 MoveTime_Speed_10080_y[] =
 {
 //	0	1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	20	21	22	23	24	25  26  27  28  29  30  31  32
-	52, 52, 52, 52, 52, 52,	52, 52,	47, 37,	32, 28,	25, 21,	20, 20,	18, 15,	15, 14,	18, 17,	16, 15, 19, 18, 18, 18, 18, 17, 16, 15, 14 
+//	52, 52, 52, 52, 52, 52,	52, 52,	47, 37,	32, 28,	25, 21,	20, 20,	18, 15,	15, 14,	18, 17,	16, 15, 19, 18, 18, 18, 18, 17, 16, 15, 14 
+    63, 63, 63, 63, 63, 63,	63, 63,	63, 58,	51, 45,	42, 36,	31, 28,	24, 19,	16, 15,	19, 16,	13, 12, 14, 13, 13, 13, 13, 12, 11, 15, 14 
 };
 
 const UINT16 MoveStartAngle_10080_x[] =
 {
 //	0	1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	20	21	22	23	24	25  26  27  28  29  30  31 32
-   300,300,250,230,220,220,220,220,220,220,220,220,220,220,220,220,170,170,170,170,190,185,180,137,127,127,127,127,127,117,107,107,107
+// 300,300,250,230,220,220,220,220,220,220,220,220,220,220,220,220,170,170,170,170,190,185,180,137,127,127,127,127,127,117,107,107,107
+   300,300,260,240,230,200,200,180,160,160,140,140,140,150,150,150,130,120,100,100, 90, 85,110, 87, 77, 77, 67, 57, 57, 37, 37, 37, 37
 };
 const UINT8 MoveTime_Speed_10080_x[] =
 {
 //  0   1   2   3   4   5   6   7   8   9   10  11  12  13  14  15  16  17  18  19  20  21	22	23	24	25  26  27  28  29  30  31  32
-    52, 52, 50, 48, 46, 44, 42, 40, 37, 28, 25, 23, 22, 21, 21, 21, 21, 19, 19, 18, 17, 15,	13, 12, 11, 10, 10, 10, 10, 10, 10 ,10, 10	
+//  52, 52, 50, 48, 46, 44, 42, 40, 37, 28, 25, 23, 22, 21, 21, 21, 21, 19, 19, 18, 17, 15,	13, 12, 11, 10, 10, 10, 10, 10, 10 ,10, 10	
+	63, 63, 63, 63, 63, 63, 63, 63, 62, 53, 50, 46, 39, 36, 33, 31, 31, 29, 29, 27, 26, 24,	21, 20, 19, 18, 18, 18, 14, 14, 12 ,12, 12
 };
 
 const UINT16 spdlimit_10080_345_tab[]=                         
@@ -1393,9 +1397,9 @@ void go_origin_allmotor(void)
 		second_start_counter = 1;
 	}
 	if( (sewingcontrol_flag == 2)&&(sewingcontrol_stitchs != 0) )
-			need_backward_sewing = 1; 
+		need_backward_sewing = 1; 
 	if( sewingcontrol_flag == 1)
-			need_action_two = 1;
+		need_action_two = 1;
 	if( ready_go_setout_com ==0)
 		predit_shift = 0;	
 	return_from_setout = 1;
@@ -1786,6 +1790,8 @@ void inpress_up(void)
 	delay_ms(80);
 	if(delay_of_inpress_up != 0 )
 	   delay_ms(delay_of_inpress_up);
+	if( blow_air_counter != 0)
+		delay_ms(wiper_end_time);
 	FA = 0;				
 	delay_ms(30);
 	inpress_flag = 1;     
@@ -2603,7 +2609,7 @@ void check_data(UINT8 control_flag)
 					case 0:
 						if(motor.spd_obj >= (UINT16)para.last_1_speed *100)
 							{
-								temp_speed = 10*u211;
+								temp_speed = para.last_1_speed*100;
 							}
 							else
 							{
@@ -7494,8 +7500,7 @@ void special_sewing(UINT8 flag,UINT8 cnt)
 	INT16 temp16_max,temp16;
 	UINT8 action_flag0,action_flag1,action_flag2,action_flag3,action_flag4,action_flag5;
 	INT16 inpress_up_angle,inpress_down_angle,max_angle;
-	
-	
+
 	i = cnt;
 	while( i > 0 )
 	{
@@ -7615,6 +7620,8 @@ void special_sewing(UINT8 flag,UINT8 cnt)
 					}
 					rec_com();
 				 }
+				 
+				 
 			#else	 
 				 
 				 //check_data();				   
@@ -7911,7 +7918,7 @@ void tail_sewing(void)
 {
 	PATTERN_DATA *tmp_point;
     spd_monitor = motor.spd_obj;
-    if( sewingcontrol_tail_flag ==2)//后几针加固
+    if( sewingcontrol_tail_flag == 2)//后几针加固
 	{
 		tmp_point = pat_point;
 		if( sewingcontrol_tail_stitches > 0)
@@ -7946,7 +7953,7 @@ void tail_sewing(void)
 		 {
 			inpress_up();
 			delay_ms(100);
-		}
+		 }
 	}
 		
 }

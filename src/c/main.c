@@ -304,7 +304,11 @@ void ta0_int(void)
 		}
 		
 	}
-	 
+	else
+	{
+	    if( sys.status !=CHECKI05 )	
+		FILL_OIL = 0;	
+	} 
 	 
 	if( rfid_alarm_flag == 1 )
 	{

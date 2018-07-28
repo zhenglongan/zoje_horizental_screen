@@ -1636,9 +1636,9 @@ void protocol(UINT8* command)
 				if(data_length >190)
 				  {
 					  temp16 = (UINT16)rec_buf[191]<<8;
-					  cool_air_close_time = temp16|(UINT16)rec_buf[192];
+					  cool_air_close_time = temp16|(UINT16)rec_buf[192];//注油间隔时间
 					  temp16 = (UINT16)rec_buf[193]<<8;
-					  cool_air_open_time = temp16|(UINT16)rec_buf[194];
+					  cool_air_open_time = temp16|(UINT16)rec_buf[194]; //注油工作时间
 				
 					  mode0_time = (INT8)rec_buf[199];
 					  temp16 = (UINT16)rec_buf[200]<<8;

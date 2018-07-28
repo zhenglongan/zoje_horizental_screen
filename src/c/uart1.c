@@ -106,28 +106,39 @@ void set_uart1_debug_mode(void)
 
 void uart1_tra_int(void)
 {
-  	volatile UINT16 i= 300;
-  	if(tra1_ind_r != tra1_ind_w)
-  	{
-    	u1tb = tra1_buf[tra1_ind_r++];
-  	}
-  	else                             
-  	{
-    	te_u1c1 = 0;
-    	while(i--);										
-  	}
+  	volatile UINT16 i = 12;
+	if( formwork_identify_device == 2)
+	{
+	}
+	else
+	{
+	  	if(tra1_ind_r != tra1_ind_w)
+	  	{
+	    	u1tb = tra1_buf[tra1_ind_r++];
+	  	}
+	  	else                             
+	  	{
+	    	te_u1c1 = 0;
+	    	while(i--);										
+	  	}
+	}
 }
 
 void uart1_rec_int(void)
 {
-//rec1_buf[rec1_ind_w++] = (UINT8)u1rb; 
-  if(rec1_ind_w<299)
-  	rec1_buf[rec1_ind_w++] = (UINT8)u1rb;
-  else  
-  {  
-     rec1_ind_w = 0; 
-     rec1_buf[rec1_ind_w] = (UINT8)u1rb;
-  }
+	if( formwork_identify_device == 2)
+	{
+	}
+	else
+	{
+		if(rec1_ind_w<299)
+		   rec1_buf[rec1_ind_w++] = (UINT8)u1rb;
+		else  
+		{  
+		   rec1_ind_w = 0; 
+		   rec1_buf[rec1_ind_w++] = (UINT8)u1rb;
+		}
+	}
 }
 
 void tra1_com(UINT8* command,UINT8 length)
@@ -242,7 +253,7 @@ void rec1_com(void)
 		}
 		else if( formwork_identify_device == 2)
 		{
-			if( ms_scan_counter > 500 )
+			if( ms_scan_counter > 150 )
 			{	
 				RFID_SCAN();
 				ms_scan_counter = 0;
@@ -338,156 +349,6 @@ void printf_uart(const unsigned char* p,...)
   delay_ms(100);
 }
 
-void process_uart1_download(void)
-{
-  	UINT16 temp;
-  	UINT16 i,j,crc_temp;
-	UINT8 port,write_read,package_no;
-  
-	if( comm1_status == 0)
-	{
-			set_uart1_debug_mode();
-			comm1_status =1;
-			rec1_ind_w = 0;	
-			rec1_ind_r = 0;	
-			return;
-	}
-	
-    switch( rec1_status_machine)
-    {
-		 case 0:
-			 if( (rec1_ind_w >= 3)&&(rec1_buf[0] == START_FLAG) )
-			 {
-				rec1_package_length = rec1_buf[1];
-				rec1_package_length = (rec1_package_length<<8) + rec1_buf[2];
-		 		//da1 = 100;
-				rec1_status_machine = 1;
-			 }	
-			 else if( rec1_buf[0] != START_FLAG )
-			 {
-
-				rec1_ind_w = 0;
-				rec1_ind_r = 0;
-				//da1 = 50;
-			}
-
-		 break;
-		 
-		 case 1:
-		 	if ( rec1_ind_w >= rec1_package_length -1 )
-			{
-				//da1 = 150;
-				rec1_status_machine = 0;
-				switch(rec1_buf[3])
-				{
-					case WRITESYSPARAM_RX:
-						 //WRITESYSPARAM_TX
-					break;
-					case WRITESTEPPARAM_RX:
-						  write_read = rec1_buf[4];
-						  port       = rec1_buf[5];
-						  package_no = rec1_buf[6];									
-						  recpat_point = (UINT8 *)&(rec1_buf + 7);
-						  temp = 240*(UINT16)(rec1_buf[6]);
-						  
-						  for(i=0;i< rec1_package_length - 8;i++)
-						  {
-							  pat_buf[ temp + i] = *recpat_point;
-							  recpat_point++;
-						  }
-						  
-						  if( rec1_package_length - 8 < 240 )
-						  {
-							  SUM = 1;
-						      delay_ms(100);
-						      SUM = 0;
-							  if( verify_rec(pat_buf,rec1_package_length-8) == 0)
-							  {
-								  write_stepmotor_config_para(port + 1, pat_buf);
-								  tra1_ind_r = 0; 
-								  tra1_ind_w = 0;
-								  send1_command[0] = START_FLAG;
-								  send1_command[1] = 0;
-								  send1_command[2] = 8;
-								  send1_command[3] = WRITESTEPPARAM_TX;
-								  send1_command[4] = write_read;
-								  send1_command[5] = port;
-								  send1_command[6] = package_no;
-								  crc_temp         = cal_crc16(send1_command, 7, CRC_CHECK_INIT);
-								  send1_command[7] = (UINT8)(crc_temp >> 8);
-								  send1_command[8] = (UINT8)(crc_temp);
-								  send1_command[9] = END_FLAG;
-								  tra1_com(send1_command ,10);
-								  SUM = 1;
-								  delay_ms(100);
-								  SUM = 0;
-						      }
-							  rec1_ind_w = 0;	
-							  rec1_ind_r = 0;	
-							  pat_buf[0] = 0;
-						  }
-					break;
-					
-					case WRITESTEPCURVE_RX:
-						 write_read = rec1_buf[4];
-						 port       = rec1_buf[5];
-						 package_no = rec1_buf[6];	
-						 								
-						 recpat_point = (UINT8 *)&(rec1_buf + 7);  //数据
-						 temp = 240*(UINT16)(rec1_buf[6]);		   //包号＝》存储地址
-						 for( i=0;i< rec1_package_length - 8;i++)
-						 {
-							 pat_buf[ temp + i] = *recpat_point;
-							 recpat_point++;
-							 rec1_datalength++;
-						 }
-						 rec1_ind_w = 0;
-				
-						 //da1 = 200;
-						 delay_ms(500);						 
-						 
-						 tra1_ind_r = 0; 
-						 tra1_ind_w = 0;
-						 send1_command[0] = START_FLAG;
-						 send1_command[1] = 0;
-						 send1_command[2] = 8;
-						 send1_command[3] = WRITESTEPCURVE_TX;
-						 send1_command[4] = write_read;
-						 send1_command[5] = port;
-						 send1_command[6] = package_no;
-						 crc_temp         = cal_crc16(send1_command, 7, CRC_CHECK_INIT);
-						 send1_command[7] = (UINT8)(crc_temp >> 8);
-						 send1_command[8] = (UINT8)(crc_temp);
-						 send1_command[9] = END_FLAG;
-						 tra1_com(send1_command ,10);						 
-						 rec1_ind_r = 0;	 
-					     
-						 
-						 if( package_no >= 29 )
-						 {
-							SUM = 1;
-						    delay_ms(100);
-						    SUM = 0;
-							if( verify_rec(pat_buf,rec1_datalength) == 0)
-							{
-								delay_ms(100);
-								SUM = 1;
-								delay_ms(200);
-								SUM = 0;
-								write_stepmotor_curve_flag = port + 1;	
-								rec1_datalength = 0;						  						  
-							}
-						 }
-					break;
-					
-				}
-			}
-		 break;	  
-	  }			
-	  //if( rec1_ind_w == 0 )
-	  //  da1 = 0;
-
-}
 
 #if DEBUG_PARA_OUTPUT
 void show_para_infoformation(void)
@@ -532,6 +393,35 @@ void show_para_infoformation(void)
 
 #endif
 
+
+void uart1_send_char(UINT8 ch)
+{
+	ti_u1c1 = 0;
+	u1tb = ch;
+	te_u1c1 = 1;
+	while( !ti_u1c1)
+		rec_com();
+	ti_u1c1 = 0;
+}
+
+UINT8 uart1_get_char(void)
+{
+	counter_1ms = 0;
+	while (ri_u1c1 == 0)
+	{
+		if( counter_1ms >1000)
+		{
+			sys.status = ERROR;
+			StatusChangeLatch = ERROR;
+			if( sys.error == 0)
+	      	    sys.error = ERROR_97;
+			break;
+		}
+	  	rec_com();
+	}
+	ri_u1c1 = 0;  
+	return (UINT8)u1rb;
+}
 /////////////////////////////////////////////////////////////////////
 //功  能：读RC632寄存器
 //参数说明：Address[IN]:寄存器地址
@@ -541,41 +431,11 @@ void show_para_infoformation(void)
 UINT8 ReadRawRC(UINT8 Address)
 {
  	 UINT8 ucAddr,i=0;
-	 ucAddr =  Address | 0x80;
-	 tra1_ind_r = 0; 
-	 tra1_ind_w = 0;
-	 send1_command[0] = ucAddr;
-	 send1_command[1] = 0;
-	 tra1_com(send1_command ,1);						 
-	 rec1_ind_r = 0;
-	 rec1_ind_w = 0;
-	 counter_1ms = 0;
-	 while( rec1_ind_w == 0)
-	 { 	
-		 rec_com();	 
-		 if(counter_1ms > 100)
-		 {
-			 i++;
-			 counter_1ms = 0;
-			 tra1_ind_r = 0; 
-			 tra1_ind_w = 0;
-			 send1_command[0] = ucAddr;
-			 send1_command[1] = 0;
-			 tra1_com(send1_command ,1);						 
-			 rec1_ind_r = 0;
-			 rec1_ind_w = 0;
-		}
-		if( i > 5 )
-		{
-			sys.status = ERROR;
-			StatusChangeLatch = ERROR;
-			if( sys.error == 0)
-	      	    sys.error = ERROR_97;
-			break; 	
-		}
-	 }	
-     return rec1_buf[0];
-}
+	 ucAddr =  Address | 0x80;//最高位＝1 表示读
+	 uart1_send_char(ucAddr);
+	 return uart1_get_char();
+
+} 
 
 /////////////////////////////////////////////////////////////////////
 //功  能：写RC632寄存器
@@ -584,43 +444,11 @@ UINT8 ReadRawRC(UINT8 Address)
 /////////////////////////////////////////////////////////////////////
 void WriteRawRC(UINT8 Address, UINT8 value)
 {
-   UINT8 ucAddr,i=0;
+   UINT8 ucAddr,i ;   
    ucAddr = Address&0x7F;
-   tra1_ind_r = 0; 
-   tra1_ind_w = 0;
-   rec1_ind_w = 0;
-   send1_command[0] = ucAddr;
-   tra1_com(send1_command ,1);						 
-   rec1_ind_r = 0;
-   counter_1ms =0;
-   while( rec1_ind_w == 0)
-   {
-		rec_com();
-		if(counter_1ms > 100)
-		{
-			i++;
-			counter_1ms = 0;
-			tra1_ind_r = 0; 
-   			tra1_ind_w = 0;
-			send1_command[0] = ucAddr;
-			tra1_com(send1_command ,1);	
-			rec1_ind_r = 0;	
-		}
-		if( i > 5 )
-		{
-			sys.status = ERROR;
-			StatusChangeLatch = ERROR;
-			if( sys.error == 0)
-	      	    sys.error = ERROR_97;
-			break; 	
-		}
-   }
-   //FK_OFF =0; //OUT3	 	
-   tra1_ind_r = 0; 
-   tra1_ind_w = 0;
-   send1_command[0] = value;
-   tra1_com(send1_command ,1);						 
-   rec1_ind_r = 0;
+   uart1_send_char(ucAddr);
+   uart1_send_char(value);
+   i = uart1_get_char();
 }
 
 
