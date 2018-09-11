@@ -1788,16 +1788,15 @@ void inpress_up(void)
 	#endif
 	inpress_to(inpress_origin);
 	delay_ms(80);
-	if(delay_of_inpress_up != 0 )
-	   delay_ms(delay_of_inpress_up);
+	//if(delay_of_inpress_up != 0 )
+	//   delay_ms(delay_of_inpress_up);
 	if( blow_air_counter != 0)
 		delay_ms(wiper_end_time);
 	FA = 0;				
 	delay_ms(30);
 	inpress_flag = 1;     
 	inpress_com = 2;      
-	MotorPositionSet = 0;
-	
+	MotorPositionSet = 0;	
 	if(delay_of_inpress_up!=0)
 	   delay_ms(delay_of_inpress_up);
 

@@ -1136,6 +1136,8 @@ void restore_para_from_eeprom(void)
 	para.rfid_gain = svpara_disp_buf[index++];
 	para.oil_empty_alarm_enable = svpara_disp_buf[index++];
 	para.second_start_switch = svpara_disp_buf[index++];
+	para.cutter_hold_speed = svpara_disp_buf[index++];
+	para.inpresser_org_select = svpara_disp_buf[index++];
 }
 
 void cpy_para_buff(void)
@@ -1233,9 +1235,11 @@ void cpy_para_buff(void)
 	svpara_disp_buf[index++] = para.rfid_gain;
 	svpara_disp_buf[index++] = para.oil_empty_alarm_enable;
 	svpara_disp_buf[index++] = para.second_start_switch;
+	svpara_disp_buf[index++] = para.cutter_hold_speed;
+	svpara_disp_buf[index++] = para.inpresser_org_select;
 	
-	svpara_disp_buf[index++] = 55;
-	svpara_disp_buf[index++] = 66;
+	svpara_disp_buf[index++] = 0;
+	svpara_disp_buf[index++] = 0;
 }
 
 void init_para_variables(void)

@@ -200,6 +200,8 @@ typedef struct
 	UINT8  rfid_gain;				   //120 切换RFID的增益控制	
 	UINT8  oil_empty_alarm_enable;     //121 油量报警使能开关
 	UINT8  second_start_switch;		   //122 二次启动开关
+	UINT8  cutter_hold_speed;		   //123 剪线后的速度
+	UINT8  inpresser_org_select;	   //124 中压脚传感器的类型选择
 
 }SYSTEM_PARA;
 

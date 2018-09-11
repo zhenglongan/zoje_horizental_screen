@@ -1419,7 +1419,7 @@ void trim_action(void)
 			  temp16 = motor.angle_adjusted;
 		}
 	}
-		
+	flag = 1;	
 	temp16 = motor.angle_adjusted;
 	while( temp16 < 994 )//350
 	{
@@ -1450,7 +1450,10 @@ void trim_action(void)
 					 cutter_delay_flag = 1;
 				 }
 			 }
-			 //motor.spd_obj = 100;
+			 if( u211 >= para.cutter_hold_speed )
+			 {
+			 	motor.spd_obj = (UINT16)para.cutter_hold_speed * 10;
+		     }
 		 }
 		 //2 松线
 		 temp16 = motor.angle_adjusted;
@@ -1595,16 +1598,15 @@ void trim_action(void)
 	}
 	else
 	{
-		
-		 temp16 = motor.angle_adjusted;
-		 while( temp16 > 40)			//等过零点
-		 {
+		temp16 = motor.angle_adjusted;
+		while( temp16 > 40)			//等过零点
+		{
 			 rec_com();
 			 temp16 = motor.angle_adjusted;
-		 }
+		}
 		 
-	
-		while( motor.stop_flag == 0)
+		temp16 = motor.angle_adjusted;
+		while( temp16 < (u236 -28) )
 		{
 			temp16 = motor.angle_adjusted;
 			if( (thread_holding_switch ==1 )&&(temp16 >= fw_start_angle) &&( action4_flag == 0) )
@@ -1614,35 +1616,45 @@ void trim_action(void)
 				 fw_action_flag = 1;
 				 fw_action_counter = 0;				
 			}	
-	 	   rec_com();
-		}
-		   
-		if(u210 == 1)
-		{
-			CutActionCounter = 0;
-			CutActionFlag = 0;
-			trim_io_control(OFF);			
-			delay_ms(5);
-			fw_action_flag = 0;
-			FW = 0;
-			if( para.wipper_type == AIR_WIPPER)
-			{
-				AIR_FW = 0;
-			}
+			rec_com();
 		}
 	}
+	blow_air_counter = para.cut_air_counter;
+	if( blow_air_counter != 0)
+	{
+		blow_air_action_flag = 1;
+		BLOW_AIR = 1;
+	}
+	if( inpress_flag == 0)  
+	{
+		inpress_up();
+			//delay_ms(100);
+	}
+	while( motor.stop_flag == 0)
+	 	   rec_com();
+		   
 	if(u210 == 1)
 	{
+		CutActionCounter = 0;
+		CutActionFlag = 0;
+		trim_io_control(OFF);			
+		delay_ms(5);
+		fw_action_flag = 0;
+		FW = 0;
 		da0 = 0;
 	    tension_open_switch =0;
 	    tension_open_counter =0;
+		if( para.wipper_type == AIR_WIPPER)
+		{
+			AIR_FW = 0;
+		}
 	}
 		
 	if( u42 == 1)
 	{
 		find_dead_point();
 	}
-	/*
+	
 	if( u42 == 0 && after_trim_stop_angle_adjust != 0)
 	{
 	    delay_ms(500);
@@ -1652,18 +1664,6 @@ void trim_action(void)
 		delay_ms(100);
 		dead_point_degree = temp8;			
 	}
-	*/
-	blow_air_counter = para.cut_air_counter;
-	if( blow_air_counter != 0)
-	{
-		blow_air_action_flag = 1;
-		BLOW_AIR = 1;
-	}
-	if(inpress_flag == 0)  
-	 {
-		inpress_up();
-		delay_ms(100);
-	 }	
 	
 	if( (u206 == 1)&&(u210 ==1) )		
 	{
@@ -1675,10 +1675,10 @@ void trim_action(void)
 		    	AIR_FW = 1;
 			else
 				FW = 1;	
-		}	
+		}
+		delay_ms(wiper_end_time);			
 	}	
-	//delay_ms(wiper_end_time);
-		
+			
 	if( para.wipper_type == AIR_WIPPER)
 		AIR_FW = 0;
 	else
@@ -1687,7 +1687,7 @@ void trim_action(void)
 	delay_ms( 20 + delay_of_wipper_down );
 		
 	SNT_H = 0; 
-	/*			
+		
 	if(u42 == 0 && after_trim_stop_angle_adjust != 0)
 	{
 		temp8 = detect_position();	
@@ -1697,8 +1697,7 @@ void trim_action(void)
 		}
 		delay_ms(100);
 	}
-	*/
-	trim_io_control(OFF);
+
 
 	if( cut_mode == STEPPER_MOTER_CUTTER )
 	{

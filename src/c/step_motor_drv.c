@@ -1369,17 +1369,22 @@ void qd_quickmove(UINT16 quick_time,INT32 tempx_step)
 	    quick_time = quick_time +1;
 	send_dsp_command(3,quick_time);
 }
+
 UINT16 get_IORG_statu(void)
 {
-	/*
-	send_dsp2_command(0x0029,0xa000);
-	send_dsp_command(2,0x5555);
+	if( para.inpresser_org_select == 1)
+	{
+		send_dsp2_command(0x0029,0xa000);
+		send_dsp_command(2,0x5555);
 	return recieve_x.word;
-	*/ 
-	if( IORG ==1 )
-		return 1;
+	}
 	else
-		return 0;
+	{
+		if( IORG ==1 )
+			return 1;
+		else
+			return 0;
+	}
 }
 
 UINT16 get_CORG_statu(void)

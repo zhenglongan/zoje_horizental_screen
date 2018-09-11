@@ -24,11 +24,12 @@
     
 #define MainFatherVersion		05
 #define MainChildVersion		07 
-#define MainSVNVersion			402//401//2083//2082//208//2078//2077//2076//2075//2074//2073//2072//2063//2062//2061//20527//20526
+#define MainSVNVersion			404//403//402//401//2083//2082//208//2078//2077//2076//2075//2074//2073//2072//2063//2062//2061//20527//20526
 
 #define ENABLE_LED_ALARM_FUNCTION   0 // led报警功能
 
 #define MULTIPULE_IO_ENABLE         0 // 开放多功能IO编程功能
+#define USE_ENCODER_Z_PULSE			1 // 中压脚用编码器的Z信号
 
 #define ROTATE_CUTTER_ENABLE		0 // 旋转切刀功能
 #define BOBBIN_CHANGER_ENABLE       0 // 自动换梭
