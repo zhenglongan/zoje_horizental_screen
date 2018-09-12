@@ -53,7 +53,8 @@ void main(void)
 	
 #if INSTALLMENT	
 	main_control_lock_flag = read_par(0);
-#endif	
+#endif
+	delay_ms(200);
     version_check();	   
 	while(connect_flag == 0)  
   	{
@@ -107,6 +108,7 @@ void main(void)
 	else if ( stepversion2 >= 60000 )
 		sys.status = DOWNLOAD_DRV2;   
 	#if MULTIPULE_IO_ENABLE	
+	//#if 0//ÏÈ²»¼ì²éDSP3¡¢4
 	else if ( stepversion3 >= 60000 )
 		sys.status = DOWNLOAD_DRV3;
 	else if ( stepversion4 >= 60000 )

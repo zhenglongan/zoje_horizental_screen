@@ -4648,18 +4648,50 @@ void slack_status(void)
 #endif	
   if( write_eeprom_para_flag >= 1)
   {
+  	//系统参数第1组，存于EEPROM中，地址100开始，长度205B
 	  if( write_eeprom_para_flag == 1)
 	  {
 	    	write_para_group(100,svpara_disp_buf,205);
 			delay_ms(300);
 	    	restore_para_from_eeprom();
 	  }
-	  else 
+	  //系统参数第2组，存于EEPROM中，地址400开始，长度205B
+	  else if( write_eeprom_para_flag == 2)
 	  {
 			write_para_group(400,svpara_disp_buf,205);
 			delay_ms(300);
 			//app_GetProgramFromEeprom();
 	  }
+	  //2018-9-12增加6、7、8、9组
+	  //系统参数第6组，存于EEPROM中，地址700开始，长度205B
+	  else if( write_eeprom_para_flag == 3)
+	  {
+			write_para_group(700,svpara_disp_buf,205);
+			delay_ms(300);
+			//app_GetProgramFromEeprom();
+	  }
+	  //系统参数第7组，存于EEPROM中，地址1000开始，长度205B
+	  else if( write_eeprom_para_flag == 4)
+	  {
+			write_para_group(1000,svpara_disp_buf,205);
+			delay_ms(300);
+			//app_GetProgramFromEeprom();
+	  }
+	  //系统参数第8组，存于EEPROM中，地址1300开始，长度205B
+	  else if( write_eeprom_para_flag == 5)
+	  {
+			write_para_group(1300,svpara_disp_buf,205);
+			delay_ms(300);
+			//app_GetProgramFromEeprom();
+	  }
+	  //系统参数第9组，存于EEPROM中，地址1600开始，长度205B
+	  else if( write_eeprom_para_flag == 6)
+	  {
+			write_para_group(1600,svpara_disp_buf,205);
+			delay_ms(300);
+			//app_GetProgramFromEeprom();
+	  }
+	  
 	  write_eeprom_para_flag = 0;	
 	  SUM = 1;
 	  delay_ms(100);

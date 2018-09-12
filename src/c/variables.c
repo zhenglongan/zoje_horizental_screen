@@ -765,6 +765,11 @@ UINT16 inpress_follow_speed;
 
 UINT8 auto_lock_flag;
 UINT16 now_pattern_number; 
+
+//以下为2018-9-12新增
+UINT8  dsp3_moto1_direction;
+
+
 //--------------------------------------------------------------------------------------
 //         COPYRIGHT(C) 2006 Beijing xingdahao technology Co., Ltd.
 //                     ALL RIGHTS RESERVED 

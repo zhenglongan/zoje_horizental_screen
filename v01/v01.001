@@ -117,6 +117,7 @@
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\M_debug.c" "User" "C source file" 2 
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\RC522.C" "User" "C source file" 2 
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\action.c" "User" "C source file" 2 
+"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\bobbin_auto_change.c" "User" "C source file" 2 
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\communication.c" "User" "C source file" 2 
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\delay.c" "User" "C source file" 2 
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\iic_bus_eeprom.C" "User" "C source file" 2 
@@ -193,6 +194,7 @@
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\M_debug.c" "02bc745b311d1d10" 1 
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\RC522.C" "0f9a2cdcbf0f2d10" 1 
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\action.c" "0a518b3856ad7c10" 1 
+"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\bobbin_auto_change.c" "037946a658a44d10" 1 
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\communication.c" "0c27d9c968fc7c10" 1 
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\delay.c" "0b56445b9e9c7c10" 1 
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\iic_bus_eeprom.C" "0b2ccf6cf1ef1d10" 1 
@@ -206,15 +208,15 @@
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\variables.c" "0cf2abf2835c7c10" 1 
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\watch.c" "0cf2abf2835c7c10" 1 
 [OPTIONS_Debug_Renesas M16C Configurator]
-"Single Shot" "0f9a2cdcbf0f2d10" 6 
+"Single Shot" "037946a658a44d10" 6 
 [OPTIONS_Debug_Renesas M16C Jump table Composer]
-"Single Shot" "0f9a2cdcbf0f2d10" 7 
+"Single Shot" "037946a658a44d10" 7 
 [OPTIONS_Debug_Renesas M16C Librarian]
-"Single Shot" "0f9a2cdcbf0f2d10" 5 
+"Single Shot" "037946a658a44d10" 5 
 [OPTIONS_Debug_Renesas M16C Linker]
-"Single Shot" "0e5d9cdcbf0f2d10" 3 
+"Single Shot" "0e4466a658a44d10" 3 
 [OPTIONS_Debug_Renesas M16C Stype Converter]
-"Single Shot" "0e5d9cdcbf0f2d10" 4 
+"Single Shot" "0e4466a658a44d10" 4 
 [OPTIONS_Debug]
 "" 0 
 "[V|VERSION|1] " 7 
@@ -237,6 +239,7 @@
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\M_debug.c" "02bc745b311d1d10" 1 
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\RC522.C" "0f9a2cdcbf0f2d10" 1 
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\action.c" "0a518b3856ad7c10" 1 
+"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\bobbin_auto_change.c" "037946a658a44d10" 1 
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\communication.c" "0c27d9c968fc7c10" 1 
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\delay.c" "0b56445b9e9c7c10" 1 
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\iic_bus_eeprom.C" "0b2ccf6cf1ef1d10" 1 
@@ -250,15 +253,15 @@
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\variables.c" "0cf2abf2835c7c10" 1 
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\watch.c" "0cf2abf2835c7c10" 1 
 [OPTIONS_Debug_M16C_E8_SYSTEM_Renesas M16C Configurator]
-"Single Shot" "0f9a2cdcbf0f2d10" 6 
+"Single Shot" "037946a658a44d10" 6 
 [OPTIONS_Debug_M16C_E8_SYSTEM_Renesas M16C Jump table Composer]
-"Single Shot" "0f9a2cdcbf0f2d10" 7 
+"Single Shot" "037946a658a44d10" 7 
 [OPTIONS_Debug_M16C_E8_SYSTEM_Renesas M16C Librarian]
-"Single Shot" "0f9a2cdcbf0f2d10" 5 
+"Single Shot" "037946a658a44d10" 5 
 [OPTIONS_Debug_M16C_E8_SYSTEM_Renesas M16C Linker]
-"Single Shot" "0e5d9cdcbf0f2d10" 3 
+"Single Shot" "0e4466a658a44d10" 3 
 [OPTIONS_Debug_M16C_E8_SYSTEM_Renesas M16C Stype Converter]
-"Single Shot" "0e5d9cdcbf0f2d10" 4 
+"Single Shot" "0e4466a658a44d10" 4 
 [OPTIONS_Debug_M16C_E8_SYSTEM]
 "" 0 
 "[V|VERSION|1] " 7 
@@ -280,6 +283,7 @@
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\M_debug.c" "02bc745b311d1d10" 1 
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\RC522.C" "0f9a2cdcbf0f2d10" 1 
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\action.c" "0a518b3856ad7c10" 1 
+"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\bobbin_auto_change.c" "037946a658a44d10" 1 
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\communication.c" "0c27d9c968fc7c10" 1 
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\delay.c" "0b56445b9e9c7c10" 1 
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\iic_bus_eeprom.C" "0b2ccf6cf1ef1d10" 1 
@@ -293,15 +297,15 @@
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\variables.c" "0cf2abf2835c7c10" 1 
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\watch.c" "0cf2abf2835c7c10" 1 
 [OPTIONS_Debug_M16C_R8C_FoUSB_UART_Renesas M16C Configurator]
-"Single Shot" "0f9a2cdcbf0f2d10" 6 
+"Single Shot" "037946a658a44d10" 6 
 [OPTIONS_Debug_M16C_R8C_FoUSB_UART_Renesas M16C Jump table Composer]
-"Single Shot" "0f9a2cdcbf0f2d10" 7 
+"Single Shot" "037946a658a44d10" 7 
 [OPTIONS_Debug_M16C_R8C_FoUSB_UART_Renesas M16C Librarian]
-"Single Shot" "0f9a2cdcbf0f2d10" 5 
+"Single Shot" "037946a658a44d10" 5 
 [OPTIONS_Debug_M16C_R8C_FoUSB_UART_Renesas M16C Linker]
-"Single Shot" "0e5d9cdcbf0f2d10" 3 
+"Single Shot" "0e4466a658a44d10" 3 
 [OPTIONS_Debug_M16C_R8C_FoUSB_UART_Renesas M16C Stype Converter]
-"Single Shot" "0e5d9cdcbf0f2d10" 4 
+"Single Shot" "0e4466a658a44d10" 4 
 [OPTIONS_Debug_M16C_R8C_FoUSB_UART]
 "" 0 
 "[V|VERSION|1] " 7 
@@ -325,6 +329,7 @@
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\M_debug.c" "02bc745b311d1d10" 1 
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\RC522.C" "0f9a2cdcbf0f2d10" 1 
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\action.c" "0a518b3856ad7c10" 1 
+"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\bobbin_auto_change.c" "037946a658a44d10" 1 
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\communication.c" "0c27d9c968fc7c10" 1 
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\delay.c" "0b56445b9e9c7c10" 1 
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\iic_bus_eeprom.C" "0b2ccf6cf1ef1d10" 1 
@@ -338,15 +343,15 @@
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\variables.c" "0cf2abf2835c7c10" 1 
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\watch.c" "0cf2abf2835c7c10" 1 
 [OPTIONS_Debug_M16C_R8C_Simulator_Renesas M16C Configurator]
-"Single Shot" "0f9a2cdcbf0f2d10" 6 
+"Single Shot" "037946a658a44d10" 6 
 [OPTIONS_Debug_M16C_R8C_Simulator_Renesas M16C Jump table Composer]
-"Single Shot" "0f9a2cdcbf0f2d10" 7 
+"Single Shot" "037946a658a44d10" 7 
 [OPTIONS_Debug_M16C_R8C_Simulator_Renesas M16C Librarian]
-"Single Shot" "0f9a2cdcbf0f2d10" 5 
+"Single Shot" "037946a658a44d10" 5 
 [OPTIONS_Debug_M16C_R8C_Simulator_Renesas M16C Linker]
-"Single Shot" "0e5d9cdcbf0f2d10" 3 
+"Single Shot" "0e4466a658a44d10" 3 
 [OPTIONS_Debug_M16C_R8C_Simulator_Renesas M16C Stype Converter]
-"Single Shot" "0e5d9cdcbf0f2d10" 4 
+"Single Shot" "0e4466a658a44d10" 4 
 [OPTIONS_Debug_M16C_R8C_Simulator]
 "" 0 
 "[V|VERSION|1] " 7 
@@ -368,6 +373,7 @@
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\M_debug.c" "02bc745b311d1d10" 1 
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\RC522.C" "0f9a2cdcbf0f2d10" 1 
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\action.c" "0a518b3856ad7c10" 1 
+"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\bobbin_auto_change.c" "037946a658a44d10" 1 
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\communication.c" "0c27d9c968fc7c10" 1 
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\delay.c" "0b56445b9e9c7c10" 1 
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\iic_bus_eeprom.C" "0b2ccf6cf1ef1d10" 1 
@@ -381,15 +387,15 @@
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\variables.c" "0cf2abf2835c7c10" 1 
 "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\watch.c" "0cf2abf2835c7c10" 1 
 [OPTIONS_Release_Renesas M16C Configurator]
-"Single Shot" "0f9a2cdcbf0f2d10" 6 
+"Single Shot" "037946a658a44d10" 6 
 [OPTIONS_Release_Renesas M16C Jump table Composer]
-"Single Shot" "0f9a2cdcbf0f2d10" 7 
+"Single Shot" "037946a658a44d10" 7 
 [OPTIONS_Release_Renesas M16C Librarian]
-"Single Shot" "0f9a2cdcbf0f2d10" 5 
+"Single Shot" "037946a658a44d10" 5 
 [OPTIONS_Release_Renesas M16C Linker]
-"Single Shot" "0e5d9cdcbf0f2d10" 3 
+"Single Shot" "0e4466a658a44d10" 3 
 [OPTIONS_Release_Renesas M16C Stype Converter]
-"Single Shot" "0e5d9cdcbf0f2d10" 4 
+"Single Shot" "0e4466a658a44d10" 4 
 [OPTIONS_Release]
 "" 0 
 "[V|VERSION|1] " 7 

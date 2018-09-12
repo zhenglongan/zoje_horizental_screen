@@ -24,11 +24,11 @@
     
 #define MainFatherVersion		05
 #define MainChildVersion		07 
-#define MainSVNVersion			404//403//402//401//2083//2082//208//2078//2077//2076//2075//2074//2073//2072//2063//2062//2061//20527//20526
+#define MainSVNVersion			4051//404//403//402//401//2083//2082//208//2078//2077//2076//2075//2074//2073//2072//2063//2062//2061//20527//20526
 
 #define ENABLE_LED_ALARM_FUNCTION   0 // led报警功能
 
-#define MULTIPULE_IO_ENABLE         0 // 开放多功能IO编程功能
+#define MULTIPULE_IO_ENABLE         1 // 开放多功能IO编程功能
 #define USE_ENCODER_Z_PULSE			1 // 中压脚用编码器的Z信号
 
 #define ROTATE_CUTTER_ENABLE		0 // 旋转切刀功能
@@ -87,6 +87,8 @@
 #define STEPPER_MOTOR           	1
 #define TIME_PARAMETER_1        	1
 
+//配置是否使用SC0716步进板，如果用这个板，表示DSP2作为XY电机，DSP1-A作为中压脚
+#define USE_SC0716_BOARD			1
 
 //--------------------------------------------------------------------------------------
 // condition compile
@@ -367,8 +369,16 @@
 #define SPI_OUT     p9_6
 #define SPI_IN      p9_7
 
+//如果使用SC0716步进板，XY电机改到了DSP2，为了方便处理，直接更改片选
+#if USE_SC0716_BOARD
+#define SPISTE1     p10_1
+#define SPISTE2     p10_0
+#else
 #define SPISTE1     p10_0
 #define SPISTE2     p10_1
+
+#endif
+//这里可能需要处理下
 #if MULTIPULE_IO_ENABLE
 #define SPISTE3     p0_4
 #define SPISTE4     p3_6
@@ -404,6 +414,7 @@
 #define LASER_LED_ON                1
 
 
+//换梭相关，这里的定义后续应该要删掉，先保留吧
 #if BOBBIN_CHANGER_ENABLE
 	#define BOBBIN_CHANGE_START      T_CLK  //气阀6
 	#define BOBBIN_CHANGE_ERROR      ADTCSM //INPUT5
@@ -552,6 +563,12 @@
 
 #define X_SENSOR_AT_LEFT          0
 #define X_SENSOR_AT_RIGHT         1
+
+#define DSP1  1
+#define DSP2  2
+#define DSP3  3
+#define DSP4  4
+
 #endif
 //--------------------------------------------------------------------------------------
 //         COPYRIGHT(C) 2006 Beijing xingdahao technology Co., Ltd.

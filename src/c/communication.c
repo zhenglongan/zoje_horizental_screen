@@ -3358,6 +3358,15 @@ void protocol(UINT8* command)
 							read_stepmotor_config_para(2);
 						else if( temp == 5)
 							read_stepmotor_config_para(3);
+						else if( temp == 6)//2018-9-12,增加系统参数6、7、8、9组，用于测试
+							read_para_group(700,svpara_disp_buf,205);
+						else if( temp == 7)
+							read_para_group(1000,svpara_disp_buf,205);
+						else if( temp == 8)
+							read_para_group(1300,svpara_disp_buf,205);
+						else if( temp == 9)
+							read_para_group(1600,svpara_disp_buf,205);
+						
 						for( i=0; i< 205 ; i++)  
 						{
 							send_command[5+i] = svpara_disp_buf[i];
@@ -3392,6 +3401,14 @@ void protocol(UINT8* command)
 							wirte_stepermotor_para_flag = 2;
 						else if( temp == 5)
 							wirte_stepermotor_para_flag = 3;
+						else if( temp == 6)//2018-9-12,增加系统参数6、7、8、9组，用于测试
+							write_eeprom_para_flag = 3;
+						else if( temp == 7)
+							write_eeprom_para_flag = 4;
+						else if( temp == 8)
+							write_eeprom_para_flag = 5;
+						else if( temp == 9)
+							write_eeprom_para_flag = 6;
 						send_command[5] = verify_code(5);
 						send_command[6] = DATA_END;                  
 						tra_com(send_command,7);    

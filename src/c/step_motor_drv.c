@@ -74,6 +74,17 @@ void spiint(void);
 //--------------------------------------------------------------------------------------
 void SPI_init(void)
 {
+//#define SPISTE1     p10_0
+//#define SPISTE2     p10_1
+//#define SPISTE3     p0_4
+//#define SPISTE4     p3_6
+	pd10_0 = 1;
+	pd10_1 = 1;
+	pd0_4 = 1;
+	pd3_6 = 1;
+
+
+	
 	SPISTE1 = 1;     // DSP1 SPI disable 
 	SPISTE2 = 1;     // DSP2 SPI disable
 	SPISTE3 = 1;     // DSP3 SPI disable 
@@ -435,33 +446,48 @@ void init_stepmotor_drv(void)
 //--------------------------------------------------------------------------------------
 void version_check(void)
 {
-	send_dsp2_command(0x0001,0x5555);  
-	if(recieve_x.word == 0x5555)
+	int i;
+	for(i=0;i<5;i++)
 	{
-		send_dsp2_command(0x0006,0x5555);
-	}  
-	stepversion2 = recieve_x.word;
+		send_dsp2_command(0x0001,0x5555);  
+		if(recieve_x.word == 0x5555)
+		{
+			send_dsp2_command(0x0006,0x5555);
+		}  
+		stepversion2 = recieve_x.word;
+	}
 	delay_ms(100);		
-	send_dsp1_command(0x0001,0x5555);
-	if(recieve_x.word == 0x5555)
+	for(i=0;i<5;i++)
 	{
-		send_dsp1_command(0x0006,0x5555);
-	}  
-	stepversion1 = recieve_x.word;	
-	
+		send_dsp1_command(0x0001,0x5555);
+		if(recieve_x.word == 0x5555)
+		{
+			send_dsp1_command(0x0006,0x5555);
+		}  
+		stepversion1 = recieve_x.word;	
+	}
+	delay_ms(100);	
 	#if MULTIPULE_IO_ENABLE
-	send_dsp3_command(0x0001,0x5555);  
-	if(recieve_x.word == 0x5555)
+	for(i=0;i<5;i++)
 	{
-		send_dsp3_command(0x0006,0x5555);
-	} 
-	stepversion3 = recieve_x.word;
-	send_dsp4_command(0x0001,0x5555);  
-	if(recieve_x.word == 0x5555)
+		send_dsp3_command(0x0001,0x5555);  
+		if(recieve_x.word == 0x5555)
+		{
+			send_dsp3_command(0x0006,0x5555);
+		} 
+		stepversion3 = recieve_x.word;
+	}
+	delay_ms(100);	
+	for(i=0;i<5;i++)
 	{
-		send_dsp4_command(0x0006,0x5555);
-	} 
-	stepversion4 = recieve_x.word;
+		send_dsp4_command(0x0001,0x5555);  
+		if(recieve_x.word == 0x5555)
+		{
+			send_dsp4_command(0x0006,0x5555);
+		} 
+		stepversion4 = recieve_x.word;
+	}
+	delay_ms(100);	
 	#endif			
 }
 //--------------------------------------------------------------------------------------
@@ -570,7 +596,7 @@ void movestep_zx(int zx_data,UINT16 time)
 		
 	if( time >63)
 	    time = 63;
-		
+
 	if(zx_data>0)
 	{
 		spi_flag=1;
@@ -592,6 +618,11 @@ void movestep_zx(int zx_data,UINT16 time)
 		else
 			trans_x.word=(UINT16)0xc000+((UINT16)zx_data_nf<<6)+(UINT16)time;
 	}
+	
+#if	USE_SC0716_BOARD
+	trans_x.word &= ~(1<<15);//bit15=0，表示使用第1路，即DSP2B
+#endif
+
 	if( trans_x.word  == 0x5555 )
 	{
 		trans_x.word += 1;
@@ -777,13 +808,11 @@ void read_stepmotor_para(void)
 //return 0x1234 ---ok 
 UINT8 check_motion_done(void)
 {
-		UINT8 ret;
-		send_dsp1_command(0x0012,0x5555);
-		if( recieve_x.word == 0x1234 )
-		    ret =1;
-		else
-		    ret = 0;
-		return ret;								
+	send_dsp1_command(0x0012,0x5555);		
+	if( recieve_x.word == 0x1234 )
+	    return(1);
+	else
+	    return(0);							
 }
 
 void send_stepmotor_up_drv(void)    
@@ -864,62 +893,87 @@ void jump_to_begin(void)
 	}
 }
 
+//==============================================================
+void select_dsp( UINT8 port)
+{
+	dsp1 = 0;
+	dsp2 = 0;
+	dsp3 = 0;
+	dsp4 = 0;
+	SPISTE1 = 1;
+	SPISTE2 = 1;
+	SPISTE3 = 1;
+	SPISTE4 = 1;
+	if( port == DSP1)      //dsp1
+	{
+	    SPISTE1 = 0;
+		dsp1 = 1;		
+	}
+	else if( port == DSP2) //dsp2
+	{
+	 	SPISTE2 = 0;
+		dsp2 = 1;
+	}
+	else if( port == DSP3)  //dsp3
+	{
+		SPISTE3 = 0;
+		dsp3 = 1;
+	}
+	else
+	{
+		SPISTE4 = 0;
+		dsp4 = 1;
+	}
+}
+
+void send_dsp1_command2(UINT16 command)
+{
+	while(spi_flag > 0);
+	spi_flag=1;
+	select_dsp(1);	
+	trans_x.word = command;      
+	trans_y.word = (~trans_x.word)&0x7fff;
+	trans_z.word = 0x5555;
+	s4trr=trans_x.byte.byte1;   
+    delay_us(500);//800
+	while(spi_flag > 0);
+}
+
 void send_dsp_command(UINT8 port,UINT16 command)
 {
-	 while(spi_flag > 0);	     
-	 spi_flag=1;				
-	 trans_x.word= command;      
-	 trans_y.word= (~trans_x.word)&0x7fff;
-	 trans_z.word=0x5555;
-	 switch(port)
-	 {
-		 case 1:
-		 {
-		 	dsp1 = 1;SPISTE1 = 0;
-		 }
-		 break;
-		 case 2:
-		 {
-		 	dsp2 = 1;SPISTE2 = 0;
-		 }
-		 break;
-		 case 3:
-		 {
-		 	dsp3 = 1;SPISTE3 = 0;
-		 }
-		 break;
-		 case 4:
-		 {
-		 	dsp4 = 1;SPISTE4 = 0;
-		 }
-		 break;
-	 }
-	 s4trr=trans_x.byte.byte1; 
-	 delay_us(500);
+	 while(spi_flag > 0);
+	 spi_flag = 1;
+	 select_dsp(port);	 
+	 trans_x.word = command;	  
+	 trans_y.word = (~trans_x.word)&0x7fff;
+	 trans_z.word = 0x5555;
+	 s4trr=trans_x.byte.byte1;	 
+ //  if( sys.status != RUN)
+	 delay_us(800);//800
+	 while(spi_flag > 0);
+
 }
+void send_dsp_command_data(UINT8 port,UINT16 command,UINT16 data)
+{
+	send_dsp_command(port,command);
+	send_dsp_command(port,data);
+}
+
 void send_dsp1_command(UINT16 command,UINT16 data)    
 {
-	 send_dsp_command(1,command);
-	 send_dsp_command(1,data);
-	 while(spi_flag > 0);	      
+	 send_dsp_command_data(DSP1,command,data);	      
 } 
 void send_dsp2_command(UINT16 command,UINT16 data)    
 {
-	 send_dsp_command(2,command);
-	 send_dsp_command(2,data);
-	 while(spi_flag > 0);
+	send_dsp_command_data(DSP2,command,data);
 } 
 void send_dsp3_command(UINT16 command,UINT16 data)    
 {
-	 send_dsp_command(3,command);
-	 send_dsp_command(3,data);
-	 while(spi_flag > 0);
+	 send_dsp_command_data(DSP3,command,data);
 } 
 void send_dsp4_command(UINT16 command,UINT16 data)    
 {
-	 send_dsp_command(4,command);
-	 send_dsp_command(4,data);
-	 while(spi_flag > 0);
+	 send_dsp_command_data(DSP4,command,data);
 } 
 /*
 #define DSP_CMD_QUICK_MOVE                  0x0000    // 申请快走 
@@ -1063,10 +1117,172 @@ void read_stepmotor_config_para(UINT8 port)
 			break;
 		}
 		svpara_disp_buf[m] = recieve_x.word;
-		delay_us(1000);
+		//delay_us(1000);,因为读写已经延时了800us了，所以不需要再延时了，否则主控面板重发数次后报错
 		
 	}
 }
+
+
+
+/*
+对于气阀输出的控制字：
+mmm xdddddd  pppppp
+mmm---控制字 
+dddddd-----端点号，气阀编号
+pppppp-----输出电平,打开为1,关闭为0
+对于电机的控制字
+mmm x ddddddd ttttt
+mmm---命令字  x--方向  ddddddd--7位位移 ttttt-5位时间
+001---第一路90V驱动 	CZ7411  X34
+010---第二路90V驱动 	CZ7412  X33
+011---第二路7078     	CZ749   X30
+100---第一路7078输出 	CZ7410  X29
+101---6064驱动电机输出  CZ7413  X28
+110---气阀输出          CZ748   X31
+						1-4  AIR1 ---PORTF4  --BIT0   1100 0000 01 00 000x
+						2-5  AIR2 ---PORTF3  --BIT1   1100 0000 10 00 00x0
+						3-6  AIR3 ---PORTF2  --BIT2   1100 0001 00 00 0x00
+110---气阀输出          CZ749   X32
+						1-4  AIR4 ---PORTB6  --BIT3   1100 0010 00 00 x000
+						2-5  AIR5 ---PORTC0  --BIT4   1100 0100 00 0x 0000
+						3-6  AIR6 ---PORTB5  --BIT5   1100 1000 00 x0 0000
+mmm xdddddd  pppppp          
+
+
+X34    0X2000    换梭臂电机  0.36d
+X33    0X4000    抓剪线电机/旋转切刀角度电机/ 0.9d
+X28    0XA000    梭盘电机 0.9d
+
+*/
+void movestep_cs3(UINT16 command,INT16 x_data,UINT8 timer_need)
+{ 
+	#if MULTIPULE_IO_ENABLE == 1
+	UINT8 dir;
+	while(spi_flag > 0);
+    
+	if( timer_need >= 63 )
+	    timer_need = 63;
+		
+	if( x_data !=0 )
+	{
+		SPISTE1 = 1;
+	   	SPISTE2 = 1;
+	   	SPISTE4 = 1;
+	   	SPISTE3 = 0;
+
+	}
+	else 
+		return;
+	if( (command == 0x2000)||(command == 0x4000) ) //换梭臂电机/旋转切刀电机
+	{
+		command = 0x0000;//第一路电机
+		dir = para.dsp3a_motor_dir;
+	}
+	else if( command == 0xA000) //梭盘电机
+	{
+		command = 0x8000;//第二路电机
+		dir = para.dsp3b_motor_dir;
+	}
+	if(x_data > 0)
+	{   
+		spi_flag = 1;	
+		trans_x.word = command + ((UINT16)x_data<<6)+(UINT16)timer_need;
+		if( dir == 0)
+	       	trans_x.word += 0x4000; 
+	}	
+	else if(x_data<0)
+	{
+		x_data_nf = -x_data;
+		spi_flag = 1;
+		trans_x.word= command + ((UINT16)x_data_nf<<6)+(UINT16)timer_need;	
+		if( dir != 0)
+	    	trans_x.word += 0x4000; 
+	}
+	if( trans_x.word == 0x5555 )
+	{
+		trans_x.word = trans_x.word + 1;
+	}
+	trans_y.word=(~trans_x.word)&0x7fff;
+	trans_z.word=0x5555;
+	dsp3 = 1;
+	SPISTE3=0;   
+	s4trr=trans_x.byte.byte1;  
+	
+	#else
+ 	while(spi_flag > 0);
+    if( timer_need >= 32 )
+	    timer_need = 31;
+	if( x_data !=0 )
+	{
+	   SPISTE3 = 0;
+	   SPISTE1 = 1;
+	   SPISTE2 = 1;
+	}
+	if(x_data>0)
+	{   
+		spi_flag=1;	
+		if( dsp3_moto1_direction == 0)
+	        trans_x.word=command+((UINT16)x_data<<5)+(UINT16)timer_need;
+		else
+			trans_x.word=(command|0x1000) + ((UINT16)x_data<<5)+(UINT16)timer_need; 
+		if(trans_x.word == 0x2AAA || trans_x.word == 0x5555 || trans_x.word == 0xAAAA || trans_x.word == 0x55AA || trans_x.word == 0xAA55 || trans_x.word == 0x2A55)
+		{
+			trans_x.word = trans_x.word + 1;
+		}
+		trans_y.word=(~trans_x.word)&0x7fff;
+	    trans_z.word=0x5555;
+		dsp3 = 1;
+		SPISTE3=0;   
+		s4trr=trans_x.byte.byte1;  
+	}	
+	else if(x_data<0)
+	{
+		x_data_nf=-x_data;
+		spi_flag=1;	
+		if( dsp3_moto1_direction == 0)
+	    	trans_x.word=(command|0x1000) + ((UINT16)x_data_nf<<5)+(UINT16)timer_need; 
+		else
+			trans_x.word= command + ((UINT16)x_data_nf<<5)+(UINT16)timer_need; 
+	    if(trans_x.word == 0x2AAA || trans_x.word == 0x5555 || trans_x.word == 0xAAAA || trans_x.word == 0x55AA || trans_x.word == 0xAA55 || trans_x.word == 0x2A55)
+		{
+			trans_x.word = trans_x.word + 1;
+		}		   
+		trans_y.word=(~trans_x.word)&0x7fff;
+		trans_z.word=0x5555;
+		dsp3 = 1;
+		SPISTE3=0;		             
+		s4trr=trans_x.byte.byte1;    
+	}
+	#endif
+}
+//===============================================
+UINT16 check_DSP3_input(void)
+{
+
+	while(spi_flag > 0);
+	spi_flag=1;
+	select_dsp(DSP3);
+	delay_us(100);	
+	trans_x.word = 0x0018;      
+	trans_y.word = (~trans_x.word)&0x7fff;
+	trans_z.word = 0x5555;
+	s4trr=trans_x.byte.byte1;   
+	while(spi_flag > 0);
+	spi_flag=1;
+	select_dsp(DSP3);	
+	delay_us(100);
+	trans_x.word = 0x0018;      
+	trans_y.word = (~trans_x.word)&0x7fff;
+	trans_z.word = 0x5555;
+	s4trr=trans_x.byte.byte1;
+	while(spi_flag > 0);
+	delay_us(100);			
+	return recieve_x.word;					
+}
+
+
+
+
 
 /*
 直接按16位写入到DSP里

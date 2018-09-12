@@ -858,6 +858,9 @@ void init_var(void)
 	monitor_predit_shift_flag_value = 0;
 	inpress_follow_speed = 3000;
 	now_pattern_number = 0;
+	
+	//以下为2018-9-12新增
+	dsp3_moto1_direction=0;
 
 }			
 //--------------------------------------------------------------------------------------
@@ -1137,7 +1140,15 @@ void restore_para_from_eeprom(void)
 	para.oil_empty_alarm_enable = svpara_disp_buf[index++];
 	para.second_start_switch = svpara_disp_buf[index++];
 	para.cutter_hold_speed = svpara_disp_buf[index++];
-	para.inpresser_org_select = svpara_disp_buf[index++];
+	para.inpresser_org_select = svpara_disp_buf[index++];//124
+
+
+	//以下为2018-9-12新增
+	para.dsp3a_motor_dir = svpara_disp_buf[index++];//125
+	para.dsp3b_motor_dir = svpara_disp_buf[index++];//126
+	//para.bobbin_platform_speed = svpara_disp_buf[index++];//127
+	//para.bobbin_shake_distance = svpara_disp_buf[index++];//128
+	//para.bobbin_shake_time = svpara_disp_buf[index++];//129
 }
 
 void cpy_para_buff(void)
@@ -1236,7 +1247,15 @@ void cpy_para_buff(void)
 	svpara_disp_buf[index++] = para.oil_empty_alarm_enable;
 	svpara_disp_buf[index++] = para.second_start_switch;
 	svpara_disp_buf[index++] = para.cutter_hold_speed;
-	svpara_disp_buf[index++] = para.inpresser_org_select;
+	svpara_disp_buf[index++] = para.inpresser_org_select;//124
+
+	//以下为2018-9-12新增
+	svpara_disp_buf[index++] = para.dsp3a_motor_dir;//125
+	svpara_disp_buf[index++] = para.dsp3b_motor_dir;//126
+	//svpara_disp_buf[index++] = para.bobbin_platform_speed;//127
+	//svpara_disp_buf[index++] = para.bobbin_shake_distance;//128
+	//svpara_disp_buf[index++] = para.bobbin_shake_time;//129
+	
 	
 	svpara_disp_buf[index++] = 0;
 	svpara_disp_buf[index++] = 0;

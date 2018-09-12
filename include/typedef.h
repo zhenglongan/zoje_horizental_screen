@@ -203,6 +203,15 @@ typedef struct
 	UINT8  cutter_hold_speed;		   //123 剪线后的速度
 	UINT8  inpresser_org_select;	   //124 中压脚传感器的类型选择
 
+//以下为2018-9-12新增
+	UINT8  dsp3a_motor_dir; 	//125
+	UINT8  dsp3b_motor_dir; 	//126
+
+	//自动换梭相关
+//	UINT8  bobbin_platform_speed;//127
+//	 INT8  bobbin_shake_distance;//128
+//	UINT8  bobbin_shake_time;	 //129
+
 }SYSTEM_PARA;
 
 #endif

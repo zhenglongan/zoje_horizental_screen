@@ -771,6 +771,9 @@ extern UINT16 inpress_follow_speed;
 extern UINT8 auto_lock_flag;
 extern UINT16 now_pattern_number; 
 extern UINT8  rc522_ok_flag;
+
+//以下为2018-9-12新增
+extern UINT8  dsp3_moto1_direction;//此变量无太大意义，在中捷竖屏程序中除了初始化之外也没有赋值过
 //--------------------------------------------------------------------------------------
 //         COPYRIGHT(C) 2006 Beijing xingdahao technology Co., Ltd.
 //                     ALL RIGHTS RESERVED 
