@@ -24,7 +24,7 @@
     
 #define MainFatherVersion		05
 #define MainChildVersion		07 
-#define MainSVNVersion			4051//404//403//402//401//2083//2082//208//2078//2077//2076//2075//2074//2073//2072//2063//2062//2061//20527//20526
+#define MainSVNVersion			4054//404//403//402//401//2083//2082//208//2078//2077//2076//2075//2074//2073//2072//2063//2062//2061//20527//20526
 
 #define ENABLE_LED_ALARM_FUNCTION   0 // led报警功能
 
@@ -230,7 +230,7 @@
 #define ERROR_77    77
 #define ERROR_78    78
 #define ERROR_79    79
-#define ERROR_81    81
+#define ERROR_81    81//底线不足
 #define ERROR_82    82
 #define ERROR_83    83
 #define ERROR_85    85

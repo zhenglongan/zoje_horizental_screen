@@ -22,6 +22,7 @@
 #include "..\..\include\action.h"         // action function
 #include "..\..\include\math.h"           // math library definition
 #include "..\..\include\iic_bus_eeprom.h"
+#include "..\..\include\bobbin_auto_change.h"
 
 
 #define double_pedal 2
@@ -690,7 +691,30 @@ void ready_status(void)
 
 		shift_func(shift_flag);
 	}
-	
+
+	//2018-9-13新增自动换梭相关内容
+	if(bobbin_case_enable == 1)//如果启用了自动换梭功能
+	{
+		if( bobbin_case_once_done_flag == 1)
+		{
+			//启用换梭流程
+			bobbin_case_workflow1();
+			bobbin_case_once_done_flag = 0;
+			//换梭后，可能针杆位置出现了变化，这个时候回死点
+			temp8 = detect_position();	
+	    	if(temp8 == OUT)    
+	      	{
+			   find_dead_center();
+	      	}
+			if( sys.status == ERROR)
+				return;
+		}
+		if( bobbin_case_switch_flag ==1 )
+		{
+			bobbin_case_switch_flag = 0;
+			find_a_bobbin_case(5);
+		}
+	}
 	
 	if( new_pattern_done == 1 )
 	{
@@ -1721,22 +1745,71 @@ void trim_action(void)
 		}				
 	}
 	#endif
-	if( baseline_alarm_flag == 1)
+	brkdt_flag = 0;
+	thbrk_count = 0;
+	thbrk_flag = 0;
+
+	//剪线后判断是否底线不够,只在运行状态下判断
+	if( baseline_alarm_flag == 1 && sys.status ==RUN)
 	{
+		//当前已经缝制的花样点数已经大于底线警报值
 		if( pat_buff_total_counter >= baseline_alarm_stitchs)
 		 {
-			sewing_stop();
-        	sys.status = ERROR;
-			StatusChangeLatch = ERROR;
-        	sys.error =  ERROR_81;     		     
-			status_now = READY;	   				 
+			 //出现了底线警报，此时应该自动换梭			 
+			//2018-9-13修改，增加自动换梭相关内容
+			if( bobbin_case_enable == 1)
+			{	
+				sewing_stop();
+				temp8 = 0;
+				if( bobbin_case_alarm_mode == 1)//先换梭再报警
+				{
+					sys.status =  ERROR;
+					sys.error = ERROR_81;
+					if( bobbin_case_restart_mode == 1)//换梭起缝方式0-手动启动，1-自动启动
+					{
+						delay_ms(300);//用于告知面板，底线不足
+						sys.status =  RUN;//面板显示的底线不足自动消失，继续缝制
+						sys.error = 0;
+						StatusChangeLatch = READY;
+					}
+					
+					temp8 = bobbin_case_workflow1();//启动换梭流程
+					if(temp8==0)
+					{
+						delay_ms(500);
+						//换梭失败，返回，相关的错误状态已经在函数bobbin_case_workflow1()中被设置了
+						return;
+					}
+					bobbin_case_once_done_flag = 0;
+					
+				}
+				if( (bobbin_case_restart_mode == 1)&&(temp8 ==1) )
+				{
+					delay_ms(20);
+				}
+				else//如果手动换梭，直接跳转到这里，等待拿下面板确认，然后跳转到READY中换梭，然后等待DVA按下后重新启动
+				{
+					sys.status =  ERROR;
+					sys.error = ERROR_81;
+					StatusChangeLatch = ERROR;
+				    return;
+				}
+			}
+			else//未启用自动换梭功能，那么报错
+			{
+				//进入此处说明底线已经不足够缝制下一段车缝了
+			 	sewing_stop();
+        		sys.status = ERROR;
+				StatusChangeLatch = ERROR;
+        		sys.error = ERROR_81;     		     
+				status_now = READY;	   				 
+				return;
+			}
 		 }
 	}
 	while( motor.stop_flag == 0)
 	 	   rec_com();
-	brkdt_flag = 0;
-	thbrk_count = 0;
-	thbrk_flag = 0;
+
 }
 //--------------------------------------------------------------------------------------
 //  Name:		run_status 
@@ -2003,18 +2076,63 @@ void run_status(void)
     	if(scan_pause_func(&pause_flag,READY))
     		return;
 
-		
-		if( baseline_alarm_flag == 1)
+		//底线警报，有时候，刚启动一个花样缝制的时候可能会底线不足报错，所以除了在剪线函数中响应之外，这里也应该响应
+		if( baseline_alarm_flag == 1)//底线警报功能开关打开
 		{
-			 if( baseline_alarm_stitchs == 0)
-			 {
-			 	sewing_stop();
-        		sys.status = ERROR;
-				StatusChangeLatch = ERROR;
-        		sys.error = ERROR_81;     		     
-				status_now = READY;	   				 
-				break;
-			 }
+			 if( baseline_alarm_stitchs == 0)//需要警报，进入此处说明底线已经不足够缝制下一段车缝了
+			 {				
+				//出现了底线警报，此时应该自动换梭			 
+				//2018-9-13修改，增加自动换梭相关内容
+				if( bobbin_case_enable == 1)
+				{	
+					sewing_stop();
+					temp8 = 0;
+					if( bobbin_case_alarm_mode == 1)//先换梭再报警
+					{
+						sys.status =  ERROR;
+						sys.error = ERROR_81;
+						if( bobbin_case_restart_mode == 1)//换梭起缝方式0-手动启动，1-自动启动
+						{
+							delay_ms(300);//用于告知面板，底线不足
+							sys.status =  RUN;//面板显示的底线不足自动消失，继续缝制
+							sys.error = 0;
+							StatusChangeLatch = READY;
+						}
+						
+						temp8 = bobbin_case_workflow1();//启动换梭流程
+						if(temp8==0)
+						{
+							delay_ms(500);//为了在面板中能够显示错误，这里延时500ms
+							//换梭失败，返回，相关的错误状态已经在函数bobbin_case_workflow1()中被设置了
+							return;
+						}
+						bobbin_case_once_done_flag = 0;
+						
+					}
+					if( (bobbin_case_restart_mode == 1)&&(temp8 ==1) )
+					{
+						delay_ms(20);
+					}
+					else//如果手动换梭，直接跳转到这里，等待拿下面板确认，然后跳转到READY中换梭，然后等待DVA按下后重新启动
+					{
+						sys.status =  ERROR;
+						sys.error = ERROR_81;
+						StatusChangeLatch = ERROR;
+					    return;
+					}
+				}
+				else//未启用自动换梭功能，那么报错
+				{
+					//进入此处说明底线已经不足够缝制下一段车缝了
+				 	sewing_stop();
+	        		sys.status = ERROR;
+					StatusChangeLatch = ERROR;
+	        		sys.error = ERROR_81;     		     
+					status_now = READY;	   				 
+					return;
+				}
+				
+			 } 
 		}
 		
 		
@@ -3332,13 +3450,15 @@ void error_status(void)
       	     break;  
 		case 46:
 		break;
-		case 88:
+		case 88://换梭相关错误，此时应该报错不能直接退出，2018-9-13
 		case 89:
-				turnoff_ledbuz();
-				sys.error = OK;
-				sys.status = READY;
-				StatusChangeLatch = READY;
-		break;
+				disable_24V_output();      // 24V disable
+				flash_led();   // flash alarm led                                                   
+            	flash_buz();	  // flash alarm buzzer 
+				//sys.error = OK;
+				//sys.status = READY;
+				//StatusChangeLatch = READY;
+				break;
 		case 90:
 		case 91:
 		case 92:
@@ -4689,7 +4809,7 @@ void slack_status(void)
 	  {
 			write_para_group(1600,svpara_disp_buf,205);
 			delay_ms(300);
-			//app_GetProgramFromEeprom();
+			bobbin_get_configuration();//更新第9组参数，和自动换梭相关
 	  }
 	  
 	  write_eeprom_para_flag = 0;	
@@ -5142,12 +5262,19 @@ void checki05_status(void)
   	UINT16 i,flag,test_flag;
 	UINT16 running_time,interval_time;
 
+	static UINT8 lamp=0;
+	
+	
 	test_flag = 0;
+
+	
   	//--------------------------------------------------------------------------------------
   	// output move
   	//--------------------------------------------------------------------------------------
+	//因为面板上暂时没有换梭相关测试的界面，所以先借用一下测试输出指令来检测一下换梭功能
 	switch(output_com)
 	{
+	
 		//--------------------------------------------------------------------------------------      
     	//  wiper move
     	//--------------------------------------------------------------------------------------
@@ -5340,6 +5467,105 @@ void checki05_status(void)
 			} 
 	}
 	#endif
+
+	
+	//借用检测模式里的输出功能，对换梭功能进行测试
+	if(bobbin_case_enable==1)
+	{
+		//如果梭盘动作按钮按下
+		if( (bobbin_case_switch_flag ==1 )&&(bobbin_case_enable == 1) )
+		{
+			//SUM=1;
+			bobbin_case_switch_flag = 0;
+			if( bobbin_case_enable == 1)
+				find_a_bobbin_case(5);//移动到下一个梭位
+			//SUM=0;
+		}
+		
+		if( DVA == 0 )//按下启动按钮，启动换梭流程
+		{
+			delay_ms(10);
+			if( DVA == 0 )
+			{	
+				//SUM=1;		
+				if( bobbin_case_enable == 1)
+					bobbin_case_workflow1(); 
+				//SUM=0;
+			}
+		}
+
+		if( DVB == 0 )       
+		{
+			delay_ms(10);
+			if( DVB == 0 )
+			{			
+				//SUM=1;	
+				if( bobbin_case_enable == 1)
+				{
+					if(lamp!=0)
+					{
+						go_origin_bobbin_case_arm(1);//换梭臂转到机头
+						lamp=0;
+					}
+					else
+					{
+						go_origin_bobbin_case_arm(0);//换梭臂转到梭盘
+						lamp=1;
+					}
+				}
+				//SUM=0;
+			 }
+			
+		}
+
+
+		//测试，测试输出的时候，先会发送输出为1，然后发送输出为0，
+		//为了避免冲突，这里在发送输出为0的时候去响应
+		if(bobbin_case_debug_cmd!=0)
+		{
+			//此处增加自动换梭的测试程序
+			switch(bobbin_case_debug_cmd)
+			{
+				case 1:
+					if( bobbin_case_enable == 1)
+					{
+		  				movestep_cs3(0x2000,-1,5);//换梭臂电机反向动作
+					    //movestep_cs3(0x2000,1,5);
+			  		  	delay_ms(10);
+					}
+					break;
+
+				case 2:
+					if( bobbin_case_enable == 1)
+					{
+		  				movestep_cs3(0x2000,1,5);//换梭臂电机反向动作
+					    //movestep_cs3(0x2000,1,5);
+			  		  	delay_ms(10);
+					}
+					break;
+
+				case 3://换梭臂抓紧气缸
+					BOBBIN_CASE_ARM_SCRATH = 1;
+					delay_ms(100);
+					BOBBIN_CASE_ARM_SCRATH = 0;
+					break;
+
+				case 4://换梭臂伸缩气缸
+					BOBBIN_CASE_ARM_OUT = 1;
+					delay_ms(100);
+					BOBBIN_CASE_ARM_OUT = 0;
+					break;
+
+				case 5:
+					break;
+
+				default:
+					break;
+			}
+			bobbin_case_debug_cmd=0;
+			
+		}
+	}
 	
 	if(StatusChangeLatch != CHECKI05) 
 	{

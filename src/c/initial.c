@@ -19,6 +19,7 @@
 #include "..\..\include\delay.h"          // delay time definition    
 #include "..\..\include\stepmotor.h"        // stepmotor driver
 #include "..\..\include\iic_bus_eeprom.h"
+#include "..\..\include\bobbin_auto_change.h"
 
 void init_para_variables(void);
 //--------------------------------------------------------------------------------------
@@ -886,6 +887,7 @@ void initial(void)
   	pd3 = 0xF8;
 	init_eeprom();	
 	init_para_variables();
+	bobbin_init();
 	//--------------------------------------------------------------------------------------
   	// call initial IO direction fucntion
   	//--------------------------------------------------------------------------------------
@@ -1146,6 +1148,9 @@ void restore_para_from_eeprom(void)
 	//以下为2018-9-12新增
 	para.dsp3a_motor_dir = svpara_disp_buf[index++];//125
 	para.dsp3b_motor_dir = svpara_disp_buf[index++];//126
+	para.dsp3A_current_level = svpara_disp_buf[index++];	//127
+	para.dsp3B_current_level = svpara_disp_buf[index++];	//128
+	
 	//para.bobbin_platform_speed = svpara_disp_buf[index++];//127
 	//para.bobbin_shake_distance = svpara_disp_buf[index++];//128
 	//para.bobbin_shake_time = svpara_disp_buf[index++];//129
@@ -1252,6 +1257,9 @@ void cpy_para_buff(void)
 	//以下为2018-9-12新增
 	svpara_disp_buf[index++] = para.dsp3a_motor_dir;//125
 	svpara_disp_buf[index++] = para.dsp3b_motor_dir;//126
+	svpara_disp_buf[index++] = para.dsp3A_current_level;	//127
+	svpara_disp_buf[index++] = para.dsp3B_current_level;	//128
+	
 	//svpara_disp_buf[index++] = para.bobbin_platform_speed;//127
 	//svpara_disp_buf[index++] = para.bobbin_shake_distance;//128
 	//svpara_disp_buf[index++] = para.bobbin_shake_time;//129

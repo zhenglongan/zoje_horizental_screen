@@ -1081,6 +1081,33 @@ void setup_stepper_moter(void)
 	}
 	#endif
 	
+#if MULTIPULE_IO_ENABLE
+	if(!((PAUSE == PAUSE_ON)&&((DVA == para.dvab_open_level)||(DVB == para.dvab_open_level))))
+	{
+//		SUM=1;
+//		delay_ms(200);
+//		SUM=0;
+		
+		send_dsp3_command(0x0011,0X0004);//平台类型		
+
+	 	send_dsp3_command(0x001F,para.DSP3_para_1F);  //开环闭环切换 1表示闭环，2表示开环，3表示转速模式，4表示随动模式，5表示双轴同步
+		send_dsp3_command(0x0020,para.DSP3_para_20);  //编码器线数
+		send_dsp3_command(0x0021,para.DSP3_para_21);		
+		send_dsp3_command(0x0022,para.DSP3_para_22);  //步距角
+		send_dsp3_command(0x0023,para.DSP3_para_23);  
+		current1 = (para.dsp3A_current_level)%16;;
+		current2 = (para.dsp3B_current_level)%16;
+		current1 = ((current1<<3) + (((UINT16)(para.dsp3A_half_current))&0x0007))<<8;
+		current2 = ((current2<<3) + (((UINT16)(para.dsp3B_half_current))&0x0007)) + current1;
+		
+		send_dsp3_command(0x0026,current2 );
+		send_dsp3_command(0x0027,para.DSP3_para_27);  
+		send_dsp3_command(0x0028,para.DSP3_para_28H); //第一路超差	
+		send_dsp3_command(para.DSP3_para_28M1,para.DSP3_para_28M2);  //第二路超差+第一路精度系数  X精确Y伺服
+	    send_dsp_command(3,para.DSP3_para_28L);
+	}
+#endif
+	
 }
 
 

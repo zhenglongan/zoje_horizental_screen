@@ -206,6 +206,8 @@ typedef struct
 //以下为2018-9-12新增
 	UINT8  dsp3a_motor_dir; 	//125
 	UINT8  dsp3b_motor_dir; 	//126
+	UINT8  dsp3A_current_level;	//127
+	UINT8  dsp3B_current_level;	//128
 
 	//自动换梭相关
 //	UINT8  bobbin_platform_speed;//127

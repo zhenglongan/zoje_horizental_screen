@@ -26,6 +26,8 @@
 #include "..\..\include\solenoid.h"       // solenoid driver definition
 #include "..\..\include\iic_bus_eeprom.h" 
 #include "..\..\include\MFRC522.h" 
+#include "..\..\include\bobbin_auto_change.h"
+
 //--------------------------------------------------------------------------------------
 //  Internal functions and subroutines declaration
 //--------------------------------------------------------------------------------------
@@ -123,6 +125,18 @@ void main(void)
 			para.dsp1_step_crc = read_stepmotor_curve_crc(1);
 			delay_ms(10);
 			para.dsp2_step_crc = read_stepmotor_curve_crc(2);
+			
+			delay_ms(10);
+			if(para.dsp3_step_crc != read_stepmotor_curve_crc(3))
+			{
+				sys.status = ERROR;
+				StatusChangeLatch = ERROR;
+				sys.error = ERROR_92;
+				SUM=1;
+				delay_ms(500);
+				SUM=0;
+			}
+			
 			
 			if( u201 == 1 )         
 		   	    go_origin_allmotor();		
@@ -599,6 +613,30 @@ void ta0_int(void)
 	else
 	{
 		pedal_state = 0;
+	}
+
+	//扫描自动换梭按钮是否按下
+//	if( (ENABLE_BOBBIN_CASE_FUN == 1)&&( bobbin_case_enable == 1) )//#if ENABLE_BOBBIN_CASE_FUN
+	if(bobbin_case_enable == 1)
+	{
+		if( BOBBIN_CASE_SWITCH == 1)
+		{
+			if( bobbin_case_switch_flag == 0)
+			{
+				bobbin_case_switch_counter++;
+				if( bobbin_case_switch_counter > 100 )
+				{
+					bobbin_case_switch_flag = 1;
+				}
+			}
+			else
+			    bobbin_case_switch_counter = 0;
+		}
+		else
+		{
+			bobbin_case_switch_counter = 0;
+			bobbin_case_switch_flag = 0;
+		}
 	}
 
 }

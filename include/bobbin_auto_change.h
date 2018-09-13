@@ -27,14 +27,11 @@
 #ifndef BOBBIN_AUTO_CHANGE_H
 #define BOBBIN_AUTO_CHANGE_H
 
-
-
-#include "sfr62p.h"       //M16C/62P special function register definitions
 #include "typedef.h"      //Data type define
-#include "variables.h"    //External variables declaration
-#include "common.h"       //Common constants definition
-#include "delay.h"        //delay time definition
-#include "iic_bus_eeprom.h"
+
+
+
+
 
 /****************************************************************
 					 数据结构定义
@@ -57,10 +54,12 @@ typedef struct
 	UINT8 	k164_bobbin_case_workmode;//12
 	INT8 	k192_bobbin_plateform_org_offset;//13
 
-	//自动换梭相关,中捷竖屏存在系统参数第一组中，这里都放到第9组
+	//自动换梭相关,中捷竖屏存在系统参数第一组(参数123-125)中，这里都放到第9组
 	UINT8  bobbin_platform_speed;//14
 	 INT8  bobbin_shake_distance;//15
 	UINT8  bobbin_shake_time;	 //16
+
+	UINT8  bobbin_case_dump_position;	 //17，空梭芯丢弃位置，仅当k164=1时有效
 }SYSTEM_PARA9;
 
 /****************************************************************
@@ -111,11 +110,15 @@ extern INT8 	bobbin_plateform_org_offset;//k192，梭盘电机零位补偿
 */
 extern UINT8  	bobbin_case_arm_position;
 extern UINT8  	bobbin_case_platform_position;
-extern UINT16 	bobbin_case_dump_position;
+extern UINT16 	bobbin_case_dump_position;//空梭芯丢弃位置,默认50
 extern UINT8  	bobbin_case_switch_counter;
 extern UINT8  	bobbin_case_switch_flag;
 
+extern UINT8  	bobbin_case_once_done_flag;//手动运行一次换梭动作
 
+
+//用于调试换梭功能的变量，借用检测模式里的输出检测
+extern UINT8 bobbin_case_debug_cmd;
 
 
 
@@ -142,6 +145,7 @@ extern void movestep_cs3(UINT16 command,INT16 x_data,UINT8 timer_need);
 extern UINT16 check_DSP3_input(void);
 extern void inpress_down(UINT8 pos);
 
+extern void bobbin_get_configuration(void);
 
 
 

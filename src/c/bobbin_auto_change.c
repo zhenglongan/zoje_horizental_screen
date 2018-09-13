@@ -14,6 +14,12 @@
 
 
 #include "..\..\include\bobbin_auto_change.h"
+#include "..\..\include\sfr62p.h"       //M16C/62P special function register definitions
+#include "..\..\include\typedef.h"      //Data type define
+#include "..\..\include\variables.h"    //External variables declaration
+#include "..\..\include\common.h"       //Common constants definition
+#include "..\..\include\delay.h"        //delay time definition
+#include "..\..\include\iic_bus_eeprom.h"
 
 /****************************************************************
 					 全局变量定义
@@ -29,6 +35,11 @@ INT8 bobbin_plateform_org_offset;
 UINT8 bobbin_case_stop_position,bobbin_case_alarm_mode,bobbin_case_restart_mode;
 UINT8  bobbin_case_current_level;
 
+UINT8  bobbin_case_once_done_flag;//手动运行一次换梭动作
+
+
+//用于调试换梭功能的变量，借用检测模式里的输出检测
+UINT8 bobbin_case_debug_cmd=0;
 
 //因为横屏暂时没有开发自动换梭相关的参数，因此这里先把设置数据
 //暂时放到系统参数第9组
@@ -37,13 +48,13 @@ static SYSTEM_PARA9 para9;
 //============================================================================
 //      静态函数（仅本文件内部有效）声明
 //============================================================================
-static void bobbin_get_configuration(void);
+
 extern UINT16 string2int(UINT8 *src);
 
 
 
-//IO和全局变量的初始化
-//开机时调用一次即可
+//IO和全局变量的初始化，包括从系统参数第9组中取出参数信息
+//开机上电时调用一次即可
 void bobbin_init(void)
 {
 //============================================================================
@@ -62,6 +73,13 @@ void bobbin_init(void)
 	*/
 	bobbin_case_arm_position = 0;
 	bobbin_case_current_level = 5;
+
+	bobbin_case_switch_counter = 0;
+	bobbin_case_switch_flag = 0;
+	
+	bobbin_case_once_done_flag = 0;
+
+	
 	//读取系统参数第9组，这里暂时存着自动换梭相关参数配置等
 	//相当于竖屏里从面板获取K系列相关参数
 	bobbin_get_configuration();
@@ -102,8 +120,8 @@ void go_origin_bobbin_case_arm(UINT8 pos)
 			{
 				sys.status = ERROR;
 				StatusChangeLatch = ERROR;
-				if(sys.error == 0)    
-	      		   sys.error = ERROR_51;
+				   //if(sys.error == 0) //必须注释掉，否则如果K162=1，k163=0时，如果换梭失败，主控面板不能检测出来，直接忽略了	 
+	      		   sys.error = ERROR_88;
 				return;
 			}
 			//先顺时针找到挡片
@@ -122,8 +140,8 @@ void go_origin_bobbin_case_arm(UINT8 pos)
 		  	  	{
 					sys.status = ERROR;
 					StatusChangeLatch = ERROR;
-					if(sys.error == 0)    
-	      			   sys.error = ERROR_49;     
+					   //if(sys.error == 0) //必须注释掉，否则如果K162=1，k163=0时，如果换梭失败，主控面板不能检测出来，直接忽略了	 
+	      			   sys.error = ERROR_89;     
 	      			return;
 				}
 			}
@@ -184,8 +202,8 @@ void go_origin_bobbin_case_arm(UINT8 pos)
 			  	  	{
 						sys.status = ERROR;
 						StatusChangeLatch = ERROR;
-						if(sys.error == 0)    
-		      			   sys.error = ERROR_49;     
+						   //if(sys.error == 0) //必须注释掉，否则如果K162=1，k163=0时，如果换梭失败，主控面板不能检测出来，直接忽略了	 
+		      			   sys.error = ERROR_89;     
 		      			return;
 					}
 				}
@@ -223,8 +241,8 @@ void go_origin_bobbin_case_arm(UINT8 pos)
 	  	  	{
 	  	  			sys.status = ERROR;
 					StatusChangeLatch = ERROR;
-					if(sys.error == 0)    
-	      			   sys.error = ERROR_49;     
+					   //if(sys.error == 0) //必须注释掉，否则如果K162=1，k163=0时，如果换梭失败，主控面板不能检测出来，直接忽略了	 
+	      			   sys.error = ERROR_89;     
 	      			return;
 	  	  	}
 
@@ -257,8 +275,8 @@ void go_origin_bobbin_case_arm(UINT8 pos)
 	  	  	{
 	  	  			sys.status = ERROR;
 					StatusChangeLatch = ERROR;
-					if(sys.error == 0)    
-	      			   sys.error = ERROR_49;     
+					   //if(sys.error == 0) //必须注释掉，否则如果K162=1，k163=0时，如果换梭失败，主控面板不能检测出来，直接忽略了	 
+	      			   sys.error = ERROR_89;     
 	      			return;
 	  	  	}
 	
@@ -293,8 +311,8 @@ void go_origin_bobbin_case_arm(UINT8 pos)
 	  	  	{
 	  	  			sys.status = ERROR;
 					StatusChangeLatch = ERROR;
-					if(sys.error == 0)    
-	      			   sys.error = ERROR_49;     
+					   //if(sys.error == 0) //必须注释掉，否则如果K162=1，k163=0时，如果换梭失败，主控面板不能检测出来，直接忽略了	 
+	      			   sys.error = ERROR_89;     
 	      			return;
 	  	  	}
 	
@@ -333,8 +351,8 @@ void go_origin_bobbin_case_arm(UINT8 pos)
 	  	{
 	  	  	sys.status = ERROR;
 			StatusChangeLatch = ERROR;
-			if(sys.error == 0)    
-	      	   sys.error = ERROR_49;     
+			   //if(sys.error == 0) //必须注释掉，否则如果K162=1，k163=0时，如果换梭失败，主控面板不能检测出来，直接忽略了	 
+	      	   sys.error = ERROR_89;     
 	      	return;
 	  	}
 	}
@@ -401,8 +419,8 @@ UINT8 find_a_bobbin_case(UINT8 full)
 			  	  	{
 			  	  		sys.status = ERROR;
 						StatusChangeLatch = ERROR;
-						if(sys.error == 0)    
-			      		   sys.error = ERROR_50;     
+						   //if(sys.error == 0) //必须注释掉，否则如果K162=1，k163=0时，如果换梭失败，主控面板不能检测出来，直接忽略了	 
+			      		   sys.error = ERROR_89;     
 			      		return 0;
 			  	  	}
 				}
@@ -428,8 +446,8 @@ UINT8 find_a_bobbin_case(UINT8 full)
 			  	  	{
 			  	  		sys.status = ERROR;
 						StatusChangeLatch = ERROR;
-						if(sys.error == 0)    
-			      		   sys.error = ERROR_50;     
+						   //if(sys.error == 0) //必须注释掉，否则如果K162=1，k163=0时，如果换梭失败，主控面板不能检测出来，直接忽略了	 
+			      		   sys.error = ERROR_89;     
 			      		return 0;
 			  	  	}
 
@@ -465,8 +483,8 @@ UINT8 find_a_bobbin_case(UINT8 full)
 			  	  	{
 			  	  		sys.status = ERROR;
 						StatusChangeLatch = ERROR;
-						if(sys.error == 0)    
-			      		   sys.error = ERROR_50;     
+						   //if(sys.error == 0) //必须注释掉，否则如果K162=1，k163=0时，如果换梭失败，主控面板不能检测出来，直接忽略了	 
+			      		   sys.error = ERROR_89;     
 			      		return 0;
 			  	  	}
 
@@ -557,7 +575,7 @@ UINT8 bobbin_case_workflow1(void)
 	//#if MACHINE_900_BOBBIN_DEBUG_MODE
 	#if 0
 	#else
-	bobbin_case_motor_adjust();
+	bobbin_case_motor_adjust();//调整主轴位置到80度，方便取出下轴空梭芯
 	#endif
 	
 	for( i = 0; i<8 ; i++)
@@ -582,8 +600,8 @@ UINT8 bobbin_case_workflow1(void)
 				//报错退出
 				sys.status = ERROR;
 				StatusChangeLatch = ERROR;
-				if(sys.error == 0)    
-	      		   sys.error = ERROR_51;
+				//if(sys.error == 0) //必须注释掉，否则如果K162=1，k163=0时，如果换梭失败，主控面板不能检测出来，直接忽略了   
+	      		   sys.error = ERROR_88;
 				return 0;
 			}
 			BOBBIN_CASE_ARM_OUT = 1;     //机械臂伸出去
@@ -649,8 +667,8 @@ UINT8 bobbin_case_workflow1(void)
 				{
 					sys.status = ERROR;
 					StatusChangeLatch = ERROR;
-					if(sys.error == 0)    
-		      		   sys.error = ERROR_51;
+				//if(sys.error == 0) //必须注释掉，否则如果K162=1，k163=0时，如果换梭失败，主控面板不能检测出来，直接忽略了	 
+		      		   sys.error = ERROR_88;
 					return 0;
 			    } 
 				delay_ms(200);
@@ -680,6 +698,14 @@ UINT8 bobbin_case_workflow1(void)
 					BOBBIN_CASE_ARM_SCRATH = 0;  //机械手松开
 					go_origin_bobbin_case_arm(0);//转到梭盘对应位置
 					delay_ms(200);
+					if(j>=7)//如果已经找了8次了，都没能够把梭芯从梭盘上抓出，此时应该报错，2018-9-13
+					{
+						sys.status = ERROR;
+						StatusChangeLatch = ERROR;
+						//if(sys.error == 0) //必须注释掉，否则如果K162=1，k163=0时，如果换梭失败，主控面板不能检测出来，直接忽略了	 
+			      		   sys.error = ERROR_89;
+						return 0;
+					}
 				    continue;
 				}
 				go_origin_bobbin_case_arm(1);//转到机头对接位置
@@ -728,7 +754,7 @@ UINT8 get_bobbin_case_arm_org_status(void)
 //============================================================================
 //      静态函数（仅本文件内部有效）定义
 //============================================================================
-static void bobbin_get_configuration(void)
+void bobbin_get_configuration(void)
 {
 	UINT16 index;
 	index = 0;
@@ -751,21 +777,41 @@ static void bobbin_get_configuration(void)
 	para9.bobbin_platform_speed = svpara_disp_buf[index++];
 	para9.bobbin_shake_distance = svpara_disp_buf[index++];
 	para9.bobbin_shake_time = svpara_disp_buf[index++];
-	
+	para9.bobbin_case_dump_position = svpara_disp_buf[index++];//17
 
-	//然后从para9转存到对应的全局变量中
-	bobbin_case_enable=para9.k151_bobbin_case_enable;
-	bobbin_case_arm_offset=para9.k156_bobbin_case_arm_offset;
-	bobbin_case_platform_offset=para9.k157_bobbin_case_platform_offset;
-	bobbin_case_inout_delay=para9.k158_bobbin_case_inout_delay;
-	bobbin_case_scrath_delay=para9.k159_bobbin_case_scrath_delay;
-	bobbin_case_current_level=para9.k160_bobbin_case_current_level;
-	bobbin_case_stop_position=para9.k161_bobbin_case_stop_position;
-	bobbin_case_alarm_mode=para9.k162_bobbin_case_alarm_mode;
-	bobbin_case_restart_mode=para9.k163_bobbin_case_restart_mode;
-	bobbin_case_workmode=para9.k164_bobbin_case_workmode;
-	bobbin_plateform_org_offset=para9.k192_bobbin_plateform_org_offset;
-	
+	//启用了自动换梭功能
+	if(para9.k151_bobbin_case_enable==1)
+	{
+		//然后从para9转存到对应的全局变量中
+		bobbin_case_enable=para9.k151_bobbin_case_enable;
+		bobbin_case_arm_offset=para9.k156_bobbin_case_arm_offset;
+		bobbin_case_platform_offset=para9.k157_bobbin_case_platform_offset;
+		bobbin_case_inout_delay=para9.k158_bobbin_case_inout_delay;
+		bobbin_case_scrath_delay=para9.k159_bobbin_case_scrath_delay;
+		bobbin_case_current_level=para9.k160_bobbin_case_current_level;
+		bobbin_case_stop_position=para9.k161_bobbin_case_stop_position;
+		bobbin_case_alarm_mode=para9.k162_bobbin_case_alarm_mode;
+		bobbin_case_restart_mode=para9.k163_bobbin_case_restart_mode;
+		bobbin_case_workmode=para9.k164_bobbin_case_workmode;
+		bobbin_plateform_org_offset=para9.k192_bobbin_plateform_org_offset;
+		bobbin_case_dump_position=para9.bobbin_case_dump_position;
+	}
+	else
+	{
+		bobbin_case_enable=0;
+		bobbin_case_arm_offset=0;
+		bobbin_case_platform_offset=0;
+		bobbin_case_inout_delay=0;
+		bobbin_case_scrath_delay=0;
+		bobbin_case_current_level=0;
+		bobbin_case_stop_position=0;
+		bobbin_case_alarm_mode=0;
+		bobbin_case_restart_mode=0;
+		bobbin_case_workmode=0;
+		bobbin_plateform_org_offset=0;
+		bobbin_case_dump_position=50;
+	}
+
 }
 
 

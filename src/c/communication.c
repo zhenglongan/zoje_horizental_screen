@@ -19,6 +19,8 @@
 #include "..\..\include\delay.h"            // delay time definition
 #include "..\..\include\motor.h"          // Motor function
 #include "..\..\include\iic_bus_eeprom.h"
+#include "..\..\include\bobbin_auto_change.h"
+
 //--------------------------------------------------------------------------------------
 //  Internal macro define
 //--------------------------------------------------------------------------------------
@@ -772,8 +774,15 @@ void protocol(UINT8* command)
 									sys.status = ERROR;
 									break;
 								case 81:
-										if(bobbin_change_in_progress ==1 )
+										//if(bobbin_change_in_progress ==1 )
+										if( bobbin_case_alarm_mode == 0)//换梭方式为底线警报后手动换梭
+									    	bobbin_case_once_done_flag = 1;//表示进入READY状态后启动换梭流程
+									    	sys.error = OK;
+											StatusChangeLatch = READY;
+											predit_shift = 1;
+											sys.status = ERROR;
 										   break;
+										
 								case 46:
 								case 15:	     					                         
 								case 45:
@@ -789,7 +798,7 @@ void protocol(UINT8* command)
 									predit_shift = 1;
 									sys.status = ERROR;
 									break;
-									
+								
 								default:
 									break;
 							}	     	            		                                   
@@ -2485,7 +2494,16 @@ void protocol(UINT8* command)
 			//--------------------------------------------------------------------------------------      
 			//  receive output query command
 			//--------------------------------------------------------------------------------------
-			case OUTPUT:      
+			case OUTPUT: 
+				//借用检测模式里的输出功能，对换梭功能进行测试
+				//测试，测试输出的时候，先会发送输出为1，然后发送输出为0，
+				//为了避免冲突，这里在发送输出为0的时候去响应
+				if(rec_buf[4]==0)
+				{
+					bobbin_case_debug_cmd = rec_buf[3];
+				}
+
+				
 			    switch(rec_buf[3])                      // data package
 				{
 					case 0x01: 
@@ -3111,9 +3129,30 @@ void protocol(UINT8* command)
 			   
 				   
 			  case SET_BASELINE_ALARM:
+			  		
 					baseline_alarm_flag = rec_buf[3];
 					temp16 = (UINT16)rec_buf[4]<<8;
 			        baseline_alarm_stitchs = temp16 | (UINT16)rec_buf[5];//总针数
+
+					//2018-9-13新增自动换梭相关内容
+					if( pat_buff_total_counter >= baseline_alarm_stitchs)
+						    baseline_alarm_stitchs += pat_buff_total_counter;
+					bobbin_case_once_done_flag = 0;//READY状态下不自动换梭
+					if(baseline_alarm_flag==1&&baseline_alarm_stitchs==0)
+					{
+						SUM = 1;
+						delay_us(50000);
+						delay_us(50000);
+						delay_us(50000);
+						delay_us(50000);
+						delay_us(50000);
+						delay_us(50000);						
+						delay_us(50000);
+						delay_us(50000);
+						delay_us(50000);
+						delay_us(50000);
+						SUM = 0;
+					}
 					
 					tra_ind_r = 0; 
 					tra_ind_w = 0;                  
