@@ -204,12 +204,12 @@ typedef struct
 	UINT8  inpresser_org_select;	   //124 中压脚传感器的类型选择
 
 //以下为2018-9-12新增
-	UINT8  dsp3a_motor_dir; 	//125
-	UINT8  dsp3b_motor_dir; 	//126
-	UINT8  dsp3A_current_level;	//127
-	UINT8  dsp3B_current_level;	//128
+	UINT8  dsp3a_motor_dir; 	//125 DSP3A-换梭臂电机方向
+	UINT8  dsp3b_motor_dir; 	//126 DSP3B-梭盘电机方向
+	UINT8  dsp3A_current_level;	//127 DSP3A-换梭臂电机电流级别
+	UINT8  dsp3B_current_level;	//128 DSP3B-梭盘电机电流级别
 
-	//自动换梭相关
+	//自动换梭相关，已经移动到系统参数第9组
 //	UINT8  bobbin_platform_speed;//127
 //	 INT8  bobbin_shake_distance;//128
 //	UINT8  bobbin_shake_time;	 //129

@@ -615,29 +615,12 @@ void ta0_int(void)
 		pedal_state = 0;
 	}
 
-	//扫描自动换梭按钮是否按下
-//	if( (ENABLE_BOBBIN_CASE_FUN == 1)&&( bobbin_case_enable == 1) )//#if ENABLE_BOBBIN_CASE_FUN
-	if(bobbin_case_enable == 1)
+	//检测梭盘动作按钮，有效电平为高电平，次数为100
+	if(bobbin_check_module_enable()==1)//如果使能了自动换梭
 	{
-		if( BOBBIN_CASE_SWITCH == 1)
-		{
-			if( bobbin_case_switch_flag == 0)
-			{
-				bobbin_case_switch_counter++;
-				if( bobbin_case_switch_counter > 100 )
-				{
-					bobbin_case_switch_flag = 1;
-				}
-			}
-			else
-			    bobbin_case_switch_counter = 0;
-		}
-		else
-		{
-			bobbin_case_switch_counter = 0;
-			bobbin_case_switch_flag = 0;
-		}
+		bobbin_check_switch_callback(1,100);
 	}
+
 
 }
 //--------------------------------------------------------------------------------------

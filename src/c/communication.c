@@ -774,9 +774,6 @@ void protocol(UINT8* command)
 									sys.status = ERROR;
 									break;
 								case 81:
-										//if(bobbin_change_in_progress ==1 )
-										if( bobbin_case_alarm_mode == 0)//换梭方式为底线警报后手动换梭
-									    	bobbin_case_once_done_flag = 1;//表示进入READY状态后启动换梭流程
 									    	sys.error = OK;
 											StatusChangeLatch = READY;
 											predit_shift = 1;
@@ -3137,7 +3134,7 @@ void protocol(UINT8* command)
 					//2018-9-13新增自动换梭相关内容
 					if( pat_buff_total_counter >= baseline_alarm_stitchs)
 						    baseline_alarm_stitchs += pat_buff_total_counter;
-					bobbin_case_once_done_flag = 0;//READY状态下不自动换梭
+					//bobbin_case_once_done_flag = 0;//READY状态下不自动换梭
 					if(baseline_alarm_flag==1&&baseline_alarm_stitchs==0)
 					{
 						SUM = 1;
