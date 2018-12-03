@@ -3,17 +3,17 @@
 [DATABASE_VERSION]
 "2.8" 
 [PROJECT_DETAILS]
-"v01" "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\v01" "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\v01\v01.hwp" "M16C" "Renesas M16C Standard" "Application" "M16C/60" "M16C/62P" 
+"v01" "E:\zla_git\zhongjie_pi620\zhongjie_pi620\v01" "E:\zla_git\zhongjie_pi620\zhongjie_pi620\v01\v01.hwp" "M16C" "Renesas M16C Standard" "Application" "M16C/60" "M16C/62P" 
 [INFORMATION]
 "No project information available" 
 [TOOL_CHAIN]
 "Renesas M16C Standard Toolchain" "5.40.00" 
 [CONFIGURATIONS]
-"Debug" "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\v01\Debug" 
-"Debug_M16C_E8_SYSTEM" "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\v01\Debug_M16C_E8_SYSTEM" 
-"Debug_M16C_R8C_FoUSB_UART" "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\v01\Debug_M16C_R8C_FoUSB_UART" 
-"Debug_M16C_R8C_Simulator" "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\v01\Debug_M16C_R8C_Simulator" 
-"Release" "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\v01\Release" 
+"Debug" "E:\zla_git\zhongjie_pi620\zhongjie_pi620\v01\Debug" 
+"Debug_M16C_E8_SYSTEM" "E:\zla_git\zhongjie_pi620\zhongjie_pi620\v01\Debug_M16C_E8_SYSTEM" 
+"Debug_M16C_R8C_FoUSB_UART" "E:\zla_git\zhongjie_pi620\zhongjie_pi620\v01\Debug_M16C_R8C_FoUSB_UART" 
+"Debug_M16C_R8C_Simulator" "E:\zla_git\zhongjie_pi620\zhongjie_pi620\v01\Debug_M16C_R8C_Simulator" 
+"Release" "E:\zla_git\zhongjie_pi620\zhongjie_pi620\v01\Release" 
 [BUILD_PHASES]
 "Renesas M16C Assembler" 1 
 "Renesas M16C C Compiler" 1 
@@ -113,23 +113,24 @@
 "Systemcall file" "Renesas M16C Jump table Composer" "Renesas M16C Assembler" 
 "Systemcall file" "Renesas M16C Jump table Composer" "Renesas M16C C Compiler" 
 [PROJECT_FILES]
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\asm\ncrt0.a30" "User" "Assembly source file" 2 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\M_debug.c" "User" "C source file" 2 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\RC522.C" "User" "C source file" 2 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\action.c" "User" "C source file" 2 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\bobbin_auto_change.c" "User" "C source file" 2 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\communication.c" "User" "C source file" 2 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\delay.c" "User" "C source file" 2 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\iic_bus_eeprom.C" "User" "C source file" 2 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\initial.c" "User" "C source file" 2 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\main.c" "User" "C source file" 2 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\motor.c" "User" "C source file" 2 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\solenoid.c" "User" "C source file" 2 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\step_motor_drv.c" "User" "C source file" 2 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\system.c" "User" "C source file" 2 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\uart1.c" "User" "C source file" 2 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\variables.c" "User" "C source file" 2 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\watch.c" "User" "C source file" 2 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\asm\ncrt0.a30" "User" "Assembly source file" 2 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\M_debug.c" "User" "C source file" 2 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\RC522.C" "User" "C source file" 2 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\action.c" "User" "C source file" 2 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\bobbin_auto_change.c" "User" "C source file" 2 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\communication.c" "User" "C source file" 2 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\delay.c" "User" "C source file" 2 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\iic_bus_eeprom.C" "User" "C source file" 2 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\initial.c" "User" "C source file" 2 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\inpress_follow_mainmotor.c" "User" "C source file" 2 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\main.c" "User" "C source file" 2 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\motor.c" "User" "C source file" 2 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\solenoid.c" "User" "C source file" 2 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\step_motor_drv.c" "User" "C source file" 2 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\system.c" "User" "C source file" 2 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\uart1.c" "User" "C source file" 2 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\variables.c" "User" "C source file" 2 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\watch.c" "User" "C source file" 2 
 [FOLDER]
 "Assembly source file" "Assembly source file" 
 "C header file" "C header file" 
@@ -178,45 +179,46 @@
 [ON_DEMAND_COMPONENTS_LOADED]
 [SYNC_SESSION_NAMES]
 [SESSIONS]
-"DefaultSession" "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\v01\DefaultSession.hsf" 0 
-"M16C_E8a" "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\v01\M16C_E8a.hsf" 0 
-"SessionM16C_R8C_FoUSB_UART" "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\v01\SessionM16C_R8C_FoUSB_UART.hsf" 0 
-"SessionM16C_R8C_Simulator" "E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\v01\SessionM16C_R8C_Simulator.hsf" 0 
+"DefaultSession" "E:\zla_git\zhongjie_pi620\zhongjie_pi620\v01\DefaultSession.hsf" 0 
+"M16C_E8a" "E:\zla_git\zhongjie_pi620\zhongjie_pi620\v01\M16C_E8a.hsf" 0 
+"SessionM16C_R8C_FoUSB_UART" "E:\zla_git\zhongjie_pi620\zhongjie_pi620\v01\SessionM16C_R8C_FoUSB_UART.hsf" 0 
+"SessionM16C_R8C_Simulator" "E:\zla_git\zhongjie_pi620\zhongjie_pi620\v01\SessionM16C_R8C_Simulator.hsf" 0 
 [GENERAL_DATA_SESSION_DefaultSession]
 [GENERAL_DATA_SESSION_M16C_E8a]
 [GENERAL_DATA_SESSION_SessionM16C_R8C_FoUSB_UART]
 [GENERAL_DATA_SESSION_SessionM16C_R8C_Simulator]
 [OPTIONS_Debug_Renesas M16C Assembler]
 "Assembly source file" "0c691d508a4c7c10" 2 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\asm\ncrt0.a30" "065b3f44270d7c10" 2 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\asm\ncrt0.a30" "065b3f44270d7c10" 2 
 [OPTIONS_Debug_Renesas M16C C Compiler]
 "C source file" "0c691d508a4c7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\M_debug.c" "02bc745b311d1d10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\RC522.C" "0f9a2cdcbf0f2d10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\action.c" "0a518b3856ad7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\bobbin_auto_change.c" "037946a658a44d10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\communication.c" "0c27d9c968fc7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\delay.c" "0b56445b9e9c7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\iic_bus_eeprom.C" "0b2ccf6cf1ef1d10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\initial.c" "0cf2abf2835c7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\main.c" "0cf2abf2835c7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\motor.c" "0cf2abf2835c7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\solenoid.c" "0267332e5ddc7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\step_motor_drv.c" "0c7f1ad06aec7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\system.c" "0cf2abf2835c7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\uart1.c" "0f6c6ecd637a2d10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\variables.c" "0cf2abf2835c7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\watch.c" "0cf2abf2835c7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\M_debug.c" "02bc745b311d1d10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\RC522.C" "0f9a2cdcbf0f2d10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\action.c" "0a518b3856ad7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\bobbin_auto_change.c" "037946a658a44d10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\communication.c" "0c27d9c968fc7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\delay.c" "0b56445b9e9c7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\iic_bus_eeprom.C" "0b2ccf6cf1ef1d10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\initial.c" "0cf2abf2835c7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\inpress_follow_mainmotor.c" "09ded29fefa84d10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\main.c" "0cf2abf2835c7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\motor.c" "0cf2abf2835c7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\solenoid.c" "0267332e5ddc7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\step_motor_drv.c" "0c7f1ad06aec7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\system.c" "0cf2abf2835c7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\uart1.c" "0f6c6ecd637a2d10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\variables.c" "0cf2abf2835c7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\watch.c" "0cf2abf2835c7c10" 1 
 [OPTIONS_Debug_Renesas M16C Configurator]
-"Single Shot" "037946a658a44d10" 6 
+"Single Shot" "09ded29fefa84d10" 6 
 [OPTIONS_Debug_Renesas M16C Jump table Composer]
-"Single Shot" "037946a658a44d10" 7 
+"Single Shot" "09ded29fefa84d10" 7 
 [OPTIONS_Debug_Renesas M16C Librarian]
-"Single Shot" "037946a658a44d10" 5 
+"Single Shot" "09ded29fefa84d10" 5 
 [OPTIONS_Debug_Renesas M16C Linker]
-"Single Shot" "0e4466a658a44d10" 3 
+"Single Shot" "069ef29fefa84d10" 3 
 [OPTIONS_Debug_Renesas M16C Stype Converter]
-"Single Shot" "0e4466a658a44d10" 4 
+"Single Shot" "069ef29fefa84d10" 4 
 [OPTIONS_Debug]
 "" 0 
 "[V|VERSION|1] " 7 
@@ -229,39 +231,40 @@
 "[V|VERSION|1] [S|OUTPUT|OBJECTCODE] [S|OUTPUTPATH|^"$(CONFIGDIR)\$(FILELEAF).r30^"] [B|INSPECTOR|1] " 1 
 [EXCLUDED_FILES_Debug]
 [LINKAGE_ORDER_Debug]
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\v01\Debug\ncrt0.r30" 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\v01\Debug\ncrt0.r30" 
 [GENERAL_DATA_CONFIGURATION_Debug]
 [OPTIONS_Debug_M16C_E8_SYSTEM_Renesas M16C Assembler]
 "Assembly source file" "0c691d508a4c7c10" 2 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\asm\ncrt0.a30" "065b3f44270d7c10" 2 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\asm\ncrt0.a30" "065b3f44270d7c10" 2 
 [OPTIONS_Debug_M16C_E8_SYSTEM_Renesas M16C C Compiler]
 "C source file" "0c691d508a4c7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\M_debug.c" "02bc745b311d1d10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\RC522.C" "0f9a2cdcbf0f2d10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\action.c" "0a518b3856ad7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\bobbin_auto_change.c" "037946a658a44d10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\communication.c" "0c27d9c968fc7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\delay.c" "0b56445b9e9c7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\iic_bus_eeprom.C" "0b2ccf6cf1ef1d10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\initial.c" "0cf2abf2835c7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\main.c" "0cf2abf2835c7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\motor.c" "0cf2abf2835c7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\solenoid.c" "0267332e5ddc7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\step_motor_drv.c" "0c7f1ad06aec7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\system.c" "0cf2abf2835c7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\uart1.c" "0f6c6ecd637a2d10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\variables.c" "0cf2abf2835c7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\watch.c" "0cf2abf2835c7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\M_debug.c" "02bc745b311d1d10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\RC522.C" "0f9a2cdcbf0f2d10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\action.c" "0a518b3856ad7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\bobbin_auto_change.c" "037946a658a44d10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\communication.c" "0c27d9c968fc7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\delay.c" "0b56445b9e9c7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\iic_bus_eeprom.C" "0b2ccf6cf1ef1d10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\initial.c" "0cf2abf2835c7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\inpress_follow_mainmotor.c" "09ded29fefa84d10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\main.c" "0cf2abf2835c7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\motor.c" "0cf2abf2835c7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\solenoid.c" "0267332e5ddc7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\step_motor_drv.c" "0c7f1ad06aec7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\system.c" "0cf2abf2835c7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\uart1.c" "0f6c6ecd637a2d10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\variables.c" "0cf2abf2835c7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\watch.c" "0cf2abf2835c7c10" 1 
 [OPTIONS_Debug_M16C_E8_SYSTEM_Renesas M16C Configurator]
-"Single Shot" "037946a658a44d10" 6 
+"Single Shot" "09ded29fefa84d10" 6 
 [OPTIONS_Debug_M16C_E8_SYSTEM_Renesas M16C Jump table Composer]
-"Single Shot" "037946a658a44d10" 7 
+"Single Shot" "09ded29fefa84d10" 7 
 [OPTIONS_Debug_M16C_E8_SYSTEM_Renesas M16C Librarian]
-"Single Shot" "037946a658a44d10" 5 
+"Single Shot" "09ded29fefa84d10" 5 
 [OPTIONS_Debug_M16C_E8_SYSTEM_Renesas M16C Linker]
-"Single Shot" "0e4466a658a44d10" 3 
+"Single Shot" "069ef29fefa84d10" 3 
 [OPTIONS_Debug_M16C_E8_SYSTEM_Renesas M16C Stype Converter]
-"Single Shot" "0e4466a658a44d10" 4 
+"Single Shot" "069ef29fefa84d10" 4 
 [OPTIONS_Debug_M16C_E8_SYSTEM]
 "" 0 
 "[V|VERSION|1] " 7 
@@ -273,39 +276,40 @@
 "[V|VERSION|1] [S|OUTPUT|OBJECTCODE] [S|OUTPUTPATH|^"$(CONFIGDIR)\$(FILELEAF).r30^"] [B|INSPECTOR|1] " 1 
 [EXCLUDED_FILES_Debug_M16C_E8_SYSTEM]
 [LINKAGE_ORDER_Debug_M16C_E8_SYSTEM]
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\v01\Debug_M16C_E8_SYSTEM\ncrt0.r30" 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\v01\Debug_M16C_E8_SYSTEM\ncrt0.r30" 
 [GENERAL_DATA_CONFIGURATION_Debug_M16C_E8_SYSTEM]
 [OPTIONS_Debug_M16C_R8C_FoUSB_UART_Renesas M16C Assembler]
 "Assembly source file" "0c691d508a4c7c10" 2 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\asm\ncrt0.a30" "065b3f44270d7c10" 2 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\asm\ncrt0.a30" "065b3f44270d7c10" 2 
 [OPTIONS_Debug_M16C_R8C_FoUSB_UART_Renesas M16C C Compiler]
 "C source file" "0c691d508a4c7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\M_debug.c" "02bc745b311d1d10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\RC522.C" "0f9a2cdcbf0f2d10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\action.c" "0a518b3856ad7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\bobbin_auto_change.c" "037946a658a44d10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\communication.c" "0c27d9c968fc7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\delay.c" "0b56445b9e9c7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\iic_bus_eeprom.C" "0b2ccf6cf1ef1d10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\initial.c" "0cf2abf2835c7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\main.c" "0cf2abf2835c7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\motor.c" "0cf2abf2835c7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\solenoid.c" "0267332e5ddc7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\step_motor_drv.c" "0c7f1ad06aec7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\system.c" "0cf2abf2835c7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\uart1.c" "0f6c6ecd637a2d10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\variables.c" "0cf2abf2835c7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\watch.c" "0cf2abf2835c7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\M_debug.c" "02bc745b311d1d10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\RC522.C" "0f9a2cdcbf0f2d10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\action.c" "0a518b3856ad7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\bobbin_auto_change.c" "037946a658a44d10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\communication.c" "0c27d9c968fc7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\delay.c" "0b56445b9e9c7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\iic_bus_eeprom.C" "0b2ccf6cf1ef1d10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\initial.c" "0cf2abf2835c7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\inpress_follow_mainmotor.c" "09ded29fefa84d10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\main.c" "0cf2abf2835c7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\motor.c" "0cf2abf2835c7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\solenoid.c" "0267332e5ddc7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\step_motor_drv.c" "0c7f1ad06aec7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\system.c" "0cf2abf2835c7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\uart1.c" "0f6c6ecd637a2d10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\variables.c" "0cf2abf2835c7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\watch.c" "0cf2abf2835c7c10" 1 
 [OPTIONS_Debug_M16C_R8C_FoUSB_UART_Renesas M16C Configurator]
-"Single Shot" "037946a658a44d10" 6 
+"Single Shot" "09ded29fefa84d10" 6 
 [OPTIONS_Debug_M16C_R8C_FoUSB_UART_Renesas M16C Jump table Composer]
-"Single Shot" "037946a658a44d10" 7 
+"Single Shot" "09ded29fefa84d10" 7 
 [OPTIONS_Debug_M16C_R8C_FoUSB_UART_Renesas M16C Librarian]
-"Single Shot" "037946a658a44d10" 5 
+"Single Shot" "09ded29fefa84d10" 5 
 [OPTIONS_Debug_M16C_R8C_FoUSB_UART_Renesas M16C Linker]
-"Single Shot" "0e4466a658a44d10" 3 
+"Single Shot" "069ef29fefa84d10" 3 
 [OPTIONS_Debug_M16C_R8C_FoUSB_UART_Renesas M16C Stype Converter]
-"Single Shot" "0e4466a658a44d10" 4 
+"Single Shot" "069ef29fefa84d10" 4 
 [OPTIONS_Debug_M16C_R8C_FoUSB_UART]
 "" 0 
 "[V|VERSION|1] " 7 
@@ -319,39 +323,40 @@
 "[V|VERSION|1] [S|OUTPUT|OBJECTCODE] [S|OUTPUTPATH|^"$(CONFIGDIR)\$(FILELEAF).r30^"] [B|INSPECTOR|1] " 1 
 [EXCLUDED_FILES_Debug_M16C_R8C_FoUSB_UART]
 [LINKAGE_ORDER_Debug_M16C_R8C_FoUSB_UART]
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\v01\Debug_M16C_R8C_FoUSB_UART\ncrt0.r30" 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\v01\Debug_M16C_R8C_FoUSB_UART\ncrt0.r30" 
 [GENERAL_DATA_CONFIGURATION_Debug_M16C_R8C_FoUSB_UART]
 [OPTIONS_Debug_M16C_R8C_Simulator_Renesas M16C Assembler]
 "Assembly source file" "0c691d508a4c7c10" 2 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\asm\ncrt0.a30" "065b3f44270d7c10" 2 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\asm\ncrt0.a30" "065b3f44270d7c10" 2 
 [OPTIONS_Debug_M16C_R8C_Simulator_Renesas M16C C Compiler]
 "C source file" "0c691d508a4c7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\M_debug.c" "02bc745b311d1d10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\RC522.C" "0f9a2cdcbf0f2d10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\action.c" "0a518b3856ad7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\bobbin_auto_change.c" "037946a658a44d10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\communication.c" "0c27d9c968fc7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\delay.c" "0b56445b9e9c7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\iic_bus_eeprom.C" "0b2ccf6cf1ef1d10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\initial.c" "0cf2abf2835c7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\main.c" "0cf2abf2835c7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\motor.c" "0cf2abf2835c7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\solenoid.c" "0267332e5ddc7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\step_motor_drv.c" "0c7f1ad06aec7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\system.c" "0cf2abf2835c7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\uart1.c" "0f6c6ecd637a2d10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\variables.c" "0cf2abf2835c7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\watch.c" "0cf2abf2835c7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\M_debug.c" "02bc745b311d1d10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\RC522.C" "0f9a2cdcbf0f2d10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\action.c" "0a518b3856ad7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\bobbin_auto_change.c" "037946a658a44d10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\communication.c" "0c27d9c968fc7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\delay.c" "0b56445b9e9c7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\iic_bus_eeprom.C" "0b2ccf6cf1ef1d10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\initial.c" "0cf2abf2835c7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\inpress_follow_mainmotor.c" "09ded29fefa84d10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\main.c" "0cf2abf2835c7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\motor.c" "0cf2abf2835c7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\solenoid.c" "0267332e5ddc7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\step_motor_drv.c" "0c7f1ad06aec7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\system.c" "0cf2abf2835c7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\uart1.c" "0f6c6ecd637a2d10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\variables.c" "0cf2abf2835c7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\watch.c" "0cf2abf2835c7c10" 1 
 [OPTIONS_Debug_M16C_R8C_Simulator_Renesas M16C Configurator]
-"Single Shot" "037946a658a44d10" 6 
+"Single Shot" "09ded29fefa84d10" 6 
 [OPTIONS_Debug_M16C_R8C_Simulator_Renesas M16C Jump table Composer]
-"Single Shot" "037946a658a44d10" 7 
+"Single Shot" "09ded29fefa84d10" 7 
 [OPTIONS_Debug_M16C_R8C_Simulator_Renesas M16C Librarian]
-"Single Shot" "037946a658a44d10" 5 
+"Single Shot" "09ded29fefa84d10" 5 
 [OPTIONS_Debug_M16C_R8C_Simulator_Renesas M16C Linker]
-"Single Shot" "0e4466a658a44d10" 3 
+"Single Shot" "069ef29fefa84d10" 3 
 [OPTIONS_Debug_M16C_R8C_Simulator_Renesas M16C Stype Converter]
-"Single Shot" "0e4466a658a44d10" 4 
+"Single Shot" "069ef29fefa84d10" 4 
 [OPTIONS_Debug_M16C_R8C_Simulator]
 "" 0 
 "[V|VERSION|1] " 7 
@@ -363,39 +368,40 @@
 "[V|VERSION|1] [S|OUTPUT|OBJECTCODE] [S|OUTPUTPATH|^"$(CONFIGDIR)\$(FILELEAF).r30^"] [B|INSPECTOR|1] " 1 
 [EXCLUDED_FILES_Debug_M16C_R8C_Simulator]
 [LINKAGE_ORDER_Debug_M16C_R8C_Simulator]
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\v01\Debug_M16C_R8C_Simulator\ncrt0.r30" 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\v01\Debug_M16C_R8C_Simulator\ncrt0.r30" 
 [GENERAL_DATA_CONFIGURATION_Debug_M16C_R8C_Simulator]
 [OPTIONS_Release_Renesas M16C Assembler]
 "Assembly source file" "0c691d508a4c7c10" 2 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\asm\ncrt0.a30" "065b3f44270d7c10" 2 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\asm\ncrt0.a30" "065b3f44270d7c10" 2 
 [OPTIONS_Release_Renesas M16C C Compiler]
 "C source file" "0c691d508a4c7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\M_debug.c" "02bc745b311d1d10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\RC522.C" "0f9a2cdcbf0f2d10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\action.c" "0a518b3856ad7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\bobbin_auto_change.c" "037946a658a44d10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\communication.c" "0c27d9c968fc7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\delay.c" "0b56445b9e9c7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\iic_bus_eeprom.C" "0b2ccf6cf1ef1d10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\initial.c" "0cf2abf2835c7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\main.c" "0cf2abf2835c7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\motor.c" "0cf2abf2835c7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\solenoid.c" "0267332e5ddc7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\step_motor_drv.c" "0c7f1ad06aec7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\system.c" "0cf2abf2835c7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\uart1.c" "0f6c6ecd637a2d10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\variables.c" "0cf2abf2835c7c10" 1 
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\src\c\watch.c" "0cf2abf2835c7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\M_debug.c" "02bc745b311d1d10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\RC522.C" "0f9a2cdcbf0f2d10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\action.c" "0a518b3856ad7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\bobbin_auto_change.c" "037946a658a44d10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\communication.c" "0c27d9c968fc7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\delay.c" "0b56445b9e9c7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\iic_bus_eeprom.C" "0b2ccf6cf1ef1d10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\initial.c" "0cf2abf2835c7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\inpress_follow_mainmotor.c" "09ded29fefa84d10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\main.c" "0cf2abf2835c7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\motor.c" "0cf2abf2835c7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\solenoid.c" "0267332e5ddc7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\step_motor_drv.c" "0c7f1ad06aec7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\system.c" "0cf2abf2835c7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\uart1.c" "0f6c6ecd637a2d10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\variables.c" "0cf2abf2835c7c10" 1 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\src\c\watch.c" "0cf2abf2835c7c10" 1 
 [OPTIONS_Release_Renesas M16C Configurator]
-"Single Shot" "037946a658a44d10" 6 
+"Single Shot" "09ded29fefa84d10" 6 
 [OPTIONS_Release_Renesas M16C Jump table Composer]
-"Single Shot" "037946a658a44d10" 7 
+"Single Shot" "09ded29fefa84d10" 7 
 [OPTIONS_Release_Renesas M16C Librarian]
-"Single Shot" "037946a658a44d10" 5 
+"Single Shot" "09ded29fefa84d10" 5 
 [OPTIONS_Release_Renesas M16C Linker]
-"Single Shot" "0e4466a658a44d10" 3 
+"Single Shot" "069ef29fefa84d10" 3 
 [OPTIONS_Release_Renesas M16C Stype Converter]
-"Single Shot" "0e4466a658a44d10" 4 
+"Single Shot" "069ef29fefa84d10" 4 
 [OPTIONS_Release]
 "" 0 
 "[V|VERSION|1] " 7 
@@ -407,7 +413,7 @@
 "[V|VERSION|1] [S|OUTPUT|OBJECTCODE] [S|OUTPUTPATH|^"$(CONFIGDIR)\$(FILELEAF).r30^"] [B|INSPECTOR|1] " 1 
 [EXCLUDED_FILES_Release]
 [LINKAGE_ORDER_Release]
-"E:\花样机组郑龙安\2018年9月\中捷特殊机型换横屏\金砖横屏程序\zhongjie_pi62020190906\zhongjie_pi620\v01\Release\ncrt0.r30" 
+"E:\zla_git\zhongjie_pi620\zhongjie_pi620\v01\Release\ncrt0.r30" 
 [GENERAL_DATA_CONFIGURATION_Release]
 [GENERAL_DATA_CONFIGURATION_SESSION_Debug_DefaultSession]
 [SESSION_DATA_CONFIGURATION_SESSION_Debug_DefaultSession]
